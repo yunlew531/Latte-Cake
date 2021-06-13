@@ -1,0 +1,36 @@
+// stylelint-disable indentation
+
+// Utilities
+
+$utilities: () !default;
+$utilities: map-merge(
+  $utilities,
+  (
+    'font-family': (
+      responsive: true,
+      property: font-family,
+      class: font,
+      values: (
+        sans: $font-family-sans-serif,
+        Tamma: $font-family-Tamma-cursive,
+      ),
+    ),
+    'letter-spacing': (
+      responsive: true,
+      property: letter-spacing,
+      class: tracking,
+      values: (
+        0: 0,
+        1: 0.0625rem,
+        2: 0.125rem,
+        3: 0.187rem,
+      ),
+    ),
+    "font-size": (
+      rfs: true,
+      property: font-size,
+      class: fs,
+      values: $font-sizes
+    ),
+  )
+);
