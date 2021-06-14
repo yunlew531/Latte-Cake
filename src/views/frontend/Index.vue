@@ -1,9 +1,19 @@
 <template>
-  <div class="fs-1">Index Page</div>
+  <main>
+    <Carousel />
+  </main>
 </template>
 
 <script>
+import Carousel from '@/components/frontend/Index/Carousel.vue';
+
 export default {
-  name: 'Home',
+  name: 'Index',
+  components: {
+    Carousel,
+  },
 };
 </script>
+
+<style lang="scss">
+</style>

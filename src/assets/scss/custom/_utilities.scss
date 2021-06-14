@@ -7,7 +7,6 @@ $utilities: map-merge(
   $utilities,
   (
     'font-family': (
-      responsive: true,
       property: font-family,
       class: font,
       values: (
@@ -26,11 +25,63 @@ $utilities: map-merge(
         3: 0.187rem,
       ),
     ),
-    "font-size": (
-      rfs: true,
-      property: font-size,
-      class: fs,
-      values: $font-sizes
+    'z-index': (
+      responsive: true,
+      property: z-index,
+      class: z,
+      values: (
+        0: 0,
+        10: 10,
+        20: 20,
+        30: 30,
+      ),
+    ),
+    'opacity': (
+      responsive: true,
+      property: opacity,
+      values: (
+        0: 0,
+        25: 0.25,
+        50: 0.5,
+        75: 0.75,
+        100: 1,
+      ),
+    ),
+    'top': (
+      property: top,
+      values: $position-values,
+    ),
+    'bottom': (
+      property: bottom,
+      values: $position-values,
+    ),
+    'start': (
+      property: left,
+      class: start,
+      values: $position-values,
+    ),
+    'end': (
+      property: right,
+      class: end,
+      values: $position-values,
+    ),
+    'top-n': (
+      property: top,
+      values: $negative-spacers,
+    ),
+    'bottom-n': (
+      property: bottom,
+      values: $negative-spacers,
+    ),
+    'start-n': (
+      property: left,
+      class: start,
+      values: $negative-spacers,
+    ),
+    'end-n': (
+      property: right,
+      class: end,
+      values: $negative-spacers,
     ),
   )
 );
