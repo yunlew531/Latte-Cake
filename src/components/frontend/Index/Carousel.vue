@@ -1,5 +1,8 @@
 <template>
-  <section class="position-relative">
+  <section
+    ref="carouselPanel"
+    class="carousel-panel position-relative overflow-hidden"
+  >
     <!-- carousel-nav -->
     <div class="carousel-nav position-absolute top-0 z-10">
       <nav
@@ -40,17 +43,11 @@
             class="navbar-toggler"
             type="button"
             data-bs-toggle="collapse"
-            data-bs-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
+            data-bs-target="#carouselNabar"
           >
             <span class="navbar-toggler-icon"></span>
           </button>
-          <div
-            class="collapse navbar-collapse ps-25"
-            id="navbarSupportedContent"
-          >
+          <div class="collapse navbar-collapse ps-25" id="carouselNabar">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
               <li
                 class="
@@ -87,7 +84,7 @@
                   ms-n1px
                 "
               >
-                <a class="nav-link d-block px-16 py-10" href="#">關於店家</a>
+                <a class="nav-link d-block px-16 py-10" href="#">關於我們</a>
               </li>
             </ul>
             <form class="d-flex position-relative">
@@ -134,7 +131,7 @@
 <script>
 import { apiGetCarouselImgs } from '@/api';
 import { ref, onMounted, watch } from 'vue';
-import bootstrap from 'bootstrap/dist/js/bootstrap';
+import Carousel from 'bootstrap/js/dist/carousel';
 
 export default {
   name: 'Carousel',
@@ -143,10 +140,11 @@ export default {
     const isSearchFocus = ref(false);
     const { photoData } = apiGetCarouselImgs();
     const carouselDom = ref(null);
+    const carouselPanel = ref(null);
     let carousel = null;
 
     const handCarousel = () => {
-      carousel = new bootstrap.Carousel(carouselDom.value, {
+      carousel = new Carousel(carouselDom.value, {
         interval: 10000,
         pause: false,
         ride: 'carousel',
@@ -171,6 +169,7 @@ export default {
       isSearchFocus,
       carouselDom,
       photoData,
+      carouselPanel,
     };
   },
 };
@@ -182,7 +181,6 @@ export default {
 
 .carousel-nav {
   width: 100%;
-  height: 100vh;
   background-color: hsla(0, 0%, 0%, 0.25);
 }
 .carousel-item {
