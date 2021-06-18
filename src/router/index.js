@@ -7,6 +7,11 @@ const routes = [
     name: 'Index',
     component: Index,
   },
+  {
+    path: '/products',
+    name: 'Products',
+    component: () => import('../views/frontend/Products.vue'),
+  },
 ];
 
 const router = createRouter({

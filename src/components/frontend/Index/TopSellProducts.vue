@@ -1,5 +1,5 @@
 <template>
-  <section class="container pt-38 py-25">
+  <section class="container py-25">
     <h3 class="fs-4 text-center pb-5">店長推薦</h3>
     <div
       class="
@@ -10,8 +10,8 @@
         pb-5
       "
     >
-      <a
-        href="javascript:;"
+      <router-link
+        to="/products"
         class="
           text-decoration-none text-reset
           d-flex
@@ -20,13 +20,13 @@
           p-1
         "
       >
-        <h4 class="fs-6 lh-1 m-0">推薦商品一覽</h4>
+        <h4 class="fs-6 lh-1 m-0">所有商品一覽</h4>
         <span class="material-icons ms-1"> trending_flat </span>
-      </a>
+      </router-link>
     </div>
     <ul class="row gx-2px gy-12 list-unstyled">
       <li
-        class="col-sm-2 col-md-4 col-xl-3 text-center"
+        class="col-sm-2 col-md-4 col-xl-3"
         v-for="product in 8"
         :key="product"
       >
@@ -42,8 +42,23 @@
               "
             ></div>
           </div>
-          <h2 class="fs-5 pt-5 m-0">蘋果蛋糕</h2>
-          <p>NT$250</p>
+          <div class="d-flex justify-content-sm-between p-1">
+            <div>
+              <h2 class="fs-5 m-0">蘋果蛋糕</h2>
+              <h4 class="fs-7 m-0 py-1 text-black-300">蘋果、丹麥麵粉</h4>
+              <p>NT$250</p>
+            </div>
+            <span
+              class="
+                text-danger
+                fs-7
+                border border-danger
+                align-self-start
+                px-1
+              "
+              >熱銷商品</span
+            >
+          </div>
         </a>
       </li>
     </ul>

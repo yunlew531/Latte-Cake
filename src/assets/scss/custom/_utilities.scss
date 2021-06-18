@@ -107,5 +107,16 @@ $utilities: map-merge(
         xl: $line-height-base * 1.75,
       ),
     ),
+    'shadow': (
+      property: box-shadow,
+      class: shadow,
+      values: (
+        null: $box-shadow,
+        sm: $box-shadow-sm,
+        lg: $box-shadow-lg,
+        xl: $box-shadow-xl,
+        none: none,
+      ),
+    ),
   )
 );

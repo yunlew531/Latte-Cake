@@ -1,9 +1,5 @@
-import axios from 'axios';
 import { reactive, toRefs } from 'vue';
-
-const mockyReq = axios.create({
-  baseURL: 'https://run.mocky.io/',
-});
+import mockyReq from '../../mockyReq';
 
 export const getCarouselImgs = () => {
   const photoData = reactive({ photoData: {} });

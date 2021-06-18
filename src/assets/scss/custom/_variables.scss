@@ -3,14 +3,16 @@
 // color-variables
 
 // custom-start
-$primary: #a7e5fd;
+$primary: #53ceff;
 $secondary: #a3a3a3;
 $danger: rgb(199, 62, 58);
 $white: #fff;
+$white-100: rgb(245, 245, 245);
 $black: #1c1c1c;
 $black-100: #1f2021;
 $black-200: #333;
-
+$black-300: #798079;
+$gray-300: #dfdfdf;
 // custom-end
 
 // Settings for the `<body>` element.
@@ -45,9 +47,12 @@ $theme-colors: (
   'light': $light,
   'dark': $dark,
   'white': $white,
+  'white-100': $white-100,
   'black': $black,
   'black-100': $black-100,
   'black-200': $black-200,
+  'black-300': $black-300,
+  'gray-300': $gray-300
 ) !default;
 
 // Spacing
@@ -76,6 +81,7 @@ $spacers: (
   24: $spacer * 6,
   25: $spacer * 6.25,
   38: $spacer * 9.5,
+  50: $spacer * 12.5
 ) !default;
 
 // Position
@@ -103,7 +109,7 @@ $position-values: (
   16: $spacer * 4,
   20: $spacer * 5,
   24: $spacer * 6,
-  25: $spacer * 6.25,
+  25: $spacer * 6.25
 ) !default;
 // scss-docs-end position-map
 
@@ -135,7 +141,7 @@ $font-sizes: (
   5: $h5-font-size,
   6: $h6-font-size,
   7: $h7-font-size,
-  8: $h8-font-size,
+  8: $h8-font-size
 );
 
 // Carousel
@@ -150,3 +156,13 @@ $navbar-light-color: $white;
 $navbar-light-hover-color: rgba($white, 0.7);
 $navbar-light-active-color: rgba($white, 0.9);
 $navbar-light-disabled-color: rgba($white, 0.3);
+
+// Shadow
+//
+// shadow-variables
+$box-shadow: 0 0.5rem 1rem rgba($black, 0.15);
+$box-shadow-sm: 0 0.125rem 0.25rem rgba($black, 0.075);
+$box-shadow-lg: 0 1rem 3rem rgba($black, 0.175);
+$box-shadow-xl: 0 1.3rem 3.5rem rgba($black, 0.5);
+$box-shadow-xl-inset: inset 0 1.3rem 3.5rem rgba($black, 0.5);
+$box-shadow-inset: inset 0 1px 2px rgba($black, 0.075);

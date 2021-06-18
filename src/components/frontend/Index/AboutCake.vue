@@ -1,5 +1,5 @@
 <template>
-  <section class="container py-25">
+  <section class="container pt-25 pb-50">
     <div class="d-flex justify-content-between align-items-center flex-wrap">
       <div class="about-cake-img">
         <img
@@ -31,7 +31,8 @@
           保存期限僅短短半年。經過一道道程序，<br />
           精選、磨粉、篩粉、包裝再加上長時間運送，<br />
           大約剩3~4個月有效期限。<br />
-          天然無添加，食材選用絕不妥協。
+          天然無添加，<br />
+          食材選用是我們不妥協的地方。
         </p>
         <div class="about-material d-flex justify-content-end mt-12">
           <a
@@ -44,7 +45,7 @@
               p-1
             "
           >
-            <h4 class="fs-6 lh-1 m-0">關於食材</h4>
+            <h4 class="fs-6 lh-1 m-0">關於更多食材</h4>
             <span class="material-icons ms-1"> trending_flat </span>
           </a>
         </div>
