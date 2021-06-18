@@ -15,6 +15,6 @@ export default function getPosition() {
     window.removeEventListener('scroll', getScrollY);
   });
   return {
-    scrollY,
+    scrollY
   };
 }

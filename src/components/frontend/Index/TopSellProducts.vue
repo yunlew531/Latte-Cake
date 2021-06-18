@@ -1,6 +1,6 @@
 <template>
   <section class="container py-25">
-    <h3 class="fs-4 text-center pb-5">店長推薦</h3>
+    <h3 class="text-primary fs-4 fw-bold text-center pb-5">熱銷商品</h3>
     <div
       class="
         recommend-products-link
@@ -24,7 +24,7 @@
         <span class="material-icons ms-1"> trending_flat </span>
       </router-link>
     </div>
-    <ul class="row gx-2px gy-12 list-unstyled">
+    <ul class="row gx-1 gy-12 list-unstyled">
       <li
         class="col-sm-2 col-md-4 col-xl-3"
         v-for="product in 8"
@@ -75,6 +75,7 @@ export default {};
 .product-item {
   color: $black-200;
   overflow: hidden;
+  animation: product-ani 0.3s;
   .top-sell-img {
     background: center no-repeat;
     background-size: cover;
@@ -88,6 +89,14 @@ export default {};
       filter: brightness(1);
       transform: scale(1.01);
     }
+  }
+}
+@keyframes product-ani {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
   }
 }
 .recommend-products-link {

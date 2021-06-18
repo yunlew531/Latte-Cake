@@ -1,13 +1,16 @@
 <template>
-  <Navbar />
+  <Navbar>
+    <template #content>
+      <div class="container position-relative h-100">
+        <div class="position-absolute start-0 top-50">
+          <h3 class="fs-1 fw-bold text-white">
+            歡迎光臨 <span class="text-danger">LATTE & CAKE</span>
+          </h3>
+        </div>
+      </div>
+    </template>
+  </Navbar>
   <main>
-    <TransparentNavbar>
-      <template #content>
-        <h3 class="fs-1 text-white position-absolute bottom-0 w-50 ps-25 pb-12">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit.
-        </h3>
-      </template>
-    </TransparentNavbar>
     <Carousel />
     <div class="bg-product-info">
       <div class="bg-filter">
@@ -21,9 +24,8 @@
 </template>
 
 <script>
-import TransparentNavbar from '@/components/TransparentNavbar.vue';
-import Carousel from '@/components/frontend/Index/Carousel.vue';
 import Navbar from '@/components/Navbar.vue';
+import Carousel from '@/components/frontend/Index/Carousel.vue';
 import TopSellProducts from '@/components/frontend/Index/TopSellProducts.vue';
 import AboutCake from '@/components/frontend/Index/AboutCake.vue';
 import SubFooter from '@/components/SubFooter.vue';
@@ -32,7 +34,6 @@ import Footer from '@/components/Footer.vue';
 export default {
   name: 'Index',
   components: {
-    TransparentNavbar,
     Navbar,
     Carousel,
     TopSellProducts,

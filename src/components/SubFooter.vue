@@ -19,7 +19,7 @@
             <div class="raw-material-img"></div>
             <div class="ps-5 flex-grow-1">
               <h3 class="fs-5 m-0">關於食材</h3>
-              <p class="m-0">about raw materials</p>
+              <p class="m-0">About Raw Materials</p>
             </div>
             <span class="material-icons fs-5 text-danger pe-2">
               play_circle_outline
@@ -43,7 +43,7 @@
             <div class="shop-img"></div>
             <div class="ps-5 flex-grow-1">
               <h3 class="fs-5 m-0">關於本店</h3>
-              <p class="m-0">about shop</p>
+              <p class="m-0">About Shop</p>
             </div>
             <span class="material-icons fs-5 text-danger pe-2">
               play_circle_outline
@@ -59,9 +59,9 @@
 @import '~@/assets/scss/custom/variables';
 
 .subfooter-panel {
-  background: url(~@/assets/images/bg-white.png) center;
+  background-color: $white;
   background-size: cover;
-  box-shadow: $box-shadow-xl-inset;
+  box-shadow: $box-shadow-lg-inset;
 }
 .raw-material-img,
 .shop-img {

@@ -3,12 +3,12 @@
 // color-variables
 
 // custom-start
-$primary: #53ceff;
+$primary: #aa1b1b;
 $secondary: #a3a3a3;
-$danger: rgb(199, 62, 58);
-$white: #fff;
+$danger: #c63232;
+$white: #fffef7;
 $white-100: rgb(245, 245, 245);
-$black: #1c1c1c;
+$black: rgb(28, 28, 28);
 $black-100: #1f2021;
 $black-200: #333;
 $black-300: #798079;
@@ -163,6 +163,5 @@ $navbar-light-disabled-color: rgba($white, 0.3);
 $box-shadow: 0 0.5rem 1rem rgba($black, 0.15);
 $box-shadow-sm: 0 0.125rem 0.25rem rgba($black, 0.075);
 $box-shadow-lg: 0 1rem 3rem rgba($black, 0.175);
-$box-shadow-xl: 0 1.3rem 3.5rem rgba($black, 0.5);
-$box-shadow-xl-inset: inset 0 1.3rem 3.5rem rgba($black, 0.5);
+$box-shadow-lg-inset: inset 0 0.5rem 5rem rgba($black, 0.5);
 $box-shadow-inset: inset 0 1px 2px rgba($black, 0.075);

@@ -1,19 +1,38 @@
 <template>
-  <header>
+  <header class="carousel-nav position-absolute z-10">
+    <p
+      class="
+        container
+        fs-7
+        fw-light
+        text-white
+        d-flex
+        align-items-center
+        py-1
+        mb-0
+      "
+    >
+      <span class="fs-6 material-icons text-danger"> phone_iphone </span
+      ><span class="ps-1">02-23164516</span>
+      <span class="fs-6 material-icons text-danger ps-5"> schedule </span>
+      <span class="ps-1">每日早上8點 ~ 晚上10點</span>
+    </p>
     <nav
       class="
         navbar navbar-expand-lg navbar-light
-        bg-black-200
-        position-fixed
+        shadow
+        duration-200
+        position-absolute
+        top-7
         start-0
         end-0
+        px-12
+        py-0
         z-20
-        p-1
-        duration-300
       "
-      :class="{ show: isNavShow }"
+      :class="{ active: isScrollDown }"
     >
-      <div class="container-fluid px-12">
+      <div class="container-fluid">
         <router-link
           to="/"
           class="
@@ -21,21 +40,26 @@
             text-center
             position-relative
             m-0
-            p-0
-            pb-1
             align-self-start
           "
         >
-          <span class="material-icons fs-3"> local_cafe </span>
+          <span
+            class="logo-icon material-icons text-danger duration-200 fs-1 lh-1"
+            :class="[{ 'fs-3': isScrollDown }, { 'pb-4': isScrollDown }]"
+          >
+            local_cafe
+          </span>
           <span
             class="
-              fs-8
+              logo-icon-text
+              fw-bold
+              fs-6
               position-absolute
               start-50
               translate-middle-x
-              bottom-n1
               tracking-1
             "
+            :class="[{ 'fs-7': isScrollDown }, { 'bottom-1': isScrollDown }]"
             >LATTE & CAKE</span
           >
         </router-link>
@@ -43,25 +67,28 @@
           class="navbar-toggler"
           type="button"
           data-bs-toggle="collapse"
-          data-bs-target="#slideNavbar"
-          @click="handScroll"
+          data-bs-target="#carouselNabar"
         >
           <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse ps-12" id="slideNavbar">
+        <div class="collapse navbar-collapse ps-25" id="carouselNabar">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
-              <a class="nav-link active px-8" aria-current="page" href="#"
+              <a class="nav-link active px-16" aria-current="page" href="#"
                 >原料</a
               >
             </li>
             <li class="nav-item">
-              <router-link to="/products" class="nav-link px-8" href="#"
+              <router-link
+                to="/products"
+                class="nav-link d-block px-16"
+                aria-current="page"
+                href="#"
                 >商品</router-link
               >
             </li>
             <li class="nav-item">
-              <a class="nav-link px-8" href="#">關於我們</a>
+              <a class="nav-link d-block px-16" href="#">關於我們</a>
             </li>
           </ul>
           <form class="d-flex position-relative">
@@ -89,6 +116,7 @@
         </div>
       </div>
     </nav>
+    <slot name="content"></slot>
   </header>
 </template>
 
@@ -98,22 +126,10 @@ import { getScrollY } from '@/methods';
 
 export default {
   setup() {
-    const isNavShow = ref(false);
-    const { scrollY } = getScrollY();
     const searchText = ref('');
+    const { scrollY } = getScrollY();
     const isSearchFocus = ref(false);
-
-    const handScroll = () => {
-      document.body.classList.toggle('overflow-hidden');
-    };
-
-    watch(scrollY, (newScrollY) => {
-      if (newScrollY >= 100) {
-        isNavShow.value = true;
-      } else {
-        isNavShow.value = false;
-      }
-    });
+    const isScrollDown = ref(false);
 
     watch(searchText, () => {
       if (searchText.value) {
@@ -123,11 +139,18 @@ export default {
       }
     });
 
+    watch(scrollY, (newScrollY) => {
+      if (newScrollY >= 100) {
+        isScrollDown.value = true;
+      } else {
+        isScrollDown.value = false;
+      }
+    });
+
     return {
-      isNavShow,
-      handScroll,
       searchText,
       isSearchFocus,
+      isScrollDown,
     };
   },
 };
@@ -137,12 +160,31 @@ export default {
 @import '~bootstrap/scss/functions';
 @import '~@/assets/scss/custom/variables';
 
-.navbar {
-  top: -60px;
-  &.show {
-    top: 0;
+.navbar-brand {
+  width: 150px;
+  .logo-icon {
+    padding-bottom: $spacer * 1;
+  }
+
+  .logo-icon-text {
+    bottom: $spacer * 0.25;
   }
 }
+
+.navbar {
+  background-color: rgba(28, 28, 28, 0.6);
+  position: fixed !important;
+  &.active {
+    top: 0 !important;
+    background-color: rgba(28, 28, 28, 0.9);
+  }
+}
+.carousel-nav {
+  width: 100%;
+  height: 100vh;
+  background-color: hsla(0, 0%, 0%, 0.25);
+}
+
 .search-input {
   caret-color: $white;
   background-color: transparent;

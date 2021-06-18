@@ -9,7 +9,7 @@
         />
       </div>
       <div class="p-12">
-        <h3 class="fs-4">火侯的掌握</h3>
+        <h3 class="text-primary fs-4 fw-bold">火侯的掌握</h3>
         <p class="fs-6 py-5 lh-xl">
           烘烤蛋糕操作時的溫度、<br />
           時間和濕度等因素，<br />
@@ -25,9 +25,9 @@
       class="d-flex justify-content-between align-items-center flex-wrap pt-38"
     >
       <div class="p-12 order-2 order-xl-1">
-        <h3 class="fs-4">食材的堅持</h3>
+        <h3 class="text-primary fs-4 fw-bold">食材的堅持</h3>
         <p class="fs-6 py-5 lh-xl">
-          選用頂級阿爾卑斯山低筋麵粉，<br />
+          選用頂級丹麥低筋麵粉，<br />
           保存期限僅短短半年。經過一道道程序，<br />
           精選、磨粉、篩粉、包裝再加上長時間運送，<br />
           大約剩3~4個月有效期限。<br />
@@ -66,11 +66,50 @@ export default {};
 </script>
 
 <style lang="scss" scoped>
+@import '~bootstrap/scss/functions';
+@import '~@/assets/scss/custom/variables';
+
 .about-cake-img {
   max-width: 700px;
 }
 .about-flour-img {
   max-width: 750px;
+}
+
+.about-cake-img,
+.about-flour-img {
+  position: relative;
+  transition: 0.5s;
+  &::before,
+  &::after {
+    content: '';
+    width: 100%;
+    height: 100%;
+    background-color: tint-color($danger, 10%);
+    position: absolute;
+    transition: 0.5s;
+    clip-path: polygon(50px 0%, 50px 5px, 5px 5px, 5px 50px, 0% 50px, 0% 0%);
+  }
+  &::before {
+    left: 20px;
+    top: 20px;
+  }
+  &::after {
+    right: 20px;
+    bottom: 20px;
+    transform: rotate(180deg);
+  }
+  &:hover {
+    transform: scale(1.03);
+    &::before {
+      left: 10px;
+      top: 10px;
+    }
+    &::after {
+      right: 10px;
+      bottom: 10px;
+    }
+  }
 }
 .about-material {
   > a {

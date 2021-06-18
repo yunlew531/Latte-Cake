@@ -1,8 +1,7 @@
 <template>
-  <Navbar />
   <main class="products">
     <section class="banner position-relative">
-      <TransparentNavbar class="transparent-nav">
+      <Navbar class="transparent-nav">
         <template #content>
           <div class="text-white position-absolute top-50 ps-50">
             <h3 class="fs-1">
@@ -11,7 +10,7 @@
             <span class="text-white-100">{{ nowCategory.eng }}</span>
           </div>
         </template>
-      </TransparentNavbar>
+      </Navbar>
     </section>
     <section class="container py-12">
       <ul
@@ -87,9 +86,7 @@
             <p class="d-flex justify-content-between m-0">
               <span class="text-decoration-line-through"
                 >原價: NT${{ product.origin_price }}</span
-              ><span class="fs-5 text-danger"
-                >售價: NT${{ product.price }}</span
-              >
+              ><span class="fs-5">售價: NT${{ product.price }}</span>
             </p>
           </a>
         </li>
@@ -103,7 +100,6 @@
 
 <script>
 import { ref, toRefs } from 'vue';
-import TransparentNavbar from '@/components/TransparentNavbar.vue';
 import Navbar from '@/components/Navbar.vue';
 import Pagination from '@/components/Pagination.vue';
 import SubFooter from '@/components/SubFooter.vue';
@@ -113,7 +109,6 @@ import { apiGetPageProducts } from '@/api';
 export default {
   components: {
     Navbar,
-    TransparentNavbar,
     Pagination,
     SubFooter,
     Footer,
@@ -145,9 +140,6 @@ export default {
 @import '~bootstrap/scss/functions';
 @import '~@/assets/scss/custom/variables';
 
-.products {
-  background: url(~@/assets/images/bg-white.png);
-}
 .banner {
   height: 500px;
   background: url(~@/assets/images/photo-1489533119213-66a5cd877091.jpg) center;
@@ -171,6 +163,25 @@ export default {
   }
 }
 .product-item {
+  animation: product-ani 0.3s;
+  .product-img {
+    height: 400px;
+    background-position: center;
+    background-size: cover;
+    position: relative;
+    &::before {
+      content: '';
+      width: 100%;
+      height: 100%;
+      transition: 0.3s;
+      position: absolute;
+    }
+  }
+  .more-info-text {
+    font-size: $h4-font-size;
+    opacity: 0;
+    transform: scale(2) !important;
+  }
   &:hover {
     .product-img {
       &::before {
@@ -186,23 +197,12 @@ export default {
     }
   }
 }
-.product-img {
-  height: 400px;
-  background-position: center;
-  background-size: cover;
-  position: relative;
-  &::before {
-    content: '';
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0);
-    transition: 0.3s;
-    position: absolute;
+@keyframes product-ani {
+  from {
+    transform: scale(0);
   }
-}
-.more-info-text {
-  font-size: $h4-font-size;
-  opacity: 0;
-  transform: scale(2) !important;
+  to {
+    transform: scale(1);
+  }
 }
 </style>
