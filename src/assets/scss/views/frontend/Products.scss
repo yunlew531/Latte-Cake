@@ -1,0 +1,86 @@
+@import '~bootstrap/scss/functions';
+@import '~@/assets/scss/custom/variables';
+
+.progress {
+  height: 3px;
+}
+.category-title {
+  &.active {
+    animation: title-ani 0.5s forwards;
+  }
+}
+@keyframes title-ani {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+.nav-bg {
+  height: 500px;
+  background: url(~@/assets/images/photo-1489533119213-66a5cd877091.jpg) center;
+  background-size: cover;
+}
+.transparent-nav {
+  height: 500px !important;
+}
+.products-nav {
+  > li {
+    width: 16.667%;
+    cursor: pointer;
+    transition: 0.2s;
+    &:hover {
+      border-color: tint-color($danger, 30%) !important;
+      color: tint-color($danger, 30%);
+    }
+    &.active {
+      border-color: $danger !important;
+      color: $danger;
+      font-weight: $font-weight-bold;
+    }
+  }
+}
+.product-item {
+  animation: product-ani 0.3s;
+  .product-img {
+    height: 400px;
+    background-position: center;
+    background-size: cover;
+    position: relative;
+    &::before {
+      content: '';
+      width: 100%;
+      height: 100%;
+      transition: 0.3s;
+      position: absolute;
+    }
+  }
+  .more-info-text {
+    font-size: $h4-font-size;
+    opacity: 0;
+    transform: scale(2) !important;
+  }
+  &:hover {
+    .product-img {
+      &::before {
+        background: rgba(0, 0, 0, 0.3);
+      }
+    }
+    .more-info-text {
+      opacity: 1;
+      transform: scale(1) !important;
+    }
+    .product-content {
+      color: $danger;
+    }
+  }
+}
+@keyframes product-ani {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+  }
+}

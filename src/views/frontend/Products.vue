@@ -1,52 +1,47 @@
 <template>
-  <main class="products">
-    <section class="banner position-relative">
-      <Navbar class="transparent-nav">
-        <template #content>
-          <div class="text-white position-absolute top-50 ps-50">
-            <h3 class="fs-1">
-              {{ nowCategory.chinese }}
-            </h3>
-            <span class="text-white-100">{{ nowCategory.eng }}</span>
-          </div>
-        </template>
-      </Navbar>
-    </section>
+  <Navbar class="transparent-nav">
+    <template #content>
+      <div class="text-white position-absolute start-25 top-50 ps-50">
+        <h3
+          class="category-title fs-1 fw-bold mt-25"
+          :class="{ active: isTitleAniPlay }"
+          @animationend="handTitleAni('removeClass')"
+        >
+          {{ nowCategory }}
+        </h3>
+      </div>
+    </template>
+  </Navbar>
+  <main>
+    <section class="nav-bg"></section>
     <section class="container py-12">
+      <div class="progress position-relative">
+        <div
+          class="progress-bar position-absolute h-100"
+          :style="handProgressBarAni"
+          role="progressbar"
+        ></div>
+      </div>
       <ul
         class="
           products-nav
           d-flex
           justify-content-around
           list-unstyled
-          border-top border-1 border-gray-300
           text-center
         "
       >
         <li
-          class="flex-grow-1 border-top border-3 pt-3"
-          :class="{ active: nowCategory.chinese === '全部商品' }"
-          @click="nowCategory = { chinese: '全部商品', eng: 'All Products' }"
+          v-for="category in categoryList"
+          :key="category"
+          class="flex-grow-1 pt-3"
+          :class="{ active: nowCategory === category }"
+          @click="nowCategory = category"
+          @mouseenter="nowHoverCategory = category"
+          @mouseleave="nowHoverCategory = ''"
         >
-          全部商品
+          {{ category }}
         </li>
-        <li
-          class="flex-grow-1 border-top border-3 pt-3"
-          :class="{ active: nowCategory.chinese === '咖啡' }"
-          @click="nowCategory = { chinese: '咖啡', eng: 'Coffee' }"
-        >
-          咖啡
-        </li>
-        <li
-          class="flex-grow-1 border-top border-3 pt-3"
-          :class="{ active: nowCategory.chinese === '蛋糕' }"
-          @click="nowCategory = { chinese: '蛋糕', eng: 'Cake' }"
-        >
-          蛋糕
-        </li>
-        <li class="flex-grow-1 border-top border-3 pt-3">其他</li>
-        <li class="flex-grow-1 border-top border-3 pt-3">其他</li>
-        <li class="flex-grow-1 border-top border-3 pt-3">其他</li>
       </ul>
     </section>
     <section class="container pb-25">
@@ -56,8 +51,8 @@
           v-for="product in productsData.productsData"
           :key="product.id"
         >
-          <a
-            href="javascript:;"
+          <router-link
+            :to="`/product/${product.id}`"
             class="text-reset text-decoration-none d-block"
           >
             <div
@@ -88,7 +83,7 @@
                 >原價: NT${{ product.origin_price }}</span
               ><span class="fs-5">售價: NT${{ product.price }}</span>
             </p>
-          </a>
+          </router-link>
         </li>
       </ul>
     </section>
@@ -99,7 +94,7 @@
 </template>
 
 <script>
-import { ref, toRefs } from 'vue';
+import { computed, reactive, ref, toRefs, watch } from 'vue';
 import Navbar from '@/components/Navbar.vue';
 import Pagination from '@/components/Pagination.vue';
 import SubFooter from '@/components/SubFooter.vue';
@@ -107,6 +102,7 @@ import Footer from '@/components/Footer.vue';
 import { apiGetPageProducts } from '@/api';
 
 export default {
+  name: 'Products',
   components: {
     Navbar,
     Pagination,
@@ -114,9 +110,20 @@ export default {
     Footer,
   },
   setup() {
-    const nowCategory = ref({ chinese: '全部商品', eng: 'All Products' });
+    const categoryList = reactive([
+      '全部',
+      '咖啡',
+      '蛋糕',
+      '其他1',
+      '其他2',
+      '其他3',
+    ]);
+    const nowHoverCategory = ref('');
+    const nowCategory = ref('全部');
     const { pagination, productsData } = apiGetPageProducts();
+    const isTitleAniPlay = ref(true);
 
+    // 換頁
     const handPage = (page) => {
       const { pagination: newPages, productsData: newData } =
         apiGetPageProducts(page);
@@ -126,83 +133,55 @@ export default {
       pagination.pagination = pages.pagination;
     };
 
+    // 控制標題動畫 @keyframes
+    const handTitleAni = (action) => {
+      if (action === 'removeClass') {
+        isTitleAniPlay.value = false;
+      } else {
+        isTitleAniPlay.value = true;
+      }
+    };
+
+    // 控制 Category Nav 動畫
+    const handProgressBarAni = computed(() => {
+      const percent = 100 / categoryList.length;
+      let position = 0;
+      // 有 hover nav 時動畫停在 hover 對象，反之動畫停在 nowCategory 對象
+      if (nowHoverCategory.value) {
+        categoryList.forEach((item, idx) => {
+          if (item === nowHoverCategory.value) position = idx * percent;
+        });
+      } else {
+        categoryList.forEach((item, idx) => {
+          if (item === nowCategory.value) position = idx * percent;
+        });
+      }
+      return [
+        { width: `${percent}%` },
+        { left: `${position}%` },
+        { transition: '0.3s' },
+      ];
+    });
+
+    watch(nowCategory, () => {
+      handTitleAni();
+    });
+
     return {
+      categoryList,
+      nowHoverCategory,
       nowCategory,
       productsData,
       pagination,
+      isTitleAniPlay,
+      handProgressBarAni,
       handPage,
+      handTitleAni,
     };
   },
 };
 </script>
 
 <style lang="scss" scoped>
-@import '~bootstrap/scss/functions';
-@import '~@/assets/scss/custom/variables';
-
-.banner {
-  height: 500px;
-  background: url(~@/assets/images/photo-1489533119213-66a5cd877091.jpg) center;
-  background-size: cover;
-}
-.transparent-nav {
-  height: 500px !important;
-}
-.products-nav {
-  > li {
-    cursor: pointer;
-    transition: 0.2s;
-    &:hover {
-      border-color: tint-color($danger, 30%) !important;
-      color: tint-color($danger, 30%);
-    }
-    &.active {
-      border-color: $danger !important;
-      color: $danger;
-    }
-  }
-}
-.product-item {
-  animation: product-ani 0.3s;
-  .product-img {
-    height: 400px;
-    background-position: center;
-    background-size: cover;
-    position: relative;
-    &::before {
-      content: '';
-      width: 100%;
-      height: 100%;
-      transition: 0.3s;
-      position: absolute;
-    }
-  }
-  .more-info-text {
-    font-size: $h4-font-size;
-    opacity: 0;
-    transform: scale(2) !important;
-  }
-  &:hover {
-    .product-img {
-      &::before {
-        background: rgba(0, 0, 0, 0.3);
-      }
-    }
-    .more-info-text {
-      opacity: 1;
-      transform: scale(1) !important;
-    }
-    .product-content {
-      color: $danger;
-    }
-  }
-}
-@keyframes product-ani {
-  from {
-    transform: scale(0);
-  }
-  to {
-    transform: scale(1);
-  }
-}
+@import '~@/assets/scss/views/frontend/Products';
 </style>

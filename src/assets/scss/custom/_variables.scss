@@ -5,9 +5,9 @@
 // custom-start
 $primary: #aa1b1b;
 $secondary: #a3a3a3;
-$danger: #c63232;
-$white: #fffef7;
-$white-100: rgb(245, 245, 245);
+$danger: rgb(198, 50, 50);
+$white: #fff;
+$white-100: rgb(255, 254, 250);
 $black: rgb(28, 28, 28);
 $black-100: #1f2021;
 $black-200: #333;
@@ -16,7 +16,7 @@ $gray-300: #dfdfdf;
 // custom-end
 
 // Settings for the `<body>` element.
-$body-bg: $white !default;
+$body-bg: $white-100 !default;
 $body-color: $black !default;
 $letter-spacing: 0.0625rem;
 
@@ -144,6 +144,18 @@ $font-sizes: (
   8: $h8-font-size
 );
 
+// font-weight
+$font-weight-lighter: lighter;
+$font-weight-light: 300;
+$font-weight-normal: 400;
+$font-weight-bold: 700;
+$font-weight-bolder: bolder;
+
+// line-height
+$line-height-base: 1.5;
+$line-height-sm: 1.25;
+$line-height-lg: 2;
+
 // Carousel
 //
 // carousel-variables
@@ -164,4 +176,4 @@ $box-shadow: 0 0.5rem 1rem rgba($black, 0.15);
 $box-shadow-sm: 0 0.125rem 0.25rem rgba($black, 0.075);
 $box-shadow-lg: 0 1rem 3rem rgba($black, 0.175);
 $box-shadow-lg-inset: inset 0 0.5rem 5rem rgba($black, 0.5);
-$box-shadow-inset: inset 0 1px 2px rgba($black, 0.075);
+$box-shadow-inset: inset 1px 1px 3px rgba($black, 0.075);

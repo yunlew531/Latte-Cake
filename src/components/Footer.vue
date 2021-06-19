@@ -1,16 +1,14 @@
 <template>
-  <footer class="footer py-25 text-white">
+  <footer class="py-25 text-white bg-black-100">
     <div class="container">footer</div>
   </footer>
 </template>
 
 <script>
-export default {};
+export default {
+  name: 'Footer',
+};
 </script>
 
 <style lang="scss" scoped>
-.footer {
-  background: url(~@/assets/images/bg-footer.jpg) center;
-  background-size: cover;
-}
 </style>

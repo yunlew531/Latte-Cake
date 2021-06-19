@@ -71,7 +71,7 @@
         >
           <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse ps-25" id="carouselNabar">
+        <div class="collapse navbar-collapse ps-8" id="carouselNabar">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
               <a class="nav-link active px-16" aria-current="page" href="#"
@@ -122,12 +122,13 @@
 
 <script>
 import { ref, watch } from 'vue';
-import { getScrollY } from '@/methods';
+import { useGetScrollY } from '@/methods';
 
 export default {
+  name: 'Navbar',
   setup() {
     const searchText = ref('');
-    const { scrollY } = getScrollY();
+    const { scrollY } = useGetScrollY();
     const isSearchFocus = ref(false);
     const isScrollDown = ref(false);
 

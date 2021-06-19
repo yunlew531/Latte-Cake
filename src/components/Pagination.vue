@@ -54,6 +54,7 @@
 import { reactive, watch } from 'vue';
 
 export default {
+  name: 'Pagination',
   props: {
     pages: {
       type: Object,

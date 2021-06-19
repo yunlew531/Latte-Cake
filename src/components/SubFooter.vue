@@ -55,11 +55,17 @@
   </section>
 </template>
 
+<script>
+export default {
+  name: 'SubFooter',
+};
+</script>
+
 <style lang="scss" scoped>
 @import '~@/assets/scss/custom/variables';
 
 .subfooter-panel {
-  background-color: $white;
+  background-color: $white-100;
   background-size: cover;
   box-shadow: $box-shadow-lg-inset;
 }

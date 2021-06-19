@@ -1,6 +1,11 @@
 <template>
-  <section class="container py-25">
-    <h3 class="text-primary fs-4 fw-bold text-center pb-5">熱銷商品</h3>
+  <section
+    class="top-sell-products-panel container py-25"
+    :class="{ active: isPanelAniPlay }"
+  >
+    <h3 class="text-primary fs-4 fw-bold tracking-2 text-center pb-5">
+      熱銷商品
+    </h3>
     <div
       class="
         recommend-products-link
@@ -66,16 +71,50 @@
 </template>
 
 <script>
-export default {};
+import { useGetScrollY } from '@/methods';
+import { ref, watch } from 'vue';
+
+export default {
+  name: 'TopSellProducts',
+  setup() {
+    const { scrollY } = useGetScrollY();
+    const isPanelAniPlay = ref(false);
+
+    watch(scrollY, () => {
+      if (scrollY.value >= 200 && scrollY.value <= 1900) {
+        isPanelAniPlay.value = true;
+      } else isPanelAniPlay.value = false;
+    });
+
+    return { isPanelAniPlay };
+  },
+};
 </script>
 
 <style lang="scss" scoped>
 @import '~@/assets/scss/custom/variables';
 
+.top-sell-products-panel {
+  transform: translateY(100px);
+  opacity: 0;
+  &.active {
+    animation: products-panel-ani 0.5s 0.3s forwards;
+    .product-item {
+      animation: product-ani 0.3s 0.3s forwards;
+    }
+  }
+}
+@keyframes products-panel-ani {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 .product-item {
   color: $black-200;
   overflow: hidden;
-  animation: product-ani 0.3s;
+
+  transform: scale(0);
   .top-sell-img {
     background: center no-repeat;
     background-size: cover;
@@ -92,9 +131,6 @@ export default {};
   }
 }
 @keyframes product-ani {
-  from {
-    transform: scale(0);
-  }
   to {
     transform: scale(1);
   }

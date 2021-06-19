@@ -1,6 +1,15 @@
 <template>
   <section class="container pt-25 pb-50">
-    <div class="d-flex justify-content-between align-items-center flex-wrap">
+    <div
+      class="
+        handle-heat
+        d-flex
+        justify-content-between
+        align-items-center
+        flex-wrap
+      "
+      :class="{ active: isHeatAniPlay }"
+    >
       <div class="about-cake-img">
         <img
           class="img-fluid"
@@ -9,28 +18,43 @@
         />
       </div>
       <div class="p-12">
-        <h3 class="text-primary fs-4 fw-bold">火侯的掌握</h3>
-        <p class="fs-6 py-5 lh-xl">
-          烘烤蛋糕操作時的溫度、<br />
-          時間和濕度等因素，<br />
+        <h3 class="paragraph-title text-primary fs-4 fw-bold tracking-2 mb-5">
+          火侯的掌握
+        </h3>
+        <p class="paragraph-content-1 fs-6 lh-lg">
+          烘烤蛋糕操作時的溫度、 時間和濕度等因素，<br />
           影響著蛋糕的口感、以及蛋糕外觀的好與壞。<br />
+        </p>
+        <p class="paragraph-content-2 fs-6 m-0 lh-lg">
           製作過程唯有不斷地嘗試，<br />
-          調配不同的參數，<br />
-          並觀察其對食材的影響，不斷地調整，<br />
+          每次調配不同的參數，<br />
+          觀察其對食材的影響，不斷地調整，<br />
           才能製烘烤出品質上乘的蛋糕。
         </p>
       </div>
     </div>
     <div
-      class="d-flex justify-content-between align-items-center flex-wrap pt-38"
+      class="
+        hold-materials
+        d-flex
+        justify-content-between
+        align-items-center
+        flex-wrap
+        pt-38
+      "
+      :class="{ active: isMaterialsAniPlay }"
     >
       <div class="p-12 order-2 order-xl-1">
-        <h3 class="text-primary fs-4 fw-bold">食材的堅持</h3>
-        <p class="fs-6 py-5 lh-xl">
+        <h3 class="paragraph-title text-primary fs-4 fw-bold tracking-2 mb-5">
+          食材的堅持
+        </h3>
+        <p class="paragraph-content-1 fs-6 lh-lg">
           選用頂級丹麥低筋麵粉，<br />
           保存期限僅短短半年。經過一道道程序，<br />
           精選、磨粉、篩粉、包裝再加上長時間運送，<br />
           大約剩3~4個月有效期限。<br />
+        </p>
+        <p class="paragraph-content-2 fs-6 lh-lg">
           天然無添加，<br />
           食材選用是我們不妥協的地方。
         </p>
@@ -62,18 +86,69 @@
 </template>
 
 <script>
-export default {};
+import { ref, watch } from 'vue';
+import { useGetScrollY } from '@/methods';
+
+export default {
+  name: 'AboutCake',
+  setup() {
+    const { scrollY } = useGetScrollY();
+    const isHeatAniPlay = ref(false);
+    const isMaterialsAniPlay = ref(false);
+
+    watch(scrollY, () => {
+      if (scrollY.value >= 1150 && scrollY.value <= 2700) {
+        isHeatAniPlay.value = true;
+      } else isHeatAniPlay.value = false;
+      if (scrollY.value >= 2000) {
+        isMaterialsAniPlay.value = true;
+      } else isMaterialsAniPlay.value = false;
+    });
+
+    return { isHeatAniPlay, isMaterialsAniPlay };
+  },
+};
 </script>
 
 <style lang="scss" scoped>
 @import '~bootstrap/scss/functions';
 @import '~@/assets/scss/custom/variables';
 
-.about-cake-img {
+.paragraph-title,
+.paragraph-content-1,
+.paragraph-content-2 {
+  opacity: 0;
+  transform: translateY(100px);
+}
+.about-cake-img,
+.about-flour-img {
   max-width: 700px;
 }
-.about-flour-img {
-  max-width: 750px;
+.handle-heat,
+.hold-materials {
+  &.active {
+    .paragraph-title,
+    .paragraph-content-1,
+    .paragraph-content-2 {
+      animation: handle-heat-ani 0.5s forwards;
+    }
+    .paragraph-title {
+      animation-delay: 0.3s;
+    }
+    .paragraph-content-1 {
+      animation-delay: 0.8s;
+    }
+    .paragraph-content-2 {
+      animation-delay: 1.3s;
+    }
+  }
+}
+
+@keyframes handle-heat-ani {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .about-cake-img,

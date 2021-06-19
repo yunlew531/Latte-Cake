@@ -1,5 +1,5 @@
-import getScrollPosition from './getScrollPosition';
+import getScrollY from './useGetScrollY';
 
-export const getScrollY = getScrollPosition;
+export const useGetScrollY = getScrollY;
 
 export default {};

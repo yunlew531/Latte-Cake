@@ -103,8 +103,7 @@ $utilities: map-merge(
         1: 1,
         sm: $line-height-sm,
         base: $line-height-base,
-        lg: $line-height-lg,
-        xl: $line-height-base * 1.75
+        lg: $line-height-lg
       )
     ),
     'shadow': (
@@ -114,6 +113,7 @@ $utilities: map-merge(
         null: $box-shadow,
         sm: $box-shadow-sm,
         lg: $box-shadow-lg,
+        inset: $box-shadow-inset,
         none: none
       )
     )

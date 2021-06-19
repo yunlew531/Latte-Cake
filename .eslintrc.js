@@ -20,6 +20,7 @@ module.exports = {
         functions: 'never'
       }
     ],
+    'object-curly-newline': 'off',
     'operator-linebreak': ['error', 'after']
   }
 };

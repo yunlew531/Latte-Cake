@@ -2,8 +2,8 @@
   <Navbar>
     <template #content>
       <div class="container position-relative h-100">
-        <div class="position-absolute start-0 top-50">
-          <h3 class="fs-1 fw-bold text-white">
+        <div class="carousel-title position-absolute start-0 top-50">
+          <h3 class="text-white fs-1 fw-bold tracking-2">
             歡迎光臨 <span class="text-danger">LATTE & CAKE</span>
           </h3>
         </div>
@@ -45,13 +45,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.bg-product-info {
-  background: center no-repeat url(~@/assets/images/image-bg-product-info.jpg);
-  background-size: cover;
-}
-.bg-filter {
-  width: 100%;
-  height: 100%;
-  background-color: rgba(255, 255, 255, 0.85);
-}
+@import '~@/assets/scss/views/frontend/Index';
 </style>
