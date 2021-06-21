@@ -17,11 +17,20 @@
         aria-label="Close"
       ></button>
     </div>
-    <div class="px-4 m-0 d-flex align-items-center pb-3 border-bottom">
+    <div class="px-4 m-0 d-flex align-items-center">
       <span class="me-auto"
         >{{ cartsData.cartsData.carts?.length }} 個品項</span
       >
       <a href="#" class="check-out-btn btn btn-danger">手刀結帳!</a>
+    </div>
+    <div class="px-4 py-3 border-bottom">
+      <div
+        class="progress"
+        :class="{ active: isProgressAniPlay }"
+        v-show="isProgressAniPlay"
+      >
+        <div class="progress-bar" role="progressbar"></div>
+      </div>
     </div>
     <ul class="offcanvas-body list-unstyled mb-0">
       <li
@@ -45,14 +54,14 @@
               <h3 class="fs-6">{{ product.product.title }}</h3>
               <div class="d-flex">
                 <span class="flex-grow-1">
-                  NT$ {{ product.product.price.toLocaleString() }}
+                  NT$ {{ product.product.price?.toLocaleString() }}
                 </span>
                 <span>x {{ product.qty }} 個</span>
               </div>
               <div class="d-flex">
                 <span class="ms-auto"
                   >NT$
-                  {{ (product.qty * product.product.price).toLocaleString() }}
+                  {{ (product.qty * product.product.price)?.toLocaleString() }}
                   元</span
                 >
               </div>
@@ -99,7 +108,7 @@
     <div class="d-flex align-items-center border-top px-4 py-4">
       <button type="button" class="btn btn-outline-danger">購物車詳細</button>
       <span class="fs-5 ms-auto"
-        >總計 NT$ {{ cartsData.cartsData.total.toLocaleString() }} 元</span
+        >總計 NT$ {{ cartsData.cartsData.total?.toLocaleString() }} 元</span
       >
     </div>
   </section>
@@ -117,9 +126,22 @@ export default {
     const $emitter = inject('$emitter');
     const cartCanvasDom = ref(null);
     const cartCanvas = ref(null);
+    const isProgressAniPlay = ref(false);
     const cartsData = reactive({ cartsData: {} });
+    let progressAniTimeOut = null;
 
-    const showCartCanvas = () => {
+    const showCartCanvas = (playAni) => {
+      if (isProgressAniPlay.value === true) {
+        clearTimeout(progressAniTimeOut);
+        isProgressAniPlay.value = false;
+      }
+      if (playAni) {
+        isProgressAniPlay.value = true;
+        progressAniTimeOut = setTimeout(() => {
+          isProgressAniPlay.value = false;
+          cartCanvas.value.hide();
+        }, 10000);
+      }
       const { cartsData: newData, cartsQty } = apiGetCarts();
       const { cartsData: data } = toRefs(newData);
       cartsData.cartsData = data;
@@ -142,7 +164,7 @@ export default {
       product.qty += 1;
       const { data } = await apiPutCartQty(product);
       if (data.success) {
-        product.qty = data.data.qty;
+        showCartCanvas();
       } else {
         product.qty = originQty;
       }
@@ -155,7 +177,7 @@ export default {
       product.qty -= 1;
       const { data } = await apiPutCartQty(product);
       if (data.success) {
-        product.qty = data.data.qty;
+        showCartCanvas();
       } else {
         product.qty = originQty;
       }
@@ -185,6 +207,7 @@ export default {
       addQty,
       minusQty,
       removeCart,
+      isProgressAniPlay,
     };
   },
 };
@@ -198,6 +221,60 @@ export default {
   &:hover {
     color: $primary;
     background: $white;
+  }
+}
+
+.progress {
+  height: 6px;
+  &.active {
+    .progress-bar {
+      animation: progress-ani 10s forwards linear;
+    }
+  }
+}
+
+.progress-bar {
+  background: $danger;
+  width: 100%;
+}
+
+@keyframes progress-ani {
+  0% {
+    width: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  55% {
+    opacity: 0;
+  }
+  60% {
+    opacity: 1;
+  }
+  65% {
+    opacity: 0;
+  }
+  70% {
+    opacity: 1;
+  }
+  75% {
+    opacity: 0;
+  }
+  80% {
+    opacity: 1;
+  }
+  85% {
+    opacity: 0;
+  }
+  90% {
+    opacity: 1;
+  }
+  95% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+    width: 100%;
   }
 }
 

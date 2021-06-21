@@ -180,7 +180,7 @@ export default {
       const { id } = productData.value.product;
       const { data } = await apiPostAddCart(id, productNum.value);
       if (data.success) {
-        $emitter.emit('showCartCanvas');
+        $emitter.emit('showCartCanvas', true);
         productNum.value = 1;
       }
     };

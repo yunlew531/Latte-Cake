@@ -29,12 +29,13 @@
           justify-content-around
           list-unstyled
           text-center
+          mb-0
         "
       >
         <li
           v-for="category in categoryList"
           :key="category"
-          class="flex-grow-1 pt-3"
+          class="flex-grow-1 py-3"
           :class="{ active: nowCategory === category }"
           @click="nowCategory = category"
           @mouseenter="nowHoverCategory = category"
