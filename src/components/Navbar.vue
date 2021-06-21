@@ -22,8 +22,7 @@
         navbar navbar-expand-lg navbar-light
         shadow
         duration-200
-        position-absolute
-        top-7
+        position-fixed
         start-0
         end-0
         px-12
@@ -59,7 +58,7 @@
               translate-middle-x
               tracking-1
             "
-            :class="[{ 'fs-7': isScrollDown }, { 'bottom-1': isScrollDown }]"
+            :class="[{ 'fs-7': isScrollDown }, { right: isScrollDown }]"
             >LATTE & CAKE</span
           >
         </router-link>
@@ -91,7 +90,28 @@
               <a class="nav-link d-block px-16" href="#">關於我們</a>
             </li>
           </ul>
-          <form class="d-flex position-relative">
+          <button
+            type="button"
+            class="cart-btn lh-1 bg-transparent border-0 position-relative"
+            @click="showCartCanvas"
+          >
+            <span class="material-icons h-100 w-100"> shopping_cart </span>
+            <span
+              class="
+                fs-7
+                text-white
+                bg-danger
+                p-1
+                rounded-pill
+                position-absolute
+                top-0
+                end-0
+                translate-middle-y
+              "
+              >{{ cartsQty }}</span
+            >
+          </button>
+          <form class="d-flex position-relative ms-3">
             <input
               class="
                 search-input
@@ -121,8 +141,9 @@
 </template>
 
 <script>
-import { ref, watch } from 'vue';
+import { ref, watch, inject, onMounted } from 'vue';
 import { useGetScrollY } from '@/methods';
+import { apiGetCarts } from '@/api';
 
 export default {
   name: 'Navbar',
@@ -131,6 +152,12 @@ export default {
     const { scrollY } = useGetScrollY();
     const isSearchFocus = ref(false);
     const isScrollDown = ref(false);
+    const $emitter = inject('$emitter');
+    const { cartsQty } = apiGetCarts();
+
+    const showCartCanvas = () => {
+      $emitter.emit('showCartCanvas');
+    };
 
     watch(searchText, () => {
       if (searchText.value) {
@@ -148,10 +175,20 @@ export default {
       }
     });
 
+    onMounted(() => {
+      $emitter.on('updateCartsQty', (qty) => {
+        watch(qty, () => {
+          cartsQty.value = qty.value;
+        });
+      });
+    });
+
     return {
       searchText,
       isSearchFocus,
       isScrollDown,
+      cartsQty,
+      showCartCanvas,
     };
   },
 };
@@ -172,11 +209,18 @@ export default {
   }
 }
 
+.cart-btn {
+  color: $white;
+  &:hover {
+    color: shade-color($white, 20%);
+  }
+}
+
 .navbar {
   background-color: rgba(28, 28, 28, 0.6);
-  position: fixed !important;
+  top: $spacer * 1.75;
   &.active {
-    top: 0 !important;
+    top: 0;
     background-color: rgba(28, 28, 28, 0.9);
   }
 }

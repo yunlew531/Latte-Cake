@@ -23,7 +23,7 @@
   background-size: cover;
 }
 .transparent-nav {
-  height: 500px !important;
+  height: 500px;
 }
 .products-nav {
   > li {
@@ -31,11 +31,9 @@
     cursor: pointer;
     transition: 0.2s;
     &:hover {
-      border-color: tint-color($danger, 30%) !important;
       color: tint-color($danger, 30%);
     }
     &.active {
-      border-color: $danger !important;
       color: $danger;
       font-weight: $font-weight-bold;
     }
@@ -59,7 +57,7 @@
   .more-info-text {
     font-size: $h4-font-size;
     opacity: 0;
-    transform: scale(2) !important;
+    transform: scale(2);
   }
   &:hover {
     .product-img {
@@ -69,7 +67,7 @@
     }
     .more-info-text {
       opacity: 1;
-      transform: scale(1) !important;
+      transform: scale(1);
     }
     .product-content {
       color: $danger;

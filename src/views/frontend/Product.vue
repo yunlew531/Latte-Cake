@@ -14,13 +14,13 @@
       <div class="row gx-12">
         <ul class="col-6 list-unstyled mb-0">
           <li
-            class="product-img rounded mb-5"
+            class="product-img rounded"
             :style="{
               'background-image': `url(${productData.product?.imageUrl})`,
             }"
           ></li>
-          <li class="product-img rounded mb-5"></li>
-          <li class="product-img rounded mb-5"></li>
+          <li class="product-img rounded"></li>
+          <li class="product-img rounded"></li>
         </ul>
         <div class="col-6">
           <div class="position-sticky top-25">
@@ -98,7 +98,7 @@
                       pe-6
                       mb-1px
                     "
-                    >1</span
+                    >{{ productNum }}</span
                   >
                   <button
                     class="
@@ -110,6 +110,7 @@
                       top-0
                       p-0
                     "
+                    @click="productNum++"
                   >
                     <span class="material-icons"> arrow_drop_up </span>
                   </button>
@@ -124,6 +125,7 @@
                       p-0
                       mt-n1px
                     "
+                    @click="productNum = productNum <= 1 ? 1 : productNum - 1"
                   >
                     <span class="material-icons border-0">
                       arrow_drop_down
@@ -143,6 +145,7 @@
                   py-5
                   mt-8
                 "
+                @click="addCart"
               >
                 加入購物車
               </button>
@@ -157,19 +160,32 @@
 </template>
 
 <script>
+import { inject, ref } from 'vue';
 import Navbar from '@/components/Navbar.vue';
 import SubFooter from '@/components/SubFooter.vue';
 import Footer from '@/components/Footer.vue';
 import { useRoute } from 'vue-router';
-import { apiGetProductInfo } from '@/api';
+import { apiPostAddCart, apiGetProductInfo } from '@/api';
 
 export default {
   name: 'Product',
   components: { Navbar, SubFooter, Footer },
   setup() {
+    const $emitter = inject('$emitter');
     const route = useRoute();
     const { productData } = apiGetProductInfo(route.params.id);
-    return { productData };
+    const productNum = ref(1);
+
+    const addCart = async () => {
+      const { id } = productData.value.product;
+      const { data } = await apiPostAddCart(id, productNum.value);
+      if (data.success) {
+        $emitter.emit('showCartCanvas');
+        productNum.value = 1;
+      }
+    };
+
+    return { productNum, productData, addCart };
   },
 };
 </script>
@@ -179,7 +195,7 @@ export default {
 @import '~@/assets/scss/custom/variables';
 
 .transparent-nav {
-  height: 500px !important;
+  height: 500px;
 }
 .nav-bg {
   height: 500px;
@@ -190,9 +206,10 @@ export default {
   height: 500px;
   background: url(https://images.unsplash.com/photo-1542826438-bd32f43d626f?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1156&q=80)
     center no-repeat;
+  margin-bottom: $spacer * 1.25;
   background-size: cover;
   &:last-child {
-    margin-bottom: 0 !important;
+    margin-bottom: 0;
   }
 }
 .quantity-text {
@@ -209,10 +226,10 @@ export default {
   transition: 0.1s;
   background: $white;
   &:first-of-type {
-    border-radius: 0 4px 0 0 !important;
+    border-radius: 0 4px 0 0;
   }
   &:last-of-type {
-    border-radius: 0 0 4px 0 !important;
+    border-radius: 0 0 4px 0;
   }
   &:hover {
     color: $white;
