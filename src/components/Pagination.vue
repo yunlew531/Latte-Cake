@@ -79,7 +79,7 @@ export default {
     watch(
       () => props.pages,
       () => {
-        pagination.pagination = props.pages.pagination;
+        pagination.pagination = props.pages;
       },
       { deep: true }
     );

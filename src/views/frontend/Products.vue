@@ -1,7 +1,9 @@
 <template>
-  <Navbar class="transparent-nav">
+  <Navbar class="navbar">
     <template #content>
-      <div class="text-white position-absolute start-25 top-50 ps-50">
+      <div
+        class="text-white position-absolute start-50 top-50 translate-middle-x"
+      >
         <h3
           class="category-title fs-1 fw-bold mt-25"
           :class="{ active: isTitleAniPlay }"
@@ -49,7 +51,7 @@
       <ul class="row gx-5 gy-10 list-unstyled">
         <li
           class="product-item col-4"
-          v-for="product in productsData.productsData"
+          v-for="product in pageProductsData"
           :key="product.id"
         >
           <router-link
@@ -95,12 +97,14 @@
 </template>
 
 <script>
-import { computed, reactive, ref, toRefs, watch } from 'vue';
+import { computed, reactive, ref, watch, inject, toRefs } from 'vue';
 import Navbar from '@/components/Navbar.vue';
 import Pagination from '@/components/Pagination.vue';
 import SubFooter from '@/components/SubFooter.vue';
 import Footer from '@/components/Footer.vue';
-import { apiGetPageProducts } from '@/api';
+import store from '@/composition/store';
+
+const { getPageProducts } = store;
 
 export default {
   name: 'Products',
@@ -111,6 +115,7 @@ export default {
     Footer,
   },
   setup() {
+    const state = inject('state');
     const categoryList = reactive([
       '全部',
       '咖啡',
@@ -121,17 +126,12 @@ export default {
     ]);
     const nowHoverCategory = ref('');
     const nowCategory = ref('全部');
-    const { pagination, productsData } = apiGetPageProducts();
     const isTitleAniPlay = ref(true);
+    getPageProducts();
 
     // 換頁
     const handPage = (page) => {
-      const { pagination: newPages, productsData: newData } =
-        apiGetPageProducts(page);
-      const products = toRefs(newData);
-      const pages = toRefs(newPages);
-      productsData.productsData = products.productsData;
-      pagination.pagination = pages.pagination;
+      getPageProducts(page);
     };
 
     // 控制標題動畫 @keyframes
@@ -169,11 +169,10 @@ export default {
     });
 
     return {
+      ...toRefs(state),
       categoryList,
       nowHoverCategory,
       nowCategory,
-      productsData,
-      pagination,
       isTitleAniPlay,
       handProgressBarAni,
       handPage,

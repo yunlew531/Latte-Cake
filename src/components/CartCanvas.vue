@@ -18,9 +18,7 @@
       ></button>
     </div>
     <div class="px-4 m-0 d-flex align-items-center">
-      <span class="me-auto"
-        >{{ cartsData.cartsData.carts?.length }} 個品項</span
-      >
+      <span class="me-auto">{{ cartsData.carts?.length }} 個品項</span>
       <a href="#" class="check-out-btn btn btn-danger">手刀結帳!</a>
     </div>
     <div class="px-4 py-3 border-bottom">
@@ -35,7 +33,7 @@
     <ul class="offcanvas-body list-unstyled mb-0">
       <li
         class="product-item border border-black-300 mb-3"
-        v-for="product in cartsData.cartsData.carts"
+        v-for="product in cartsData.carts"
         :key="product.id"
       >
         <a
@@ -71,7 +69,7 @@
                 >
                   <span
                     class="qty-btn material-icons"
-                    @click.stop="minusQty(product)"
+                    @click.stop="handQty(product, -1)"
                   >
                     remove
                   </span>
@@ -87,7 +85,7 @@
                   >
                   <span
                     class="qty-btn material-icons"
-                    @click.stop="addQty(product)"
+                    @click.stop="handQty(product, 1)"
                   >
                     add
                   </span>
@@ -106,28 +104,34 @@
       </li>
     </ul>
     <div class="d-flex align-items-center border-top px-4 py-4">
-      <button type="button" class="btn btn-outline-danger">購物車詳細</button>
+      <button type="button" class="btn btn-outline-danger" @click="goToCart">
+        購物車詳細
+      </button>
       <span class="fs-5 ms-auto"
-        >總計 NT$ {{ cartsData.cartsData.total?.toLocaleString() }} 元</span
+        >總金額 NT$ {{ cartsData.total?.toLocaleString() }} 元</span
       >
     </div>
   </section>
 </template>
 
 <script>
-import { onMounted, ref, inject, reactive, toRefs } from 'vue';
+import { onMounted, ref, inject, toRefs } from 'vue';
 import Offcanvas from 'bootstrap/js/dist/offcanvas';
-import { apiGetCarts, apiPutCartQty, apiDeleteCart } from '@/api';
+import { apiPutCartQty, apiDeleteCart } from '@/api';
 import { useRouter } from 'vue-router';
+import store from '@/composition/store';
+import { useToast } from '@/methods';
+
+const { getCarts } = store;
 
 export default {
   setup() {
     const router = useRouter();
     const $emitter = inject('$emitter');
+    const state = inject('state');
     const cartCanvasDom = ref(null);
     const cartCanvas = ref(null);
     const isProgressAniPlay = ref(false);
-    const cartsData = reactive({ cartsData: {} });
     let progressAniTimeOut = null;
 
     const showCartCanvas = (playAni) => {
@@ -140,12 +144,8 @@ export default {
         progressAniTimeOut = setTimeout(() => {
           isProgressAniPlay.value = false;
           cartCanvas.value.hide();
-        }, 10000);
+        }, 8000);
       }
-      const { cartsData: newData, cartsQty } = apiGetCarts();
-      const { cartsData: data } = toRefs(newData);
-      cartsData.cartsData = data;
-      $emitter.emit('updateCartsQty', cartsQty);
       cartCanvas.value.show();
     };
 
@@ -158,39 +158,35 @@ export default {
       cartCanvas.value.hide();
     };
 
-    const addQty = async (item) => {
-      const originQty = item.qty;
-      const product = item;
-      product.qty += 1;
-      const { data } = await apiPutCartQty(product);
-      if (data.success) {
-        showCartCanvas();
-      } else {
-        product.qty = originQty;
-      }
+    const goToCart = () => {
+      router.push({ path: '/cart' });
+      cartCanvas.value.hide();
     };
 
-    const minusQty = async (item) => {
-      const originQty = item.qty;
-      const product = item;
-      if (product.qty === 1) return;
-      product.qty -= 1;
-      const { data } = await apiPutCartQty(product);
-      if (data.success) {
-        showCartCanvas();
-      } else {
-        product.qty = originQty;
+    const handQty = async (item, num) => {
+      const product = { ...item };
+      product.qty = item.qty + num <= 1 ? 1 : item.qty + num;
+      if (product.qty === item.qty) return;
+      try {
+        const { data } = await apiPutCartQty(product);
+        if (data.success) {
+          getCarts();
+          useToast('成功更新數量!', 'success');
+        } else useToast('操作失敗!', 'danger');
+      } catch (err) {
+        console.dir(err);
       }
     };
 
     const removeCart = async (id) => {
       const { data } = await apiDeleteCart(id);
-      if (data.success) {
-        const { cartsData: newData, cartsQty } = apiGetCarts();
-        const { cartsData: data1 } = toRefs(newData);
-        cartsData.cartsData = data1;
-        $emitter.emit('updateCartsQty', cartsQty);
-        $emitter.emit('updateCarts', cartsData);
+      try {
+        if (data.success) {
+          getCarts();
+          useToast('成功移除商品!', 'success');
+        } else useToast('發生錯誤!', 'danger');
+      } catch (err) {
+        console.dir(err);
       }
     };
 
@@ -201,11 +197,11 @@ export default {
     });
 
     return {
+      ...toRefs(state),
       cartCanvasDom,
-      cartsData,
       goToPage,
-      addQty,
-      minusQty,
+      goToCart,
+      handQty,
       removeCart,
       isProgressAniPlay,
     };
@@ -228,7 +224,7 @@ export default {
   height: 6px;
   &.active {
     .progress-bar {
-      animation: progress-ani 10s forwards linear;
+      animation: progress-ani 8s forwards linear;
     }
   }
 }
@@ -242,34 +238,28 @@ export default {
   0% {
     width: 0;
   }
-  50% {
-    opacity: 1;
-  }
   55% {
-    opacity: 0;
-  }
-  60% {
     opacity: 1;
   }
-  65% {
+  62% {
     opacity: 0;
   }
-  70% {
+  69% {
     opacity: 1;
   }
   75% {
     opacity: 0;
   }
-  80% {
+  81% {
     opacity: 1;
   }
-  85% {
+  86% {
     opacity: 0;
   }
-  90% {
+  91% {
     opacity: 1;
   }
-  95% {
+  96% {
     opacity: 0;
   }
   100% {
@@ -294,8 +284,5 @@ export default {
   width: 133px;
   background: center no-repeat;
   background-size: cover;
-}
-
-.offcanvas-footer {
 }
 </style>

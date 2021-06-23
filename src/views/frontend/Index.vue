@@ -14,10 +14,12 @@
     <Carousel />
     <div class="bg-product-info">
       <div class="bg-filter">
-        <TopSellProducts />
+        <Category />
         <AboutCake />
       </div>
     </div>
+    <LocationPanel />
+
     <SubFooter />
   </main>
   <Footer />
@@ -26,20 +28,22 @@
 <script>
 import Navbar from '@/components/Navbar.vue';
 import Carousel from '@/components/frontend/Index/Carousel.vue';
-import TopSellProducts from '@/components/frontend/Index/TopSellProducts.vue';
+import Category from '@/components/frontend/Index/Category.vue';
 import AboutCake from '@/components/frontend/Index/AboutCake.vue';
 import SubFooter from '@/components/SubFooter.vue';
 import Footer from '@/components/Footer.vue';
+import LocationPanel from '../../components/frontend/Index/LocationPanel.vue';
 
 export default {
   name: 'Index',
   components: {
     Navbar,
     Carousel,
-    TopSellProducts,
+    Category,
     AboutCake,
     SubFooter,
     Footer,
+    LocationPanel,
   },
 };
 </script>

@@ -1,16 +1,16 @@
-import { reactive, toRefs } from 'vue';
+import { ref, reactive, toRefs } from 'vue';
 import frontReq from '@/api/frontReq';
 
-export default {};
-
-export const getProductInfo = (id) => {
+export default (id) => {
   const productData = reactive({ productData: {} });
+  const isLoad = ref(false);
+
   frontReq.get(`api/${process.env.VUE_APP_PATH}/product/${id}`).then((res) => {
     if (res.data.success) {
       productData.productData = res.data;
+      isLoad.value = true;
     }
-    console.log(productData.productData);
   });
 
-  return { ...toRefs(productData) };
+  return { ...toRefs(productData), isLoad };
 };

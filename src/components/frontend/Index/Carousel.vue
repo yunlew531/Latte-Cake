@@ -46,7 +46,7 @@ export default {
 };
 </script>
 
-<style lang="scss" socped>
+<style lang="scss" scoped>
 .carousel-item {
   height: 100vh;
   background: no-repeat center;

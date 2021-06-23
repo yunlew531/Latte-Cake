@@ -1,8 +1,18 @@
 <template>
-  <Navbar class="transparent-nav">
+  <Navbar class="navbar">
     <template #content>
-      <div class="text-white position-absolute start-25 top-50 ps-50">
-        <h3 class="category-title fs-1 fw-bold mt-25">
+      <div
+        class="
+          page-title
+          text-white
+          position-absolute
+          start-50
+          translate-middle-x
+          bottom-25
+        "
+        :class="{ active: isLoad }"
+      >
+        <h3 class="fs-1 fw-bold">
           {{ productData.product?.title }}
         </h3>
       </div>
@@ -10,7 +20,7 @@
   </Navbar>
   <main>
     <section class="nav-bg"></section>
-    <section class="container py-38">
+    <section class="product-panel container py-38" :class="{ active: isLoad }">
       <div class="row gx-12">
         <ul class="col-6 list-unstyled mb-0">
           <li
@@ -53,7 +63,7 @@
                     text-success
                     border border-success
                     px-1
-                    ms-1
+                    ms-2
                     mb-0
                   "
                 >
@@ -166,6 +176,10 @@ import SubFooter from '@/components/SubFooter.vue';
 import Footer from '@/components/Footer.vue';
 import { useRoute } from 'vue-router';
 import { apiPostAddCart, apiGetProductInfo } from '@/api';
+import store from '@/composition/store';
+import { useToast } from '@/methods';
+
+const { getCarts } = store;
 
 export default {
   name: 'Product',
@@ -173,19 +187,30 @@ export default {
   setup() {
     const $emitter = inject('$emitter');
     const route = useRoute();
-    const { productData } = apiGetProductInfo(route.params.id);
+    const { productData, isLoad } = apiGetProductInfo(route.params.id);
     const productNum = ref(1);
 
     const addCart = async () => {
       const { id } = productData.value.product;
-      const { data } = await apiPostAddCart(id, productNum.value);
-      if (data.success) {
-        $emitter.emit('showCartCanvas', true);
-        productNum.value = 1;
+      try {
+        const { data } = await apiPostAddCart(id, productNum.value);
+        if (data.success) {
+          getCarts();
+          $emitter.emit('showCartCanvas', true);
+          useToast('成功加入購物車!', 'success');
+          productNum.value = 1;
+        } else useToast('操作失敗!', 'danger');
+      } catch (err) {
+        console.dir(err);
       }
     };
 
-    return { productNum, productData, addCart };
+    return {
+      productNum,
+      productData,
+      isLoad,
+      addCart,
+    };
   },
 };
 </script>
@@ -194,23 +219,43 @@ export default {
 @import '~bootstrap/scss/functions';
 @import '~@/assets/scss/custom/variables';
 
-.transparent-nav {
+.product-panel {
+  .product-img {
+    height: 500px;
+    background: center no-repeat;
+    margin-bottom: $spacer * 1.25;
+    background-size: cover;
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+  &.active {
+    .product-img {
+      animation: scale-ani 0.5s forwards;
+      transform: scale(0);
+    }
+  }
+}
+.page-title {
+  &.active {
+    > h3 {
+      animation: scale-ani 0.5s forwards;
+      transform: scale(0);
+    }
+  }
+}
+@keyframes scale-ani {
+  to {
+    transform: scale(1);
+  }
+}
+.navbar {
   height: 500px;
 }
 .nav-bg {
   height: 500px;
-  background: url(~@/assets/images/photo-1489533119213-66a5cd877091.jpg) center;
+  background: url(~@/assets/images/bg-banner.jpg) center no-repeat;
   background-size: cover;
-}
-.product-img {
-  height: 500px;
-  background: url(https://images.unsplash.com/photo-1542826438-bd32f43d626f?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1156&q=80)
-    center no-repeat;
-  margin-bottom: $spacer * 1.25;
-  background-size: cover;
-  &:last-child {
-    margin-bottom: 0;
-  }
 }
 .quantity-text {
   width: 120px;

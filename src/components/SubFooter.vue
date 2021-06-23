@@ -81,7 +81,7 @@ export default {
   background-image: url(~@/assets/images/photo-1509440159596-0249088772ff.jpg);
 }
 .shop-img {
-  background-image: url(~@/assets/images/street-cafe-4472312_1920.jpg);
+  background-image: url(~@/assets/images/street-cafe-taipei.jpg);
 }
 .link-item {
   h3,

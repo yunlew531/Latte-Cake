@@ -1,5 +1,5 @@
 <template>
-  <header class="carousel-nav position-absolute z-10">
+  <header class="carousel-nav d-block position-absolute z-10 top-0 p-0">
     <p
       class="
         container
@@ -7,6 +7,7 @@
         fw-light
         text-white
         d-flex
+        justify-content-start
         align-items-center
         py-1
         mb-0
@@ -108,7 +109,7 @@
                 end-0
                 translate-middle-y
               "
-              >{{ cartsQty }}</span
+              >{{ cartsData.carts?.length }}</span
             >
           </button>
           <form class="d-flex position-relative ms-3">
@@ -141,9 +142,11 @@
 </template>
 
 <script>
-import { ref, watch, inject, onMounted } from 'vue';
+import { ref, watch, inject, toRefs } from 'vue';
 import { useGetScrollY } from '@/methods';
-import { apiGetCarts } from '@/api';
+import store from '@/composition/store';
+
+const { getCarts } = store;
 
 export default {
   name: 'Navbar',
@@ -153,7 +156,8 @@ export default {
     const isSearchFocus = ref(false);
     const isScrollDown = ref(false);
     const $emitter = inject('$emitter');
-    const { cartsQty } = apiGetCarts();
+    const state = inject('state');
+    getCarts();
 
     const showCartCanvas = () => {
       $emitter.emit('showCartCanvas');
@@ -175,19 +179,11 @@ export default {
       }
     });
 
-    onMounted(() => {
-      $emitter.on('updateCartsQty', (qty) => {
-        watch(qty, () => {
-          cartsQty.value = qty.value;
-        });
-      });
-    });
-
     return {
+      ...toRefs(state),
       searchText,
       isSearchFocus,
       isScrollDown,
-      cartsQty,
       showCartCanvas,
     };
   },
@@ -227,13 +223,14 @@ export default {
 .carousel-nav {
   width: 100%;
   height: 100vh;
-  background-color: hsla(0, 0%, 0%, 0.25);
+  background-color: hsla(0, 0%, 0%, 0.15);
 }
 
 .search-input {
   caret-color: $white;
   background-color: transparent;
   transition: 0.2s ease-in;
+  position: relative;
   &::placeholder {
     color: $white;
   }

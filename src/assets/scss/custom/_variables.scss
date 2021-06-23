@@ -5,13 +5,14 @@
 // custom-start
 $primary: #aa1b1b;
 $secondary: #a3a3a3;
-$danger: rgb(198, 50, 50);
+$danger: #c63232;
 $white: #fff;
 $white-100: rgb(255, 254, 250);
-$black: rgb(28, 28, 28);
+$black: #1c1c1c;
 $black-100: #1f2021;
 $black-200: #333;
 $black-300: #798079;
+$black-400: rgb(100, 100, 100);
 $gray-300: #dfdfdf;
 // custom-end
 
@@ -52,6 +53,7 @@ $theme-colors: (
   'black-100': $black-100,
   'black-200': $black-200,
   'black-300': $black-300,
+  'black-400': $black-400,
   'gray-300': $gray-300
 ) !default;
 

@@ -2,6 +2,7 @@ import { createApp } from 'vue';
 import axios from 'axios';
 import VueAxios from 'vue-axios';
 import mitt from 'mitt';
+import 'mosha-vue-toastify/dist/style.css';
 import App from './App.vue';
 import router from './router';
 import 'bootstrap';
