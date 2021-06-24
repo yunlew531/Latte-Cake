@@ -12,9 +12,10 @@
   </Navbar>
   <main>
     <Carousel />
+    <HotSale />
+    <Category />
     <div class="bg-product-info">
       <div class="bg-filter">
-        <Category />
         <AboutCake />
       </div>
     </div>
@@ -28,6 +29,7 @@
 <script>
 import Navbar from '@/components/Navbar.vue';
 import Carousel from '@/components/frontend/Index/Carousel.vue';
+import HotSale from '@/components/frontend/Index/HotSale.vue';
 import Category from '@/components/frontend/Index/Category.vue';
 import AboutCake from '@/components/frontend/Index/AboutCake.vue';
 import SubFooter from '@/components/SubFooter.vue';
@@ -39,6 +41,7 @@ export default {
   components: {
     Navbar,
     Carousel,
+    HotSale,
     Category,
     AboutCake,
     SubFooter,

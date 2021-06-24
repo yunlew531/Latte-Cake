@@ -1,5 +1,5 @@
 <template>
-  <section class="container pt-25 pb-50">
+  <section class="container py-50">
     <div
       class="
         handle-heat

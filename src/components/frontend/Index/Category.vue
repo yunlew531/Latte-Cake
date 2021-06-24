@@ -1,5 +1,5 @@
 <template>
-  <section class="container pt-50 pb-25">
+  <section class="container pt-25 pb-50">
     <div class="category-panel text-white d-flex">
       <div class="hot-area w-50">
         <h3 class="display-3 fw-normal m-0 h-100 w-100">
@@ -14,7 +14,7 @@
               h-100
             "
           >
-            Hot Sale
+            熱銷
           </router-link>
         </h3>
       </div>
@@ -30,7 +30,7 @@
                 p-12
                 h-100
               "
-              >Coffee</router-link
+              >咖啡</router-link
             >
           </h3>
         </li>
@@ -45,7 +45,7 @@
                 p-12
                 h-100
               "
-              >Cake</router-link
+              >蛋糕</router-link
             >
           </h3>
         </li>
@@ -60,7 +60,7 @@
                 p-12
                 h-100
               "
-              >Salad</router-link
+              >沙拉</router-link
             >
           </h3>
         </li>
@@ -75,7 +75,7 @@
                 p-12
                 h-100
               "
-              >Set Meal</router-link
+              >套餐</router-link
             >
           </h3>
         </li>

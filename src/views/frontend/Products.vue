@@ -126,7 +126,7 @@ export default {
     ]);
     const nowHoverCategory = ref('');
     const nowCategory = ref('全部');
-    const isTitleAniPlay = ref(true);
+
     getPageProducts();
 
     // 換頁
@@ -135,6 +135,7 @@ export default {
     };
 
     // 控制標題動畫 @keyframes
+    const isTitleAniPlay = ref(true);
     const handTitleAni = (action) => {
       if (action === 'removeClass') {
         isTitleAniPlay.value = false;
