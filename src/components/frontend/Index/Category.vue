@@ -90,9 +90,8 @@ export default {};
 
 <style lang="scss" scoped>
 .category-panel {
-  height: 720px;
+  height: 648px;
 }
-
 .hot-area,
 .coffee-area,
 .cake-area,
@@ -100,6 +99,9 @@ export default {};
 .set-area {
   background: center no-repeat;
   background-size: cover;
+  &:hover {
+    filter: brightness(1.1);
+  }
 }
 .hot-area {
   background-image: url(~@/assets/images/hamburger-2.jpg);

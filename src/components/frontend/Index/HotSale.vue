@@ -1,7 +1,7 @@
 <template>
-  <div class="container pt-50 pb-25">
-    <h3 class="text-center fs-3 fw-bold text-primary mb-5">熱銷商品</h3>
-    <h4 class="text-center fs-5 mb-20">值得您嘗鮮的選擇</h4>
+  <section class="hot-sale-section container py-25">
+    <h3 class="text-center fs-2 fw-bold text-primary mb-5">熱銷商品</h3>
+    <h4 class="text-center fs-5 mb-12">值得您嘗鮮的選擇</h4>
     <swiper
       :slides-per-view="3"
       :space-between="50"
@@ -36,7 +36,27 @@
         </div>
       </swiper-slide>
     </swiper>
-  </div>
+    <div class="text-center mt-12">
+      <router-link
+        to="/products"
+        class="
+          all-product-btn
+          position-relative
+          rounded
+          btn btn-primary
+          px-12
+          py-2
+          overflow-hidden
+        "
+      >
+        <span class="opacity-0">所有產品</span>
+        <span
+          class="btn-content position-absolute top-50 start-50 translate-middle"
+          >所有產品</span
+        >
+      </router-link>
+    </div>
+  </section>
 </template>
 
 <script>
@@ -55,50 +75,79 @@ export default {
 </script>
 
 <style lang="scss">
-.swiper-content {
-  h2,
-  p {
-    opacity: 0;
-    padding-top: 100px;
-    transition: 0.3s;
-  }
-  p {
-    transition-delay: 0.2s;
-  }
-}
-.swiper-img {
-  height: 500px;
-  background: center no-repeat;
-  background-size: cover;
-  position: relative;
-  cursor: pointer;
-  &::before {
-    content: '';
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    bottom: -100%;
-  }
-  &:hover {
-    .swiper-content {
-      h2,
-      p {
-        opacity: 1;
-        padding-top: 0;
-      }
+@import '~@/assets/scss/custom/variables';
+
+.hot-sale-section {
+  .swiper-content {
+    h2,
+    p {
+      opacity: 0;
+      padding-top: 100px;
+      transition: 0.3s;
     }
+    p {
+      transition-delay: 0.2s;
+    }
+  }
+  .swiper-img {
+    height: 500px;
+    background: center no-repeat;
+    background-size: cover;
+    position: relative;
+    cursor: pointer;
     &::before {
-      background-image: linear-gradient(
-        to bottom,
-        rgba(0, 0, 0, 0),
-        rgba(0, 0, 0, 0.8)
-      );
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+
       bottom: 0;
     }
+    &:hover {
+      .swiper-content {
+        h2,
+        p {
+          opacity: 1;
+          padding-top: 0;
+        }
+      }
+      &::before {
+        background-image: linear-gradient(
+          to bottom,
+          rgba(0, 0, 0, 0),
+          rgba(0, 0, 0, 0.8)
+        );
+      }
+    }
   }
-}
-
-.swiper-img-1 {
-  background-image: url(~@/assets/images/swiper-1-1.jpg);
+  .swiper-img-1 {
+    background-image: url(~@/assets/images/swiper-1-1.jpg);
+  }
+  .all-product-btn {
+    display: inline-block;
+    .btn-content {
+      transition: 0.2s;
+      color: $white;
+    }
+    &::before {
+      content: '';
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      background: $white;
+      top: -150%;
+      left: 0;
+      border-radius: $border-radius;
+      transition: 0.2s ease-in-out;
+    }
+    &:hover {
+      &::before {
+        top: 0;
+      }
+      .btn-content {
+        color: $danger;
+      }
+    }
+  }
 }
 </style>

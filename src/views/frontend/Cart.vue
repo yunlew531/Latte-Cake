@@ -322,7 +322,10 @@ export default {
       const day = date.getDay();
       const hour = date.getHours();
       const deliveryD = hour >= 17 ? d + 3 : d + 2;
-      const deliveryDay = hour >= 17 ? day + 3 : day + 2;
+      let deliveryDay = hour >= 17 ? day + 3 : day + 2;
+      if (deliveryDay === 7) deliveryDay = 0;
+      else if (deliveryDay === 8) deliveryDay = 1;
+      else if (deliveryDay === 9) deliveryDay = 2;
       const time = `${y} / ${m} / ${deliveryD} 星期${dayTranslate[deliveryDay]}`;
       return time;
     });

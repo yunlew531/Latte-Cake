@@ -1,5 +1,5 @@
 <template>
-  <header class="carousel-nav d-block position-absolute z-10 top-0 p-0">
+  <header class="carousel-nav d-block position-absolute z-20 top-0 p-0">
     <p
       class="
         container
@@ -88,7 +88,9 @@
               >
             </li>
             <li class="nav-item">
-              <a class="nav-link d-block px-16" href="#">關於我們</a>
+              <router-link to="/aboutUs" class="nav-link d-block px-16"
+                >關於我們</router-link
+              >
             </li>
           </ul>
           <button

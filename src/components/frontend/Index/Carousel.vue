@@ -11,7 +11,7 @@
       </ul>
     </div>
     <div class="scroll-btn position-absolute bottom-0 start-50 z-10">
-      <span class="fs-1 text-white material-icons"> south </span>
+      <span class="fs-1 text-white material-icons"> expand_more </span>
     </div>
   </section>
 </template>

@@ -17,13 +17,6 @@
   <main>
     <section class="nav-bg"></section>
     <section class="container py-12">
-      <div class="progress position-relative">
-        <div
-          class="progress-bar position-absolute h-100"
-          :style="handProgressBarAni"
-          role="progressbar"
-        ></div>
-      </div>
       <ul
         class="
           products-nav
@@ -46,11 +39,18 @@
           {{ category }}
         </li>
       </ul>
+      <div class="progress position-relative">
+        <div
+          class="progress-bar position-absolute h-100"
+          :style="handProgressBarAni"
+          role="progressbar"
+        ></div>
+      </div>
     </section>
     <section class="container pb-25">
       <ul class="row gx-5 gy-10 list-unstyled">
         <li
-          class="product-item col-4"
+          class="product-item col-3"
           v-for="product in pageProductsData"
           :key="product.id"
         >
