@@ -115,7 +115,7 @@
 </template>
 
 <script>
-import { onMounted, ref, inject, toRefs } from 'vue';
+import { ref, inject, toRefs, onMounted, onUnmounted } from 'vue';
 import Offcanvas from 'bootstrap/js/dist/offcanvas';
 import { apiPutCartQty, apiDeleteCart } from '@/api';
 import { useRouter } from 'vue-router';
@@ -130,37 +130,36 @@ export default {
     const $emitter = inject('$emitter');
     const state = inject('state');
     const cartCanvasDom = ref(null);
-    const cartCanvas = ref(null);
     const isProgressAniPlay = ref(false);
+    let cartCanvas = null;
     let progressAniTimeOut = null;
 
     const showCartCanvas = (playAni) => {
-      if (isProgressAniPlay.value === true) {
+      if (isProgressAniPlay.value) {
         clearTimeout(progressAniTimeOut);
         isProgressAniPlay.value = false;
-      }
-      if (playAni) {
+      } else if (playAni) {
         isProgressAniPlay.value = true;
         progressAniTimeOut = setTimeout(() => {
           isProgressAniPlay.value = false;
-          cartCanvas.value.hide();
+          cartCanvas.hide();
         }, 8000);
       }
-      cartCanvas.value.show();
+      cartCanvas.show();
     };
 
     const hideCartCanvas = () => {
-      cartCanvas.value.hide();
+      cartCanvas.hide();
     };
 
     const goToPage = (id) => {
       router.push({ path: `/product/${id}` });
-      cartCanvas.value.hide();
+      cartCanvas.hide();
     };
 
     const goToCart = () => {
       router.push({ path: '/cart' });
-      cartCanvas.value.hide();
+      cartCanvas.hide();
     };
 
     const handQty = async (item, num) => {
@@ -191,9 +190,14 @@ export default {
     };
 
     onMounted(() => {
-      cartCanvas.value = new Offcanvas(cartCanvasDom.value);
-      $emitter.on('showCartCanvas', showCartCanvas);
+      cartCanvas = new Offcanvas(cartCanvasDom.value);
+      $emitter.on('showCartCanvas', showCartCanvas); // Product.vue / Navbar.vue
       $emitter.on('hideCartCanvas', hideCartCanvas);
+    });
+
+    onUnmounted(() => {
+      $emitter.off('showCartCanvas', showCartCanvas);
+      $emitter.off('hideCartCanvas', hideCartCanvas);
     });
 
     return {

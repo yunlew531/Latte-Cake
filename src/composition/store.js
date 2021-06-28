@@ -1,28 +1,27 @@
 import { reactive, readonly } from 'vue';
-import frontReq from '@/api/frontReq';
-
-const PATH = process.env.VUE_APP_PATH;
+import { apiGetCarts, apiGetPageProducts } from '@/api';
 
 // state
 const state = reactive({
   cartsData: {},
   pageProductsData: {},
-  pagination: {}
+  pagination: {},
+  shopPosition: 'Taipei'
 });
 
 // actions
 const getCarts = async () => {
-  const { data } = await frontReq.get(`api/${PATH}/cart`);
   try {
+    const { data } = await apiGetCarts();
     if (data.success) state.cartsData = data.data;
   } catch (err) {
-    console.dir(err);
+    console.dir('err');
   }
 };
 
-const getPageProducts = async (page = 1) => {
-  const { data } = await frontReq.get(`api/${PATH}/products?page=${page}`);
+const getPageProducts = async (page = 0) => {
   try {
+    const { data } = await apiGetPageProducts(page);
     if (data.success) {
       state.pageProductsData = data.products;
       state.pagination = data.pagination;
@@ -37,9 +36,14 @@ const setCartsData = (cartsData) => {
   state.cartsData = cartsData;
 };
 
+const setShopPosition = (city) => {
+  state.shopPosition = city;
+};
+
 export default {
   state: readonly(state),
   getCarts,
   getPageProducts,
-  setCartsData
+  setCartsData,
+  setShopPosition
 };

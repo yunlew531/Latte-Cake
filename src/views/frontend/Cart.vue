@@ -283,6 +283,8 @@ export default {
     const state = inject('state');
     const productNum = ref(1);
 
+    getCarts();
+
     const handQty = async (item, num) => {
       const product = { ...item };
       product.qty = item.qty + num <= 1 ? 1 : item.qty + num;

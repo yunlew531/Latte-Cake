@@ -33,13 +33,14 @@
           "
         >
           <h5 class="fs-5 m-0 fw-light">歡迎來店用餐</h5>
-          <router-link
-            to="/"
+          <a
+            href="javascript:;"
+            @click="handCity('Taipei')"
             class="location-link d-inline-block text-decoration-none"
           >
             <h4 class="display-4 pt-5">台北信義店</h4>
             <p class="fs-4 fw-light">地址: 台北市信義區市府路1號</p>
-          </router-link>
+          </a>
         </div>
       </div>
       <div class="carousel-item">
@@ -56,13 +57,14 @@
           "
         >
           <h5 class="fs-5 m-0 fw-light">歡迎來店用餐</h5>
-          <router-link
-            to="/"
+          <a
+            href="javascript:;"
+            @click="handCity('Taichung')"
             class="location-link d-inline-block text-decoration-none"
           >
             <h4 class="display-4 pt-5">台中西屯店</h4>
             <p class="fs-4 fw-light">地址: 台中市西屯區台灣大道三段99號</p>
-          </router-link>
+          </a>
         </div>
       </div>
       <div class="carousel-item">
@@ -79,13 +81,14 @@
           "
         >
           <h5 class="fs-5 m-0 fw-light">歡迎來店用餐</h5>
-          <router-link
-            to="/"
+          <a
+            href="javascript:;"
+            @click="handCity('Kaohsiung')"
             class="location-link d-inline-block text-decoration-none"
           >
             <h4 class="display-4 pt-5">高雄苓雅店</h4>
             <p class="fs-4 fw-light">地址: 高雄市苓雅區四維三路2號</p>
-          </router-link>
+          </a>
         </div>
       </div>
     </div>
@@ -112,12 +115,22 @@
 
 <script >
 import { onMounted, ref } from 'vue';
+import { useRouter } from 'vue-router';
 import Carousel from 'bootstrap/js/dist/carousel';
+import store from '@/composition/store';
+
+const { setShopPosition } = store;
 
 export default {
   setup() {
+    const router = useRouter();
     const carouselDom = ref(null);
     const carousel = ref(null);
+
+    const handCity = (city) => {
+      setShopPosition(city);
+      router.push('/aboutUs');
+    };
 
     onMounted(() => {
       carousel.value = new Carousel(carouselDom.value, {
@@ -129,6 +142,7 @@ export default {
 
     return {
       carouselDom,
+      handCity,
     };
   },
 };

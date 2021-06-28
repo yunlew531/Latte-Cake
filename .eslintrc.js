@@ -21,6 +21,8 @@ module.exports = {
       }
     ],
     'object-curly-newline': 'off',
-    'operator-linebreak': ['error', 'after', { overrides: { '?': 'before', ':': 'before' } }]
+    'operator-linebreak': ['error', 'after', { overrides: { '?': 'before', ':': 'before' } }],
+    'implicit-arrow-linebreak': 'off',
+    'function-paren-newline': 'off'
   }
 };
