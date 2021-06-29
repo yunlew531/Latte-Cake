@@ -2,7 +2,10 @@
   <Navbar>
     <template #content>
       <div class="container position-relative h-100">
-        <div class="carousel-title position-absolute start-0 top-50">
+        <div
+          class="carousel-title position-absolute start-0 top-50"
+          :class="{ active: !isLoading }"
+        >
           <h3 class="text-white fs-1 fw-bold tracking-2">
             歡迎光臨 <span class="text-danger">LATTE & CAKE</span>
           </h3>
@@ -78,6 +81,7 @@
 </template>
 
 <script>
+import { inject, toRefs } from 'vue';
 import Navbar from '@/components/Navbar.vue';
 import Carousel from '@/components/frontend/Index/Carousel.vue';
 import HotSale from '@/components/frontend/Index/HotSale.vue';
@@ -98,6 +102,13 @@ export default {
     SubFooter,
     Footer,
     LocationPanel,
+  },
+  setup() {
+    const state = inject('state');
+
+    return {
+      ...toRefs(state),
+    };
   },
 };
 </script>

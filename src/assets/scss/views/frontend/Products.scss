@@ -6,7 +6,9 @@
 }
 .category-title {
   &.active {
-    animation: title-ani 0.5s forwards;
+    > h3 {
+      animation: title-ani 0.5s forwards;
+    }
   }
 }
 @keyframes title-ani {

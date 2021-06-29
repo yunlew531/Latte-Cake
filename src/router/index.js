@@ -26,6 +26,11 @@ const routes = [
     path: '/aboutUs',
     name: 'AboutUs',
     component: () => import('../views/frontend/AboutUs.vue')
+  },
+  {
+    path: '/checkout',
+    name: 'Checkout',
+    component: () => import('../views/frontend/Checkout.vue')
   }
 ];
 

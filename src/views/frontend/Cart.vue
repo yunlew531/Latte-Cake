@@ -1,19 +1,18 @@
 <template>
   <Navbar class="navbar position-relative">
     <template #content>
-      <h3
+      <div
         class="
-          fs-1
-          fw-bold
-          text-white
+          page-title
           position-absolute
           start-50
           bottom-25
           translate-middle-x
         "
+        :class="{ active: !isLoading }"
       >
-        購物車
-      </h3>
+        <h3 class="fs-1 fw-bold text-white">購物車</h3>
+      </div>
     </template>
   </Navbar>
   <main>
@@ -244,15 +243,36 @@
               <router-link
                 to="/checkout"
                 class="checkout-btn fs-5 btn w-100 py-3"
-                >結帳</router-link
+                ><span
+                  class="
+                    checkout-btn-text
+                    position-absolute
+                    start-50
+                    top-50
+                    translate-middle
+                  "
+                  >結帳</span
+                >
+                <span class="opacity-0">結帳</span></router-link
               >
             </div>
             <div class="rounded shadow bg-white p-8 mt-8">
               <h4 class="fs-4">輸入優惠折扣碼</h4>
               <div class="d-flex">
                 <input type="text" class="flex-grow-1" />
-                <button type="button" class="btn coupon-btn px-5 ms-2">
-                  送出
+                <button
+                  type="button"
+                  class="btn coupon-btn px-5 ms-2 position-relative"
+                >
+                  <span
+                    class="
+                      coupon-btn-text
+                      position-absolute
+                      start-50
+                      translate-middle-x
+                    "
+                    >送出</span
+                  ><span class="opacity-0">送出</span>
                 </button>
               </div>
             </div>
@@ -265,14 +285,14 @@
 </template>
 
 <script>
-import { ref, inject, toRefs, watch, computed } from 'vue';
+import { ref, inject, toRefs, computed } from 'vue';
 import Navbar from '@/components/Navbar.vue';
 import Footer from '@/components/Footer.vue';
 import { useToast } from '@/methods';
 import { apiPutCartQty, apiDeleteCart } from '@/api';
 import store from '@/composition/store';
 
-const { getCarts } = store;
+const { getCarts, setIsLoading } = store;
 
 export default {
   components: {
@@ -290,20 +310,25 @@ export default {
       product.qty = item.qty + num <= 1 ? 1 : item.qty + num;
       if (product.qty === item.qty) return;
       try {
+        setIsLoading(true);
         const { data } = await apiPutCartQty(product);
         if (data.success) {
+          setIsLoading(false);
           getCarts();
           useToast('成功更新數量!', 'success');
         } else useToast('操作失敗!', 'danger');
       } catch (err) {
+        setIsLoading(false);
         console.dir(err);
       }
     };
 
     const removeCart = async (product) => {
       try {
+        setIsLoading(true);
         const { data } = await apiDeleteCart(product.id);
         if (data.success) {
+          setIsLoading(false);
           getCarts();
           useToast('成功移除商品!', 'success');
         } else {
@@ -311,6 +336,7 @@ export default {
         }
         console.log(data);
       } catch (err) {
+        setIsLoading(false);
         console.dir(err);
       }
     };
@@ -331,14 +357,6 @@ export default {
       const time = `${y} / ${m} / ${deliveryD} 星期${dayTranslate[deliveryDay]}`;
       return time;
     });
-
-    watch(
-      state,
-      () => {
-        console.log(state.cartsData);
-      },
-      { deep: true }
-    );
 
     return {
       ...toRefs(state),
@@ -361,6 +379,21 @@ export default {
   height: 500px;
   background: url(~@/assets/images/bg-banner.jpg) no-repeat center;
   background-size: cover;
+}
+.page-title {
+  > h3 {
+    transform: scale(0);
+  }
+  &.active {
+    > h3 {
+      animation: scale-ani 0.5s forwards;
+    }
+  }
+}
+@keyframes scale-ani {
+  to {
+    transform: scale(1);
+  }
 }
 .product-item {
   border-bottom: 1px solid $secondary;
@@ -424,19 +457,59 @@ export default {
 }
 .checkout-btn {
   background: $primary;
-  color: white;
+  position: relative;
+  overflow: hidden;
+  .checkout-btn-text {
+    color: $white;
+    transition: 0.2s ease-in-out;
+  }
+  &::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: $white;
+    border-radius: $border-radius;
+    top: -105%;
+    left: 0;
+    transition: 0.2s ease-in-out;
+  }
   &:hover {
-    background: $white-100;
-    border: 1px solid $primary;
-    color: $primary;
+    &::before {
+      top: 0;
+    }
+    .checkout-btn-text {
+      color: $primary;
+    }
   }
 }
 .coupon-btn {
   border: 1px solid $black-200;
-  color: $primary;
+  overflow: hidden;
+  .coupon-btn-text {
+    color: $primary;
+    transition: 0.2s;
+  }
+  &::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: $primary;
+    border-radius: $border-radius;
+    top: -105%;
+    left: 0;
+    transition: 0.2s ease-in-out;
+  }
   &:hover {
     color: $white;
     background: $primary;
+    &::before {
+      top: 0;
+    }
+    .coupon-btn-text {
+      color: $white;
+    }
   }
 }
 </style>

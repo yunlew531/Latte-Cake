@@ -2,11 +2,18 @@
   <Navbar class="navbar">
     <template #content>
       <div
-        class="text-white position-absolute start-50 top-50 translate-middle-x"
+        class="
+          category-title
+          position-absolute
+          start-50
+          top-50
+          translate-middle-x
+        "
+        :class="{ active: isTitleAniPlay && !isLoading }"
       >
         <h3
-          class="category-title fs-1 fw-bold mt-25"
-          :class="{ active: isTitleAniPlay }"
+          v-if="!isLoading"
+          class="text-white fs-1 fw-bold mt-25"
           @animationend="handTitleAni('removeClass')"
         >
           {{ nowCategory }}

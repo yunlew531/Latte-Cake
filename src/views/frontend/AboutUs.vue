@@ -2,7 +2,13 @@
   <Navbar class="navbar position-relative">
     <template class="" #content>
       <div class="position-absolute start-50 bottom-25 translate-middle-x">
-        <h2 class="aboutus-title fs-1 text-white">關於Latte & Cake</h2>
+        <h3
+          v-if="!isLoading"
+          class="aboutus-title fs-1 text-white"
+          :class="{ active: !isLoading }"
+        >
+          關於Latte & Cake
+        </h3>
       </div>
     </template>
   </Navbar>
@@ -178,7 +184,9 @@ export default {
   background-size: cover;
 }
 .aboutus-title {
-  animation: title-ani 0.5s forwards;
+  &.active {
+    animation: title-ani 0.5s forwards;
+  }
 }
 @keyframes title-ani {
   from {

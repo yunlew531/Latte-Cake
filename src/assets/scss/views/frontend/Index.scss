@@ -5,7 +5,9 @@
 .carousel-title {
   transform: translateY(100px);
   opacity: 0;
-  animation: carousel-title-ani 0.3s 0.5s forwards;
+  &.active {
+    animation: carousel-title-ani 0.5s 0.5s forwards;
+  }
 }
 @keyframes carousel-title-ani {
   to {

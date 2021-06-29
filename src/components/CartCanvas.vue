@@ -19,7 +19,12 @@
     </div>
     <div class="px-4 m-0 d-flex align-items-center">
       <span class="me-auto">{{ cartsData.carts?.length }} 個品項</span>
-      <a href="#" class="check-out-btn btn btn-danger">手刀結帳!</a>
+      <a
+        href="javascript:;"
+        class="check-out-btn btn btn-danger"
+        @click="goToPage('checkout')"
+        >立刻結帳!</a
+      >
     </div>
     <div class="px-4 py-3 border-bottom">
       <div
@@ -39,7 +44,7 @@
         <a
           href="javascript:;"
           class="text-decoration-none text-reset"
-          @click="goToPage(product.product.id)"
+          @click="goToPage('product', product.product.id)"
         >
           <div class="d-flex">
             <div
@@ -122,7 +127,7 @@ import { useRouter } from 'vue-router';
 import store from '@/composition/store';
 import { useToast } from '@/methods';
 
-const { getCarts } = store;
+const { getCarts, setIsLoading } = store;
 
 export default {
   setup() {
@@ -152,8 +157,9 @@ export default {
       cartCanvas.hide();
     };
 
-    const goToPage = (id) => {
-      router.push({ path: `/product/${id}` });
+    const goToPage = (page, id) => {
+      if (page === 'product') router.push({ path: `/${page}/${id}` });
+      else router.push({ path: `/${page}` });
       cartCanvas.hide();
     };
 
@@ -166,25 +172,31 @@ export default {
       const product = { ...item };
       product.qty = item.qty + num <= 1 ? 1 : item.qty + num;
       if (product.qty === item.qty) return;
+      setIsLoading(true);
       try {
         const { data } = await apiPutCartQty(product);
         if (data.success) {
+          setIsLoading(false);
           getCarts();
           useToast('成功更新數量!', 'success');
         } else useToast('操作失敗!', 'danger');
       } catch (err) {
+        setIsLoading(false);
         console.dir(err);
       }
     };
 
     const removeCart = async (id) => {
-      const { data } = await apiDeleteCart(id);
+      setIsLoading(true);
       try {
+        const { data } = await apiDeleteCart(id);
         if (data.success) {
+          setIsLoading(false);
           getCarts();
           useToast('成功移除商品!', 'success');
         } else useToast('發生錯誤!', 'danger');
       } catch (err) {
+        setIsLoading(false);
         console.dir(err);
       }
     };

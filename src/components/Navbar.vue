@@ -33,36 +33,14 @@
       :class="{ active: isScrollDown }"
     >
       <div class="container-fluid">
-        <router-link
-          to="/"
-          class="
-            navbar-brand
-            text-center
-            position-relative
-            m-0
-            align-self-start
-          "
-        >
-          <span
-            class="logo-icon material-icons text-danger duration-200 fs-1 lh-1"
-            :class="[{ 'fs-3': isScrollDown }, { 'pb-4': isScrollDown }]"
+        <h1 class="m-0 pt-1 pb-2px">
+          <router-link
+            to="/"
+            class="navbar-brand d-block"
+            :class="{ active: isScrollDown }"
           >
-            local_cafe
-          </span>
-          <span
-            class="
-              logo-icon-text
-              fw-bold
-              fs-6
-              position-absolute
-              start-50
-              translate-middle-x
-              tracking-1
-            "
-            :class="[{ 'fs-7': isScrollDown }, { right: isScrollDown }]"
-            >LATTE & CAKE</span
-          >
-        </router-link>
+          </router-link>
+        </h1>
         <button
           class="navbar-toggler"
           type="button"
@@ -197,13 +175,21 @@ export default {
 @import '~@/assets/scss/custom/variables';
 
 .navbar-brand {
-  width: 150px;
+  width: 136px;
+  height: 56px;
+  background: center no-repeat;
+  background-size: cover;
+  background-image: url(~@/assets/images/logo_transparent_medium.png);
   .logo-icon {
     padding-bottom: $spacer * 1;
   }
-
   .logo-icon-text {
     bottom: $spacer * 0.25;
+  }
+  &.active {
+    width: 117px;
+    height: 48px;
+    background-image: url(~@/assets/images/logo_transparent_small.png);
   }
 }
 
