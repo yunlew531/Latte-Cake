@@ -21,9 +21,9 @@
       <span class="me-auto">{{ cartsData.carts?.length }} 個品項</span>
       <a
         href="javascript:;"
-        class="check-out-btn btn btn-danger"
-        @click="goToPage('checkout')"
-        >立刻結帳!</a
+        class="cart-btn btn btn-danger"
+        @click="goToPage('cart')"
+        >詳細購物車</a
       >
     </div>
     <div class="px-4 py-3 border-bottom">
@@ -109,9 +109,6 @@
       </li>
     </ul>
     <div class="d-flex align-items-center border-top px-4 py-4">
-      <button type="button" class="btn btn-outline-danger" @click="goToCart">
-        購物車詳細
-      </button>
       <span class="fs-5 ms-auto"
         >總金額 NT$ {{ cartsData.total?.toLocaleString() }} 元</span
       >
@@ -228,7 +225,7 @@ export default {
 <style lang="scss" scoped>
 @import '~@/assets/scss/custom/variables';
 
-.check-out-btn {
+.cart-btn {
   color: $white;
   &:hover {
     color: $primary;

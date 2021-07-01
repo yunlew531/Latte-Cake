@@ -131,18 +131,18 @@ const { getCarts } = store;
 export default {
   name: 'Navbar',
   setup() {
-    const searchText = ref('');
+    const state = inject('state');
     const { scrollY } = useGetScrollY();
-    const isSearchFocus = ref(false);
     const isScrollDown = ref(false);
     const $emitter = inject('$emitter');
-    const state = inject('state');
     getCarts();
 
     const showCartCanvas = () => {
       $emitter.emit('showCartCanvas');
     };
 
+    const searchText = ref('');
+    const isSearchFocus = ref(false);
     watch(searchText, () => {
       if (searchText.value) {
         isSearchFocus.value = true;

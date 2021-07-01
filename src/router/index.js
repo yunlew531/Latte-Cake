@@ -31,6 +31,39 @@ const routes = [
     path: '/checkout',
     name: 'Checkout',
     component: () => import('../views/frontend/Checkout.vue')
+  },
+  {
+    path: '/login',
+    name: 'Login',
+    component: () => import('../views/backend/Login.vue')
+  },
+  {
+    path: '/admin',
+    name: 'Backstage',
+    redirect: '/admin/Products',
+    component: () => import('../views/backend/Backstage.vue'),
+    children: [
+      {
+        path: 'addProduct',
+        name: 'AddProduct',
+        component: () => import('../views/backend/AddProduct.vue')
+      },
+      {
+        path: 'products',
+        name: 'BackendProducts',
+        component: () => import('../views/backend/Products.vue')
+      },
+      {
+        path: 'coupon',
+        name: 'Coupon',
+        component: () => import('../views/backend/Coupon.vue')
+      },
+      {
+        path: 'orders',
+        name: 'Orders',
+        component: () => import('../views/backend/Orders.vue')
+      }
+    ]
   }
 ];
 

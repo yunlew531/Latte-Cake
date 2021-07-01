@@ -1,0 +1,112 @@
+<template>
+  <ul class="sidebar flex-shrink-0 list-unstyled px-2 py-5 mb-0 mx-5">
+    <li>
+      <router-link
+        to="/admin/addProduct"
+        active-class="active"
+        class="
+          duration-1
+          router-link
+          d-flex
+          align-items-center
+          fs-5
+          text-black-200 text-decoration-none
+          rounded
+          px-5
+          py-2
+        "
+      >
+        <span class="material-icons-outlined text-primary me-1"> add </span
+        >新增產品</router-link
+      >
+    </li>
+    <li>
+      <router-link
+        to="/admin/products"
+        active-class="active"
+        class="
+          router-link
+          d-flex
+          align-items-center
+          fs-5
+          text-black-200 text-decoration-none
+          rounded
+          px-5
+          py-2
+        "
+      >
+        <span class="material-icons-outlined text-primary me-1"> list_alt </span
+        >產品列表</router-link
+      >
+    </li>
+    <li>
+      <router-link
+        to="/admin/orders"
+        active-class="active"
+        class="
+          router-link
+          d-flex
+          align-items-center
+          fs-5
+          text-black-200 text-decoration-none
+          rounded
+          px-5
+          py-2
+        "
+      >
+        <span class="material-icons-outlined text-primary me-1">
+          border_color </span
+        >訂單列表</router-link
+      >
+    </li>
+    <li>
+      <router-link
+        to="/admin/coupon"
+        active-class="active"
+        class="
+          router-link
+          d-flex
+          align-items-center
+          fs-5
+          text-black-200 text-decoration-none
+          rounded
+          px-5
+          py-2
+        "
+      >
+        <span class="material-icons-outlined text-primary me-1">
+          local_offer </span
+        >優惠券</router-link
+      >
+    </li>
+  </ul>
+</template>
+
+<script>
+export default {
+  name: 'Sidebar',
+};
+</script>
+
+<style lang="scss" scoped>
+@import '~@/assets/scss/custom/variables';
+
+.sidebar {
+  width: 250px;
+  transform: translateX(-250px);
+  animation: sidebar 0.3s forwards ease-in-out;
+}
+@keyframes sidebar {
+  to {
+    transform: translateX(0);
+  }
+}
+.router-link {
+  transition-delay: 2s;
+  &.active {
+    box-shadow: $box-shadow;
+    background: $white;
+    transform: translateX(5px);
+  }
+}
+</style>

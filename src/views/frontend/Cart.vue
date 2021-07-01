@@ -256,26 +256,6 @@
                 <span class="opacity-0">結帳</span></router-link
               >
             </div>
-            <div class="rounded shadow bg-white p-8 mt-8">
-              <h4 class="fs-4">輸入優惠折扣碼</h4>
-              <div class="d-flex">
-                <input type="text" class="flex-grow-1" />
-                <button
-                  type="button"
-                  class="btn coupon-btn px-5 ms-2 position-relative"
-                >
-                  <span
-                    class="
-                      coupon-btn-text
-                      position-absolute
-                      start-50
-                      translate-middle-x
-                    "
-                    >送出</span
-                  ><span class="opacity-0">送出</span>
-                </button>
-              </div>
-            </div>
           </div>
         </div>
       </div>
@@ -480,35 +460,6 @@ export default {
     }
     .checkout-btn-text {
       color: $primary;
-    }
-  }
-}
-.coupon-btn {
-  border: 1px solid $black-200;
-  overflow: hidden;
-  .coupon-btn-text {
-    color: $primary;
-    transition: 0.2s;
-  }
-  &::before {
-    content: '';
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background: $primary;
-    border-radius: $border-radius;
-    top: -105%;
-    left: 0;
-    transition: 0.2s ease-in-out;
-  }
-  &:hover {
-    color: $white;
-    background: $primary;
-    &::before {
-      top: 0;
-    }
-    .coupon-btn-text {
-      color: $white;
     }
   }
 }

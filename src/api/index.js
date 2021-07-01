@@ -1,6 +1,8 @@
 import getShopImg from './frontend/AboutUs';
 import getProductInfo from './frontend/Product';
 import { getCarts, putCartQty, deleteCart, postAddCart } from './frontend/shared';
+import postLogin from './backend/Login';
+import postCheck from './backend/Backstage';
 import getPageProducts from './frontend/Products';
 
 // frontend
@@ -11,3 +13,7 @@ export const apiPutCartQty = putCartQty;
 export const apiDeleteCart = deleteCart;
 export const apiPostAddCart = postAddCart;
 export const apiGetShopImg = getShopImg;
+
+// backend
+export const apiPostLogin = postLogin;
+export const apiPostCheck = postCheck;
