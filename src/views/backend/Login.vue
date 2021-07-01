@@ -105,7 +105,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '~@/assets/scss/custom/variables';
+@import '~@/assets/styleSheets/custom/variables';
 
 .navbar-bg {
   height: 100vh;

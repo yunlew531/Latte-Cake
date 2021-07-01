@@ -173,7 +173,7 @@ export default {
 
 <style lang="scss" scoped>
 @import '~bootstrap/scss/functions';
-@import '~@/assets/scss/custom/variables';
+@import '~@/assets/styleSheets/custom/variables';
 
 .navbar {
   height: 500px;

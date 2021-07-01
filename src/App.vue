@@ -42,7 +42,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import './assets/scss';
+@import './assets/styleSheets';
 
 .cup-hand {
   width: 35px;

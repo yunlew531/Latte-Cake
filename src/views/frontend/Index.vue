@@ -114,5 +114,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '~@/assets/scss/views/frontend/Index';
+@import '~@/assets/styleSheets/views/frontend/Index';
 </style>

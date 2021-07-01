@@ -62,7 +62,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '~@/assets/scss/custom/variables';
+@import '~@/assets/styleSheets/custom/variables';
 
 .subfooter-panel {
   background-color: $white-100;

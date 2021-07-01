@@ -191,5 +191,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '~@/assets/scss/views/frontend/Products';
+@import '~@/assets/styleSheets/views/frontend/Products';
 </style>

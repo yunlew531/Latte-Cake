@@ -75,7 +75,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import '~@/assets/scss/custom/variables';
+@import '~@/assets/styleSheets/custom/variables';
 
 .hot-sale-section {
   .swiper-content {

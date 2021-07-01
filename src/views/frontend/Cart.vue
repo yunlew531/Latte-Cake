@@ -350,7 +350,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '~@/assets/scss/custom/variables';
+@import '~@/assets/styleSheets/custom/variables';
 
 .navbar {
   height: 500px;
