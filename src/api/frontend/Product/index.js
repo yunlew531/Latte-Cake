@@ -1,16 +1,27 @@
-import { ref, reactive, toRefs } from 'vue';
+import { ref, reactive, toRefs, onUnmounted } from 'vue';
 import frontReq from '@/api/frontReq';
 
-export default (id) => {
-  const productData = reactive({ productData: {} });
-  const isLoad = ref(false);
+const productData = reactive({ productData: {} });
+const isAniPlay = ref(false);
 
+export default (id, lifeCycle) => {
+  isAniPlay.value = false;
   frontReq.get(`api/${process.env.VUE_APP_PATH}/product/${id}`).then((res) => {
     if (res.data.success) {
       productData.productData = res.data;
-      isLoad.value = true;
+      isAniPlay.value = true;
     }
   });
 
-  return { ...toRefs(productData), isLoad };
+  if (lifeCycle === 'setup') {
+    onUnmounted(() => {
+      productData.productData = {};
+      isAniPlay.value = false;
+    });
+  }
+
+  return {
+    ...toRefs(productData),
+    isAniPlay
+  };
 };

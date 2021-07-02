@@ -1,5 +1,5 @@
 <template>
-  <header class="carousel-nav d-block position-absolute z-20 top-0 p-0">
+  <header class="d-block position-absolute z-30 top-0 start-0 end-0 p-0">
     <p
       class="
         container
@@ -7,8 +7,8 @@
         fw-light
         text-white
         d-flex
-        justify-content-start
         align-items-center
+        w-100
         py-1
         mb-0
       "
@@ -35,7 +35,7 @@
       <div class="container-fluid">
         <h1 class="m-0 pt-1 pb-2px">
           <router-link
-            to="/"
+            to="/home"
             class="navbar-brand d-block"
             :class="{ active: isScrollDown }"
           >
@@ -207,11 +207,6 @@ export default {
     top: 0;
     background-color: rgba(28, 28, 28, 0.9);
   }
-}
-.carousel-nav {
-  width: 100%;
-  height: 100vh;
-  background-color: hsla(0, 0%, 0%, 0.15);
 }
 
 .search-input {

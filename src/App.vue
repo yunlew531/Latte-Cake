@@ -11,12 +11,11 @@
       <div class="cup-hand position-relative"></div> </template
   ></Loading>
   <CartCanvas />
-  <router-view :key="key" />
+  <router-view />
 </template>
 
 <script>
-import { computed, provide, toRefs } from 'vue';
-import { useRoute } from 'vue-router';
+import { provide, toRefs } from 'vue';
 import CartCanvas from '@/components/CartCanvas.vue';
 import Loading from 'vue-loading-overlay';
 import 'vue-loading-overlay/dist/vue-loading.css';
@@ -31,11 +30,9 @@ export default {
   },
   setup() {
     provide('state', state);
-    const route = useRoute();
-    const key = computed(() => route.path + Math.random());
+
     return {
       ...toRefs(state),
-      key,
     };
   },
 };

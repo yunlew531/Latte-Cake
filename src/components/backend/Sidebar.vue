@@ -102,7 +102,7 @@ export default {
   }
 }
 .router-link {
-  transition-delay: 2s;
+  transition: 0.2s ease-in-out;
   &.active {
     box-shadow: $box-shadow;
     background: $white;

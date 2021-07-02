@@ -20,24 +20,25 @@
   }
 }
 .nav-bg {
-  height: 500px;
+  height: 300px;
   background: url(~@/assets/images/bg-banner.jpg) center no-repeat;
   background-size: cover;
 }
-.navbar {
-  height: 500px;
-}
-.products-nav {
-  > li {
-    width: 16.667%;
-    cursor: pointer;
-    transition: 0.2s;
-    &:hover {
-      color: tint-color($danger, 30%);
-    }
-    &.active {
-      color: $danger;
-      font-weight: $font-weight-bold;
+.products-nav-panel {
+  transform: translateY(-50px);
+  margin-bottom: -30px;
+  > ul {
+    > li {
+      width: 16.667%;
+      cursor: pointer;
+      transition: 0.2s;
+      &:hover {
+        color: tint-color($danger, 30%);
+      }
+      &.active {
+        color: $danger;
+        font-weight: $font-weight-bold;
+      }
     }
   }
 }

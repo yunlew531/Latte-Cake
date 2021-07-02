@@ -1,5 +1,8 @@
 <template>
-  <section class="position-relative">
+  <section class="carousel-panel position-relative">
+    <h3 class="fs-1 text-white position-absolute start-25 top-50 z-10">
+      歡迎光臨 <span class="text-danger">Latte & Cake</span>
+    </h3>
     <div ref="carouselDom" class="carousel slide carousel-fade">
       <ul class="carousel-inner m-0 p-0">
         <li class="carousel-item bg-carousel-1 active"></li>
@@ -47,6 +50,17 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '~@/assets/styleSheets/custom/variables';
+.carousel-panel {
+  &::before {
+    content: '';
+    width: 100%;
+    height: 100%;
+    background: rgba($black, 0.15);
+    position: absolute;
+    z-index: 2;
+  }
+}
 .carousel-item {
   height: 100vh;
   background: no-repeat center;

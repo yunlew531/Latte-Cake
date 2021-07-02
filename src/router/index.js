@@ -5,32 +5,40 @@ const routes = [
   {
     path: '/',
     name: 'Index',
-    component: Index
-  },
-  {
-    path: '/products',
-    name: 'Products',
-    component: () => import('../views/frontend/Products.vue')
-  },
-  {
-    path: '/product/:id',
-    name: 'Product',
-    component: () => import('../views/frontend/Product.vue')
-  },
-  {
-    path: '/cart',
-    name: 'Cart',
-    component: () => import('../views/frontend/Cart.vue')
-  },
-  {
-    path: '/aboutUs',
-    name: 'AboutUs',
-    component: () => import('../views/frontend/AboutUs.vue')
-  },
-  {
-    path: '/checkout',
-    name: 'Checkout',
-    component: () => import('../views/frontend/Checkout.vue')
+    redirect: '/home',
+    component: Index,
+    children: [
+      {
+        path: 'home',
+        name: 'Home',
+        component: () => import('../views/frontend/Home.vue')
+      },
+      {
+        path: 'products',
+        name: 'Products',
+        component: () => import('../views/frontend/Products.vue')
+      },
+      {
+        path: 'product/:id',
+        name: 'Product',
+        component: () => import('../views/frontend/Product.vue')
+      },
+      {
+        path: 'cart',
+        name: 'Cart',
+        component: () => import('../views/frontend/Cart.vue')
+      },
+      {
+        path: 'aboutUs',
+        name: 'AboutUs',
+        component: () => import('../views/frontend/AboutUs.vue')
+      },
+      {
+        path: 'checkout',
+        name: 'Checkout',
+        component: () => import('../views/frontend/Checkout.vue')
+      }
+    ]
   },
   {
     path: '/login',
