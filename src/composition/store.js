@@ -12,12 +12,10 @@ const state = reactive({
 
 // actions
 const getCarts = async () => {
-  state.isLoading = true;
   try {
     const { data } = await apiGetCarts();
     if (data.success) {
       state.cartsData = data.data;
-      state.isLoading = false;
     }
   } catch (err) {
     console.dir('err');
@@ -25,13 +23,11 @@ const getCarts = async () => {
 };
 
 const getPageProducts = async (page = 0) => {
-  state.isLoading = true;
   try {
     const { data } = await apiGetPageProducts(page);
     if (data.success) {
       state.pageProductsData = data.products;
       state.pagination = data.pagination;
-      state.isLoading = false;
     }
   } catch (err) {
     console.dir(err);
@@ -53,9 +49,9 @@ const setShopPosition = (city) => {
 
 export default {
   state: readonly(state),
+  setIsLoading,
   getCarts,
   getPageProducts,
-  setIsLoading,
   setCartsData,
   setShopPosition
 };

@@ -5,7 +5,7 @@
     ref="cartCanvasDom"
     id="cartCanvas"
     data-bs-backdrop="true"
-    data-bs-scroll="false"
+    data-bs-scroll="true"
     aria-labelledby="cartCanvasLabel"
   >
     <div class="offcanvas-header">
@@ -127,6 +127,7 @@ import { useToast } from '@/methods';
 const { getCarts, setIsLoading } = store;
 
 export default {
+  name: 'CartCanvas',
   setup() {
     const router = useRouter();
     const $emitter = inject('$emitter');
@@ -164,7 +165,7 @@ export default {
       router.push({ path: '/cart' });
       cartCanvas.hide();
     };
-
+    const isQtyLoad = ref(false);
     const handQty = async (item, num) => {
       const product = { ...item };
       product.qty = item.qty + num <= 1 ? 1 : item.qty + num;
@@ -173,27 +174,26 @@ export default {
       try {
         const { data } = await apiPutCartQty(product);
         if (data.success) {
+          await getCarts();
           setIsLoading(false);
-          getCarts();
           useToast('成功更新數量!', 'success');
         } else useToast('操作失敗!', 'danger');
       } catch (err) {
-        setIsLoading(false);
         console.dir(err);
       }
     };
 
+    const isRemoveLoad = ref(false);
     const removeCart = async (id) => {
       setIsLoading(true);
       try {
         const { data } = await apiDeleteCart(id);
         if (data.success) {
+          await getCarts();
           setIsLoading(false);
-          getCarts();
           useToast('成功移除商品!', 'success');
         } else useToast('發生錯誤!', 'danger');
       } catch (err) {
-        setIsLoading(false);
         console.dir(err);
       }
     };
@@ -217,6 +217,8 @@ export default {
       handQty,
       removeCart,
       isProgressAniPlay,
+      isQtyLoad,
+      isRemoveLoad,
     };
   },
 };

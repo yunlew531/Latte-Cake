@@ -60,7 +60,6 @@
 
 <script>
 import { inject, toRefs } from 'vue';
-
 import Carousel from '@/components/frontend/Index/Carousel.vue';
 import HotSale from '@/components/frontend/Index/HotSale.vue';
 import Category from '@/components/frontend/Index/Category.vue';

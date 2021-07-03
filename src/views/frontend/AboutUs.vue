@@ -71,7 +71,7 @@
       :visible="visible"
       :imgs="imgs"
       :index="imgIdx"
-      @hide="handleHide"
+      @hide="hideLightbox"
     >
     </VueEasyLightbox>
     <div class="row">
@@ -102,23 +102,24 @@
 </template>
 
 <script>
-import { ref, toRefs } from 'vue';
+import { inject, ref, toRefs } from 'vue';
 import VueEasyLightbox from 'vue-easy-lightbox';
 import store from '@/composition/store';
 import { apiGetShopImg } from '@/api';
 
-const { state, setShopPosition } = store;
+const { setShopPosition } = store;
 
 export default {
   components: {
     VueEasyLightbox,
   },
   setup() {
+    const state = inject('state');
     const { imgs, imgFilter, imgsFilter } = apiGetShopImg();
     const imgIdx = ref(0);
     const visible = ref(false);
 
-    const handleHide = () => {
+    const hideLightbox = () => {
       visible.value = false;
     };
 
@@ -135,7 +136,7 @@ export default {
       setShopPosition,
       imgFilter,
       visible,
-      handleHide,
+      hideLightbox,
       showLightbox,
     };
   },
@@ -155,11 +156,8 @@ export default {
 @import '~bootstrap/scss/functions';
 @import '~@/assets/styleSheets/custom/variables';
 
-.navbar {
-  height: 500px;
-}
 .navbar-bg {
-  height: 500px;
+  height: 300px;
   background: url(~@/assets/images/bg-banner.jpg) no-repeat center;
   background-size: cover;
 }

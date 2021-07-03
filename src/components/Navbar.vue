@@ -138,6 +138,7 @@ export default {
     getCarts();
 
     const showCartCanvas = () => {
+      getCarts();
       $emitter.emit('showCartCanvas');
     };
 

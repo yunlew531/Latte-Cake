@@ -1,6 +1,6 @@
 <template>
   <Loading
-    v-model:active="isLoading"
+    v-model:active="isLoad"
     :isFullPage="true"
     :background-color="'#000'"
     :lockScroll="true"
@@ -10,36 +10,43 @@
       <div class="loading"></div>
       <div class="cup-hand position-relative"></div> </template
   ></Loading>
-  <CartCanvas />
-  <router-view />
 </template>
 
 <script>
-import { provide, toRefs } from 'vue';
-import CartCanvas from '@/components/CartCanvas.vue';
-import store from '@/composition/store';
+import { ref, watch } from 'vue';
 import Loading from 'vue-loading-overlay';
 import 'vue-loading-overlay/dist/vue-loading.css';
 
-const { state } = store;
-
 export default {
+  name: 'MyLoading',
+  props: {
+    isLoading: {
+      type: Boolean,
+      default: false,
+    },
+  },
   components: {
-    CartCanvas,
     Loading,
   },
-  setup() {
-    provide('state', state);
+  setup(props) {
+    const isLoad = ref(props.isLoading);
+
+    watch(
+      () => props.isLoading,
+      () => {
+        isLoad.value = props.isLoading;
+      }
+    );
 
     return {
-      ...toRefs(state),
+      isLoad,
     };
   },
 };
 </script>
 
-<style lang="scss">
-@import './assets/styleSheets';
+<style lang="scss" scoped>
+@import '~@/assets/styleSheets/custom/variables';
 
 .cup-hand {
   width: 35px;

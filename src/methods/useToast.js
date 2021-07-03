@@ -1,6 +1,6 @@
 import { createToast } from 'mosha-vue-toastify';
 
-//  useToast('成功!!!', 'success'/'danger');
+//  useToast('文字文字文字', 'success'/'danger');
 export default (text, type) => {
   const color = type === 'success' ? '#30E69A' : '#c63232';
 

@@ -2,7 +2,7 @@
   <section class="nav-bg"></section>
   <section
     class="product-panel bg-white rounded shadow-sm container p-10"
-    :class="{ active: isAniPlay }"
+    :class="{ active: !isProductLoading }"
   >
     <div class="row gx-12">
       <ul class="col-6 list-unstyled mb-0">
@@ -136,6 +136,7 @@
                 py-5
                 mt-8
               "
+              :class="{ active: isProductLoading }"
               @click="addCart"
             >
               加入購物車
@@ -148,20 +149,21 @@
 </template>
 
 <script>
-import { inject, ref, watch } from 'vue';
+import { inject, ref, watch, toRefs } from 'vue';
 import { useRoute } from 'vue-router';
 import { apiPostAddCart, apiGetProductInfo } from '@/api';
 import store from '@/composition/store';
 import { useToast } from '@/methods';
 
-const { getCarts } = store;
+const { getCarts, setIsLoading } = store;
 
 export default {
   name: 'Product',
   setup() {
+    const state = inject('state');
     const $emitter = inject('$emitter');
     const route = useRoute();
-    const { productData, isAniPlay } = apiGetProductInfo(
+    const { productData, isProductLoading } = apiGetProductInfo(
       route.params.id,
       'setup'
     );
@@ -170,9 +172,11 @@ export default {
     const addCart = async () => {
       const { id } = productData.value.product;
       try {
+        setIsLoading(true);
         const { data } = await apiPostAddCart(id, productNum.value);
         if (data.success) {
-          getCarts();
+          await getCarts();
+          setIsLoading(false);
           $emitter.emit('showCartCanvas', true);
           useToast('成功加入購物車!', 'success');
           productNum.value = 1;
@@ -190,9 +194,10 @@ export default {
     );
 
     return {
+      ...toRefs(state),
       productNum,
       productData,
-      isAniPlay,
+      isProductLoading,
       addCart,
     };
   },
@@ -267,9 +272,16 @@ export default {
   }
 }
 .add-cart-btn {
+  transition: 0.3s;
+  transform: translateY(0);
+  opacity: 1;
   &:hover {
     color: $danger;
     background: $white-100;
+  }
+  &.active {
+    transform: translateY(100px);
+    opacity: 0;
   }
 }
 </style>
