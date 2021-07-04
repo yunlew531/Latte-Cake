@@ -17,7 +17,7 @@
         "
       >
         <span class="material-icons-outlined text-primary me-1"> add </span
-        >新增產品</router-link
+        >{{ boardStatus }}產品</router-link
       >
     </li>
     <li>
@@ -85,6 +85,12 @@
 <script>
 export default {
   name: 'Sidebar',
+  props: {
+    boardStatus: {
+      type: String,
+      default: '新增',
+    },
+  },
 };
 </script>
 

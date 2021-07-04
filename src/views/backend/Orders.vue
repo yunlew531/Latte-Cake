@@ -1,5 +1,7 @@
 <template>
-  <h2>訂單</h2>
+  <div class="rounded bg-white shadow p-12">
+    <h2>訂單</h2>
+  </div>
 </template>
 
 <script>

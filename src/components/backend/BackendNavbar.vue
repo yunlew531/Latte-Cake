@@ -1,6 +1,6 @@
 <template>
   <div class="header">
-    <div class="d-flex p-8">
+    <div class="header-nav d-flex p-8">
       <router-link
         to="/"
         class="
@@ -64,6 +64,15 @@ export default {
 .header {
   height: 250px;
   background: rgba($info, 0.9);
+  .header-nav {
+    animation: header 0.3s forwards;
+    transform: translateY(-100%);
+  }
+}
+@keyframes header {
+  to {
+    transform: translateY(0);
+  }
 }
 .search-input {
   caret-color: $white;

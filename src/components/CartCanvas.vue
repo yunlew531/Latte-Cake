@@ -4,7 +4,7 @@
     tabindex="-1"
     ref="cartCanvasDom"
     id="cartCanvas"
-    data-bs-backdrop="true"
+    data-bs-backdrop="false"
     data-bs-scroll="true"
     aria-labelledby="cartCanvasLabel"
   >
@@ -165,7 +165,7 @@ export default {
       router.push({ path: '/cart' });
       cartCanvas.hide();
     };
-    const isQtyLoad = ref(false);
+
     const handQty = async (item, num) => {
       const product = { ...item };
       product.qty = item.qty + num <= 1 ? 1 : item.qty + num;
@@ -183,7 +183,6 @@ export default {
       }
     };
 
-    const isRemoveLoad = ref(false);
     const removeCart = async (id) => {
       setIsLoading(true);
       try {
@@ -217,8 +216,6 @@ export default {
       handQty,
       removeCart,
       isProgressAniPlay,
-      isQtyLoad,
-      isRemoveLoad,
     };
   },
 };

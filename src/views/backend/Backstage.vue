@@ -2,16 +2,18 @@
   <div v-if="isLogIn">
     <BackendNavbar />
     <div class="d-flex">
-      <Sidebar />
-      <div class="dashboard-content rounded bg-white shadow w-100 p-12 me-25">
-        <router-view />
-      </div>
+      <Sidebar :boardStatus="boardStatus" />
+      <router-view
+        :boardStatus="boardStatus"
+        @handStatus="handStatus"
+        class="dashboard-content w-100 me-25"
+      />
     </div>
   </div>
 </template>
 
 <script>
-import { onMounted, ref, onUnmounted } from 'vue';
+import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import backReq from '@/api/backReq';
 import { apiPostCheck } from '@/api';
@@ -28,6 +30,11 @@ export default {
   setup() {
     const router = useRouter();
     const isLogIn = ref(false);
+    const boardStatus = ref('新增');
+
+    const handStatus = (status) => {
+      boardStatus.value = status;
+    };
 
     const setHeaders = () => {
       const token = document.cookie.replace(
@@ -38,14 +45,6 @@ export default {
     };
 
     setHeaders();
-
-    onMounted(() => {
-      console.log('admin父元件 Mounted');
-    });
-
-    onUnmounted(() => {
-      console.log('admin父元件 Unmounted');
-    });
 
     apiPostCheck()
       .then((res) => {
@@ -61,6 +60,8 @@ export default {
 
     return {
       isLogIn,
+      boardStatus,
+      handStatus,
     };
   },
 };
@@ -72,7 +73,7 @@ export default {
 .dashboard-content {
   animation: translate 0.3s forwards;
   margin-bottom: -50px;
-  transform: translateY(-100px) scale(0);
+  transform: translateY(-100px) scale(0.99);
 }
 @keyframes translate {
   to {

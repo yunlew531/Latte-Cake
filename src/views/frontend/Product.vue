@@ -11,12 +11,20 @@
           :style="{
             'background-image': `url(${productData.product?.imageUrl})`,
           }"
+          @click="showLightbox(0)"
         ></li>
-        <li class="product-img rounded"></li>
-        <li class="product-img rounded"></li>
+        <li
+          v-for="(img, key) in productData.product?.imagesUrl"
+          :key="img + key"
+          :style="{
+            'background-image': `url(${img})`,
+          }"
+          class="product-img rounded"
+          @click="showLightbox(productData.product?.imageUrl ? key + 1 : key)"
+        ></li>
       </ul>
       <div class="col-6">
-        <div class="position-sticky top-25">
+        <div class="product-content position-sticky">
           <div class="d-flex justify-content-between pt-1">
             <h2 class="fw-bold lh-1">{{ productData.product?.title }}</h2>
             <div class="d-flex">
@@ -38,6 +46,7 @@
                 <span class="ms-1">熱銷商品</span>
               </p>
               <p
+                v-if="productData.product?.freeDelivery"
                 class="
                   fs-7
                   align-self-start
@@ -146,19 +155,30 @@
       </div>
     </div>
   </section>
+  <VueEasyLightbox
+    moveDisabled
+    :visible="isLightboxShow"
+    :imgs="lightboxImgs"
+    :index="lightboxIndex"
+    @hide="hideLightbox"
+  ></VueEasyLightbox>
 </template>
 
 <script>
-import { inject, ref, watch, toRefs } from 'vue';
+import { inject, ref, reactive, watch, toRefs } from 'vue';
 import { useRoute } from 'vue-router';
 import { apiPostAddCart, apiGetProductInfo } from '@/api';
 import store from '@/composition/store';
 import { useToast } from '@/methods';
+import VueEasyLightbox from 'vue-easy-lightbox';
 
 const { getCarts, setIsLoading } = store;
 
 export default {
   name: 'Product',
+  components: {
+    VueEasyLightbox,
+  },
   setup() {
     const state = inject('state');
     const $emitter = inject('$emitter');
@@ -168,6 +188,26 @@ export default {
       'setup'
     );
     const productNum = ref(1);
+
+    const isLightboxShow = ref(false);
+    const lightboxImgs = reactive({ lightboxImgs: [] });
+    const lightboxIndex = ref(0);
+
+    watch(productData, () => {
+      const data = productData.value.product;
+      lightboxImgs.lightboxImgs = data.imageUrl
+        ? [data.imageUrl, ...(data.imagesUrl || [])]
+        : data.imagesUrl || [];
+    });
+
+    const showLightbox = (idx) => {
+      lightboxIndex.value = idx;
+      isLightboxShow.value = true;
+    };
+
+    const hideLightbox = () => {
+      isLightboxShow.value = false;
+    };
 
     const addCart = async () => {
       const { id } = productData.value.product;
@@ -199,10 +239,21 @@ export default {
       productData,
       isProductLoading,
       addCart,
+      isLightboxShow,
+      ...toRefs(lightboxImgs),
+      lightboxIndex,
+      showLightbox,
+      hideLightbox,
     };
   },
 };
 </script>
+
+<style lang="scss">
+.vel-toolbar {
+  display: none;
+}
+</style>
 
 <style lang="scss" scoped>
 @import '~bootstrap/scss/functions';
@@ -215,6 +266,7 @@ export default {
     background: center no-repeat;
     margin-bottom: $spacer * 1.25;
     background-size: cover;
+    transform: scale(0);
     &:last-child {
       margin-bottom: 0;
     }
@@ -222,9 +274,11 @@ export default {
   &.active {
     .product-img {
       animation: scale-ani 0.5s forwards;
-      transform: scale(0);
     }
   }
+}
+.product-content {
+  top: 150px;
 }
 .page-title {
   &.active {
