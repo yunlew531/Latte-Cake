@@ -1,6 +1,6 @@
 <template>
-  <div class="header">
-    <div class="header-nav d-flex p-8">
+  <div class="header position-relative">
+    <div class="header-nav d-flex flex-wrap p-8">
       <router-link
         to="/"
         class="
@@ -12,14 +12,15 @@
         ><span class="fs-1 material-icons-outlined"> home </span
         ><span class="fs-4 ms-2">前台</span></router-link
       >
-      <form class="d-flex position-relative ms-3">
+      <form class="d-flex position-relative">
         <input
           class="
             search-input
             form-control
             border-0 border-bottom border-2 border-white
-            me-2
             ps-3
+            me-2
+            mt-1
           "
           :class="{ active: isSearchFocus }"
           type="search"
@@ -31,16 +32,57 @@
           <span class="material-icons"> search </span>
         </button>
       </form>
+      <button
+        type="button"
+        class="align-self-start btn btn-primary mt-2 ms-0 ms-xm-5"
+        @click="logOut"
+      >
+        登出
+      </button>
+    </div>
+    <div
+      class="
+        d-flex
+        align-items-center
+        text-white
+        position-absolute
+        start-0
+        bottom-0
+        p-8
+      "
+    >
+      <div
+        :style="{ 'background-image': `url(${user.photo})` }"
+        class="user-photo rounded-pill border overflow-hiddden"
+      ></div>
+      <p class="m-0 ms-3">
+        <span
+          class="d-block fs-5"
+          :class="calcNameSize(user.username?.length)"
+          >{{ user.username }}</span
+        >
+        <span class="fs-7 text-black-300">管理員</span>
+      </p>
     </div>
   </div>
 </template>
 
 <script>
 import { watch, ref } from 'vue';
+import { useRouter } from 'vue-router';
+import { apiLogOut } from '@/api';
 
 export default {
   name: 'BackendNavbar',
+  props: {
+    user: {
+      type: Object,
+      default: () => ({ username: '無法取得用戶者資料' }),
+    },
+  },
   setup() {
+    const router = useRouter();
+
     const searchText = ref('');
     const isSearchFocus = ref(false);
     watch(searchText, () => {
@@ -50,9 +92,25 @@ export default {
         isSearchFocus.value = false;
       }
     });
+
+    const calcNameSize = (length) => {
+      if (length > 15) return 'fs-6';
+      return 'fs-5';
+    };
+
+    const logOut = async () => {
+      const { data } = await apiLogOut();
+      if (data.success) {
+        document.cookie = 'LatteCake=;expires=Thu, 01 Jan 1970 00:00:00 UTC;';
+        router.push('/login');
+      }
+    };
+
     return {
       searchText,
       isSearchFocus,
+      logOut,
+      calcNameSize,
     };
   },
 };
@@ -110,5 +168,11 @@ export default {
   &:focus {
     box-shadow: 0 0 0 $white;
   }
+}
+.user-photo {
+  width: 60px;
+  height: 60px;
+  background: center no-repeat;
+  background-size: cover;
 }
 </style>

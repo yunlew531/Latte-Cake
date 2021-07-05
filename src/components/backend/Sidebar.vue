@@ -1,5 +1,18 @@
 <template>
-  <ul class="sidebar flex-shrink-0 list-unstyled px-2 py-5 mb-0 mx-5">
+  <ul
+    class="
+      sidebar
+      flex-shrink-0
+      list-unstyled
+      bg-white-100
+      rounded
+      px-2
+      py-5
+      my-5
+      mb-lg-0
+      me-5
+    "
+  >
     <li>
       <router-link
         to="/admin/addProduct"
@@ -36,7 +49,7 @@
         "
       >
         <span class="material-icons-outlined text-primary me-1"> list_alt </span
-        >產品列表</router-link
+        >商品列表</router-link
       >
     </li>
     <li>
@@ -96,6 +109,7 @@ export default {
 
 <style lang="scss" scoped>
 @import '~@/assets/styleSheets/custom/variables';
+@import '~bootstrap/scss/mixins';
 
 .sidebar {
   width: 250px;
@@ -105,6 +119,11 @@ export default {
 @keyframes sidebar {
   to {
     transform: translateX(0);
+  }
+}
+@include media-breakpoint-down(lg) {
+  .sidebar {
+    width: 100%;
   }
 }
 .router-link {
