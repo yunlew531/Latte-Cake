@@ -1,5 +1,5 @@
 <template>
-  <div class="rounded bg-white shadow w-100 p-12">
+  <div class="rounded bg-white shadow w-100 p-10">
     <Loading v-model:active="isLoading" :is-full-page="false" />
     <h2>商品列表</h2>
     <div class="table-panel">
@@ -52,6 +52,7 @@
           </tr>
         </tbody>
       </table>
+      <Pagination class="mt-8" :pages="pagination" @handPage="handPage" />
     </div>
   </div>
 </template>
@@ -62,6 +63,7 @@ import { useRouter } from 'vue-router';
 import { apiGetProducts } from '@/api';
 import Loading from 'vue-loading-overlay';
 import 'vue-loading-overlay/dist/vue-loading.css';
+import Pagination from '@/components/Pagination.vue';
 
 export default {
   name: 'BackendProducts',
@@ -70,18 +72,27 @@ export default {
   },
   components: {
     Loading,
+    Pagination,
   },
   setup(props, { emit }) {
     const router = useRouter();
 
-    const isLoading = ref(true);
-    const products = reactive({ products: [] });
-    apiGetProducts().then(({ data }) => {
-      if (data.success) {
-        products.products = data.products;
-        isLoading.value = false;
+    const isLoading = ref(false);
+    const products = reactive({ products: [], pagination: {} });
+    const handPage = async (page) => {
+      isLoading.value = true;
+      try {
+        const { data } = await apiGetProducts(page);
+        if (data.success) {
+          products.products = data.products;
+          products.pagination = data.pagination;
+          isLoading.value = false;
+        }
+      } catch (err) {
+        console.dir(err);
       }
-    });
+    };
+    handPage();
 
     const editProduct = (product) => {
       emit('handStatus', { status: '編輯', product });
@@ -90,8 +101,9 @@ export default {
 
     return {
       ...toRefs(products),
-      editProduct,
       isLoading,
+      editProduct,
+      handPage,
     };
   },
 };

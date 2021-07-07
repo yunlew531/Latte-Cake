@@ -4,13 +4,14 @@
       <router-link
         to="/"
         class="
+          tofront-link
           d-flex
           align-items-center
-          text-white text-decoration-none
+          text-decoration-none
           me-auto
         "
         ><span class="fs-1 material-icons-outlined"> home </span
-        ><span class="fs-4 ms-2">前台</span></router-link
+        ><span class="fs-4 ms-2 tracking-2">返回前台</span></router-link
       >
       <form class="d-flex position-relative">
         <input
@@ -42,6 +43,7 @@
     </div>
     <div
       class="
+        user-panel
         d-flex
         align-items-center
         text-white
@@ -117,6 +119,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '~bootstrap/scss/functions';
 @import '~@/assets/styleSheets/custom/variables';
 
 .header {
@@ -130,6 +133,13 @@ export default {
 @keyframes header {
   to {
     transform: translateY(0);
+  }
+}
+.tofront-link {
+  color: $white;
+  transition: 0.2s;
+  &:hover {
+    color: shade-color($white, 20%);
   }
 }
 .search-input {
@@ -167,6 +177,17 @@ export default {
   }
   &:focus {
     box-shadow: 0 0 0 $white;
+  }
+}
+.user-panel {
+  opacity: 0;
+  transform: translateX(-100%);
+  animation: user-panel 0.3s forwards ease-in-out;
+}
+@keyframes user-panel {
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 .user-photo {

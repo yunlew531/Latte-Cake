@@ -64,7 +64,7 @@
       </li>
     </ul>
   </section>
-  <Pagination class="mt-8" :pages="pagination" @handPage="handPage" />
+  <Pagination class="py-8" :pages="pagination" @handPage="handPage" />
 </template>
 
 <script>

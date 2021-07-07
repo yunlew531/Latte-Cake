@@ -1,5 +1,5 @@
 import { reactive, readonly } from 'vue';
-import { apiGetCarts, apiGetPageProducts } from '@/api';
+import { apiGetCarts, apiGetPageProducts, apiGetOrders } from '@/api';
 
 // state
 const state = reactive({
@@ -7,7 +7,8 @@ const state = reactive({
   cartsData: {},
   pageProductsData: {},
   pagination: {},
-  shopPosition: 'Taipei'
+  shopPosition: 'Taipei',
+  orders: {}
 });
 
 // actions
@@ -34,6 +35,20 @@ const getPageProducts = async (page = 0) => {
   }
 };
 
+const getOrders = async () => {
+  try {
+    const { data } = await apiGetOrders();
+    if (data.success) {
+      state.orders = data.orders;
+      return data;
+    }
+    return false;
+  } catch (err) {
+    console.dir(err);
+    return false;
+  }
+};
+
 // mutations
 const setIsLoading = (boolean) => {
   state.isLoading = boolean;
@@ -51,6 +66,7 @@ export default {
   state: readonly(state),
   setIsLoading,
   getCarts,
+  getOrders,
   getPageProducts,
   setCartsData,
   setShopPosition

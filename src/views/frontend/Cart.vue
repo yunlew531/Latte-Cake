@@ -41,6 +41,7 @@
                     <span class="ms-1">熱銷商品</span>
                   </p>
                   <p
+                    v-if="product.product.freeDelivery"
                     class="
                       fs-7
                       align-self-start
