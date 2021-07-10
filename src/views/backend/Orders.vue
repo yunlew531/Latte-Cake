@@ -31,7 +31,7 @@
               <span>未付款</span>
             </p>
           </td>
-          <td>NT$ {{ order.total.toLocaleString() }}</td>
+          <td>NT$ {{ order.total?.toLocaleString() }}</td>
           <td>
             <button
               type="button"

@@ -11,7 +11,6 @@
     "@popperjs/core": "^2.9.2",
     "@vee-validate/i18n": "^4.1.20",
     "@vee-validate/rules": "^4.1.20",
-    "@vee-validate/zod": "^4.5.0-alpha.1",
     "axios": "^0.21.1",
     "bootstrap": "^5.0.1",
     "core-js": "^3.6.5",
