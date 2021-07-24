@@ -1,27 +1,21 @@
 <template>
   <section class="navbar-bg"></section>
-  <section class="container py-25">
+  <section class="container cart-panel mb-12">
     <div class="row g-8">
       <div class="col-lg-8">
-        <div class="rounded shadow bg-white p-8">
-          <span v-if="cartsData.carts?.length !== 0" class="fs-4"
-            >{{ cartsData.carts?.length }} 件商品</span
-          >
-          <div
-            v-else
-            class="d-flex justify-content-center align-content-center"
-          >
-            <router-link to="/products" class="btn btn-primary">
-              立即前往購物
+        <div class="rounded shadow-sm bg-white p-8">
+          <div v-if="cartsData.carts?.length !== 0" class="d-flex align-items-center">
+            <span class="fs-4 me-auto">{{ cartsData.carts?.length }} 件商品</span>
+            <Button @click="removeAllCarts" class="remove-all-products-btn">移除所有商品 </Button>
+          </div>
+          <div v-else class="d-flex justify-content-center align-content-center">
+            <router-link to="/products">
+              <Button class="px-5 py-2">立即前往購物 </Button>
             </router-link>
           </div>
           <ul class="list-unstyled">
-            <li
-              class="product-item py-8"
-              v-for="product in cartsData.carts"
-              :key="product.id"
-            >
-              <div class="d-flex justify-content-between pb-2">
+            <li class="product-item py-8" v-for="product in cartsData.carts" :key="product.id">
+              <div class="d-flex flex-wrap justify-content-between pb-2">
                 <div class="d-flex">
                   <p
                     class="
@@ -58,16 +52,16 @@
                     <span class="ms-1">免運費</span>
                   </p>
                 </div>
-                <span
-                  >單價 NT$
-                  {{ product.product.price?.toLocaleString() }} 元</span
+                <span class="pt-2 pt-sm-0"
+                  >單價 NT$ {{ product.product.price?.toLocaleString() }} 元</span
                 >
               </div>
-              <div class="d-flex">
+              <div class="d-flex flex-wrap flex-sm-nowrap">
                 <div
                   class="product-img"
                   :style="{
-                    'background-image': `url(${product.product.imageUrl})`,
+                    'background-image': `url(${product.product.imageUrl ||
+                      product.product.imagesUrl[0]})`,
                   }"
                 ></div>
                 <div
@@ -75,24 +69,30 @@
                     d-flex
                     flex-column
                     justify-content-between
-                    ps-5
+                    mt-5 mt-sm-0
+                    ps-sm-5
                     flex-grow-1
                   "
                 >
-                  <div class="d-flex">
+                  <div class="d-flex flex-wrap">
                     <div class="flex-grow-1 flex-shrink-1">
-                      <h2 class="fs-3">
+                      <h2 class="fs-3 mb-2px">
                         <router-link
                           :to="`/product/${product.product.id}`"
-                          class="text-decoration-none"
+                          class="text-decoration-none text-nowrap"
                           >{{ product.product.title }}</router-link
                         >
                       </h2>
                       <h4 class="fs-7 text-black-300">
-                        {{ product.product.category }}
+                        {{ product.product.description }}
+                      </h4>
+                      <h4 class="fs-7 text-black-200">
+                        分類:
+                        <a href="javascript:;" @click="searchCategory(product.product.category)">
+                          {{ product.product.category }}
+                        </a>
                       </h4>
                     </div>
-
                     <div
                       class="
                         align-self-start
@@ -101,7 +101,7 @@
                         flex-shrink-0
                       "
                     >
-                      <span class="fs-6 text-black-200">購買數量</span>
+                      <span class="fs-6 text-black-200 py-5 py-md-0">購買數量</span>
                       <div class="position-relative">
                         <span
                           class="
@@ -151,11 +151,11 @@
                       </div>
                     </div>
                   </div>
-                  <p class="text-black-200">
+                  <p class="text-wrap tracking-2 text-black-200">
                     {{ product.product.content }}
                   </p>
-                  <div class="d-flex align-items-center">
-                    <div class="d-flex align-items-center flex-grow-1">
+                  <div class="d-flex flex-wrap align-items-center">
+                    <div class="d-flex flex-wrap align-items-center flex-grow-1">
                       <button
                         class="
                           product-remove-btn
@@ -163,12 +163,13 @@
                           bg-transparent
                           d-flex
                           align-items-center
+                          p-0
                         "
                         type="button"
                         @click="removeCart(product)"
                       >
                         <span class="text-danger material-icons"> delete </span>
-                        <span class="ms-1">移除物品</span>
+                        <span class="ms-1">移除商品</span>
                       </button>
                       <button
                         class="
@@ -177,7 +178,9 @@
                           bg-transparent
                           d-flex
                           align-items-center
-                          ms-3
+                          p-0
+                          mt-1 mt-sm-0
+                          ms-md-3
                         "
                         type="button"
                       >
@@ -190,16 +193,14 @@
                         <span class="btn-text ms-1">移動到想要清單</span>
                       </button>
                     </div>
-                    <span class="fs-4"
-                      >NT$ {{ product.total?.toLocaleString() }} 元</span
-                    >
+                    <span class="fs-4">NT$ {{ product.total?.toLocaleString() }} 元</span>
                   </div>
                 </div>
               </div>
             </li>
           </ul>
         </div>
-        <div class="rounded shadow bg-white p-8 mt-8">
+        <div class="rounded shadow-sm bg-white p-8 mt-8">
           <p class="d-flex">
             <span class="fs-4 flex-lg-grow-1">預計到貨日</span
             ><span class="fs-3">{{ deliveryTime }}</span>
@@ -209,9 +210,9 @@
           </p>
         </div>
       </div>
-      <div class="col-4">
-        <div class="position-sticky top-20">
-          <div class="rounded shadow bg-white p-8">
+      <div class="col-lg-4">
+        <div class="total-price-panel position-sticky">
+          <div class="rounded shadow-sm bg-white p-8">
             <p class="fs-4">總金額</p>
             <p class="d-flex text-black-400">
               <span class="flex-grow-1">金額</span
@@ -220,19 +221,9 @@
             <p class="d-flex text-black-400">
               <span class="flex-grow-1">運費</span><span>NT$ 100 元</span>
             </p>
-            <router-link to="/checkout" class="checkout-btn fs-5 btn w-100 py-3"
-              ><span
-                class="
-                  checkout-btn-text
-                  position-absolute
-                  start-50
-                  top-50
-                  translate-middle
-                "
-                >結帳</span
-              >
-              <span class="opacity-0">結帳</span></router-link
-            >
+            <router-link v-if="cartsData.carts?.length" to="/checkout" class="d-inline-block w-100"
+              ><Button class="fs-5 w-100 py-3">結帳 </Button>
+            </router-link>
           </div>
         </div>
       </div>
@@ -241,23 +232,27 @@
 </template>
 
 <script>
-import { ref, inject, toRefs, computed } from 'vue';
+import {
+  ref, inject, toRefs, computed,
+} from 'vue';
+import Button from '@/components/frontend/Button.vue';
 import { useToast } from '@/methods';
-import { apiPutCartQty, apiDeleteCart } from '@/api';
+import { apiPutCartQty, apiDeleteCart, apiDeleteAllCarts } from '@/api';
 import store from '@/composition/store';
 
 const { getCarts, setIsLoading } = store;
 
 export default {
   name: 'Cart',
-
+  components: {
+    Button,
+  },
   setup() {
     const state = inject('state');
     const productNum = ref(1);
 
     getCarts();
 
-    const isQtyLoad = ref(false);
     const handQty = async (item, num) => {
       const product = { ...item };
       product.qty = item.qty + num <= 1 ? 1 : item.qty + num;
@@ -267,29 +262,42 @@ export default {
         const { data } = await apiPutCartQty(product);
         if (data.success) {
           await getCarts();
-          setIsLoading(false);
-          useToast('成功更新數量!', 'success');
+          useToast('成功更新數量!');
         } else useToast('操作失敗!', 'danger');
       } catch (err) {
         console.dir(err);
       }
+      setIsLoading(false);
     };
 
-    const isRemoveLoad = ref(false);
     const removeCart = async (product) => {
       setIsLoading(true);
       try {
         const { data } = await apiDeleteCart(product.id);
         if (data.success) {
           await getCarts();
-          setIsLoading(false);
-          useToast('成功移除商品!', 'success');
+          useToast('成功移除商品!');
         } else {
           useToast('操作失敗!', 'danger');
         }
       } catch (err) {
         console.dir(err);
       }
+      setIsLoading(false);
+    };
+
+    const removeAllCarts = async () => {
+      setIsLoading(false);
+      try {
+        const { data } = await apiDeleteAllCarts();
+        if (data.success) {
+          await getCarts();
+          useToast('成功移除!');
+        } else useToast('操作失敗!', 'danger');
+      } catch (err) {
+        console.dir(err);
+      }
+      setIsLoading(false);
     };
 
     const deliveryTime = computed(() => {
@@ -314,123 +322,13 @@ export default {
       productNum,
       deliveryTime,
       removeCart,
+      removeAllCarts,
       handQty,
-      isQtyLoad,
-      isRemoveLoad,
     };
   },
 };
 </script>
 
 <style lang="scss" scoped>
-@import '~@/assets/styleSheets/custom/variables';
-
-.navbar-bg {
-  height: 300px;
-  background: url(~@/assets/images/bg-banner.jpg) no-repeat center;
-  background-size: cover;
-}
-.page-title {
-  > h3 {
-    transform: scale(0);
-  }
-  &.active {
-    > h3 {
-      animation: scale-ani 0.5s forwards;
-    }
-  }
-}
-@keyframes scale-ani {
-  to {
-    transform: scale(1);
-  }
-}
-.product-item {
-  border-bottom: 1px solid $secondary;
-  &:last-of-type {
-    border-bottom: 0;
-  }
-}
-.product-img {
-  width: 200px;
-  min-height: 200px;
-  flex-shrink: 0;
-  background: no-repeat center;
-  background-size: cover;
-}
-.quantity-text {
-  width: 120px;
-  height: 45px;
-  line-height: 45px;
-  &::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-  }
-}
-.quntity-btn {
-  width: 25px;
-  color: $danger;
-  transition: 0.1s;
-  background: $white;
-  &:first-of-type {
-    border-radius: 0 4px 0 0;
-  }
-  &:last-of-type {
-    border-radius: 0 0 4px 0;
-  }
-  &:hover {
-    color: $white;
-    background: $danger;
-  }
-  &:active {
-    background: shade-color($danger, 10%);
-  }
-}
-.product-remove-btn {
-  color: $black-200;
-  .heart-border,
-  .heart-solid {
-    color: $danger;
-  }
-  .heart-solid {
-    display: none;
-  }
-
-  &:hover {
-    color: $danger;
-    .heart-border {
-      display: none;
-    }
-    .heart-solid {
-      display: block;
-    }
-  }
-}
-.checkout-btn {
-  background: $primary;
-  position: relative;
-  overflow: hidden;
-  .checkout-btn-text {
-    color: $white;
-    transition: 0.2s ease-in-out;
-  }
-  &::before {
-    content: '';
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background: $white;
-    border-radius: $border-radius;
-    top: -105%;
-    left: 0;
-    transition: 0.2s ease-in-out;
-  }
-  &:hover {
-    &::before {
-      top: 0;
-    }
-    .checkout-btn-text {
-      color: $primary;
-    }
-  }
-}
+@import '@/assets/styleSheets/views/frontend/Cart';
 </style>
