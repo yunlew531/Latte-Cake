@@ -7,8 +7,7 @@ const state = reactive({
   cartsData: {},
   pageProductsData: {},
   pagination: {},
-  shopPosition: 'Taipei',
-  orders: {}
+  orders: {},
 });
 
 // actions
@@ -58,10 +57,6 @@ const setCartsData = (cartsData) => {
   state.cartsData = cartsData;
 };
 
-const setShopPosition = (city) => {
-  state.shopPosition = city;
-};
-
 export default {
   state: readonly(state),
   setIsLoading,
@@ -69,5 +64,4 @@ export default {
   getOrders,
   getPageProducts,
   setCartsData,
-  setShopPosition
 };

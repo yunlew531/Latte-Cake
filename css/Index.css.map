@@ -1,9 +1,0 @@
-{
-    "version": 3,
-    "mappings": "AAAA,AAAA,eAAe,CAAC;EACd,SAAS,EAAE,iBAAiB;EAC5B,OAAO,EAAE,CAAC;EACV,SAAS,EAAE,qCAAqC;CACjD;;AACD,UAAU,CAAV,kBAAU;EACR,EAAE;IACA,SAAS,EAAE,aAAa;IACxB,OAAO,EAAE,CAAC;;;;AAGd,AAAA,gBAAgB,CAAC;EACf,UAAU,EAAE,MAAM,CAAC,SAAS,CAAC,+CAA+C;EAC5E,eAAe,EAAE,KAAK;CACvB;;AACD,AAAA,UAAU,CAAC;EACT,KAAK,EAAE,IAAI;EACX,MAAM,EAAE,IAAI;EACZ,gBAAgB,EAAE,yBAAyB;CAC5C",
-    "sources": [
-        "../src/assets/scss/views/frontend/Index.scss"
-    ],
-    "names": [],
-    "file": "Index.css"
-}

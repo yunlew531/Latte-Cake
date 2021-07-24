@@ -9,20 +9,6 @@ module.exports = {
   },
   rules: {
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
-    'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
-    'comma-dangle': [
-      'error',
-      {
-        arrays: 'only-multiline',
-        objects: 'only-multiline',
-        imports: 'only-multiline',
-        exports: 'only-multiline',
-        functions: 'never'
-      }
-    ],
-    'object-curly-newline': 'off',
-    'operator-linebreak': ['error', 'after', { overrides: { '?': 'before', ':': 'before' } }],
-    'implicit-arrow-linebreak': 'off',
-    'function-paren-newline': 'off'
+    'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off'
   }
 };
