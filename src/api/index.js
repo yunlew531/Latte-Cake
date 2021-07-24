@@ -9,6 +9,7 @@ import getPageProducts from './frontend/Products';
 import { postUploadImg, postAddProduct, putEditProduct } from './backend/AddProduct/index';
 import LogOut from './backend/shared/index';
 import { getProducts } from './backend/Products';
+import { postCheckout, postCoupon } from './frontend/Checkout';
 import { getOrders } from './backend/Orders';
 import putEditOrder from './backend/Order';
 import {
@@ -24,6 +25,8 @@ export const apiDeleteCart = deleteCart;
 export const apiDeleteAllCarts = deleteAllCarts;
 export const apiPostAddCart = postAddCart;
 export const apiGetShopImg = getShopImg;
+export const apiPostCheckout = postCheckout;
+export const apiPostCoupon = postCoupon;
 
 // backend
 export const apiPostLogin = postLogin;
