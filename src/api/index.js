@@ -5,7 +5,7 @@ import {
 } from './frontend/shared';
 import postLogin from './backend/Login';
 import { postCheck, getUser } from './backend/Backstage';
-import getPageProducts from './frontend/Products';
+import { getPageProducts, getAllProducts } from './frontend/Products';
 import { postUploadImg, postAddProduct, putEditProduct } from './backend/AddProduct/index';
 import LogOut from './backend/shared/index';
 import { getProducts } from './backend/Products';
@@ -20,6 +20,7 @@ import {
 export const apiGetProductInfo = getProductInfo;
 export const apiGetCarts = getCarts;
 export const apiGetPageProducts = getPageProducts;
+export const apiGetAllProducts = getAllProducts;
 export const apiPutCartQty = putCartQty;
 export const apiDeleteCart = deleteCart;
 export const apiDeleteAllCarts = deleteAllCarts;

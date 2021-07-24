@@ -1,10 +1,10 @@
 <template>
   <section class="subfooter-panel">
-    <div class="container px-25 py-25">
+    <div class="container py-25">
       <ul class="row gx-8 list-unstyled">
-        <li class="col-6">
+        <li class="col-md-6 mb-8 mb-md-0">
           <a
-            href="javascript:;"
+            @click.prevent="handToPageMaterials"
             class="
               link-item
               text-reset text-decoration-none
@@ -26,9 +26,9 @@
             </span>
           </a>
         </li>
-        <li class="col-6">
-          <a
-            href="javascript:;"
+        <li class="col-md-6 mb-md-0">
+          <router-link
+            to="/aboutus"
             class="
               link-item
               text-reset text-decoration-none
@@ -48,7 +48,7 @@
             <span class="material-icons fs-5 text-danger pe-2">
               play_circle_outline
             </span>
-          </a>
+          </router-link>
         </li>
       </ul>
     </div>
@@ -56,8 +56,31 @@
 </template>
 
 <script>
+import { inject } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+
 export default {
   name: 'SubFooter',
+  setup() {
+    const route = useRoute();
+    const router = useRouter();
+    const $emitter = inject('$emitter');
+
+    const handToPageMaterials = () => {
+      if (route.path === '/home') {
+        $emitter.emit('scrollToEl', 'aboutMaterialPanelEl');
+      } else {
+        router.push({
+          name: 'Home',
+          params: { scrollToElProps: 'aboutMaterialPanelEl' },
+        });
+      }
+    };
+
+    return {
+      handToPageMaterials,
+    };
+  },
 };
 </script>
 
@@ -84,6 +107,7 @@ export default {
   background-image: url(~@/assets/images/street-cafe-taipei.jpg);
 }
 .link-item {
+  cursor: pointer;
   h3,
   p {
     transition: 0.2s;

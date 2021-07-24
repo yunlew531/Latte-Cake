@@ -1,84 +1,84 @@
 <template>
   <Carousel />
+  <WhyChooseUs />
+  <Menu />
   <HotSale />
-  <Category />
-  <div class="bg-info">
-    <div class="container position-relative py-8 py-md-16 mt-16">
-      <img
-        class="
-          hamburger-img
-          img-fluid
-          position-absolute
-          ms-xl-50
-          start-0
-          bottom-0
-        "
-        src="@/assets/images/photo-hamburger.png"
-        alt="hamburger"
-      />
-      <div class="text-end px-xl-50 ps-50">
-        <router-link
-          to="/products"
-          class="
-            products-page-link
-            border-2
-            btn btn-danger
-            text-decoration-none
-            px-6 px-sm-12
-            overflow-hidden
-          "
-        >
-          <span class="position-absolute start-50 top-50 translate-middle w-100"
-            >立即點餐</span
-          >
-          <span class="opacity-0">立即點餐</span></router-link
-        >
-        <p
-          class="
-            d-flex
-            flex-wrap
-            align-items-center
-            justify-content-end
-            text-white
-            fs-2
-            tracking-3
-            mt-5
-            mb-0
-          "
-        >
-          <span class="text-danger fs-5">餓了嗎?</span>
-          <span class="ms-5">立即享用餐點</span>
-        </p>
-      </div>
-    </div>
-  </div>
-  <div class="bg-product-info">
-    <div class="bg-filter">
-      <AboutCake />
-    </div>
-  </div>
+  <ImmediatelyOrder />
+  <AboutMaterialPanel />
+  <OurTeam />
+  <RestaurantLightbox />
   <LocationPanel />
 </template>
 
 <script>
-import { inject, toRefs } from 'vue';
+import {
+  ref, inject, provide, watch, toRefs, onMounted, onUnmounted, nextTick,
+} from 'vue';
+import store from '@/composition/store';
+import useGetScrollY from '@/methods/useGetScrollY';
 import Carousel from '@/components/frontend/Index/Carousel.vue';
+import WhyChooseUs from '@/components/frontend/Index/WhyChooseUs.vue';
+import Menu from '@/components/frontend/Index/Menu.vue';
 import HotSale from '@/components/frontend/Index/HotSale.vue';
-import Category from '@/components/frontend/Index/Category.vue';
-import AboutCake from '@/components/frontend/Index/AboutCake.vue';
-import LocationPanel from '../../components/frontend/Index/LocationPanel.vue';
+import ImmediatelyOrder from '@/components/frontend/Index/ImmediatelyOrder.vue';
+import AboutMaterialPanel from '@/components/frontend/Index/AboutMaterialPanel.vue';
+import OurTeam from '@/components/frontend/Index/OurTeam.vue';
+import RestaurantLightbox from '@/components/frontend/RestaurantLightbox.vue';
+import LocationPanel from '@/components/frontend/Index/LocationPanel.vue';
+
+const { getAllProducts } = store;
 
 export default {
   name: 'Index',
+  props: {
+    scrollToElProps: {
+      type: String,
+    },
+  },
   components: {
     Carousel,
+    WhyChooseUs,
+    Menu,
     HotSale,
-    Category,
-    AboutCake,
+    ImmediatelyOrder,
+    AboutMaterialPanel,
+    OurTeam,
+    RestaurantLightbox,
     LocationPanel,
   },
-  setup() {
+  setup(props) {
     const state = inject('state');
+    const $emitter = inject('$emitter');
+    const { scrollToElProps } = toRefs(props);
+
+    const { scrollY } = useGetScrollY();
+    provide('scrollY', scrollY);
+
+    const ajaxStatus = ref(false);
+    getAllProducts().then((data) => {
+      if (data.success) ajaxStatus.value = true;
+    });
+
+    const scrollToEl = (id) => {
+      nextTick(() => {
+        const el = document.getElementById(`${id}`);
+        const position = el.offsetTop;
+        window.scrollTo(0, position);
+      });
+    };
+    watch(
+      scrollToElProps,
+      (id) => {
+        if (id) scrollToEl(id);
+      },
+      { immediate: true },
+    );
+    onMounted(() => {
+      $emitter.on('scrollToEl', scrollToEl);
+    });
+    onUnmounted(() => {
+      $emitter.off('scrollToEl', scrollToEl);
+    });
 
     return {
       ...toRefs(state),

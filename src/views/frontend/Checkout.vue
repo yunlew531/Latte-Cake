@@ -99,8 +99,8 @@
               v-for="(product, key) in cartsData.carts"
               :key="product.id"
               class="product-item fs-5 shadow-sm rounded mb-2"
-              :class="{ show: nowShow.includes(key) }"
-              @click="showInfo(key)"
+              :class="{ show: nowShowCarts.includes(key) }"
+              @click="showCartInfo(key)"
             >
               <button type="button" class="btn d-flex flex-wrap align-items-end w-100 p-3">
                 <h2 class="text-primary d-inline-block d-sm-block fs-5 m-0">
@@ -264,24 +264,24 @@ export default {
       }
     };
 
-    const nowShow = reactive([]);
-    const showInfo = (key) => {
-      const idx = nowShow.indexOf(key);
-      if (idx !== -1) nowShow.splice(idx, 1);
-      else nowShow.push(key);
+    const nowShowCarts = reactive([]);
+    const showCartInfo = (key) => {
+      const idx = nowShowCarts.indexOf(key);
+      if (idx !== -1) nowShowCarts.splice(idx, 1);
+      else nowShowCarts.push(key);
     };
 
     return {
       ...toRefs(state),
       user,
-      nowShow,
+      nowShowCarts,
       coupons,
       couponInput,
       onSubmit,
       submitCoupon,
       copyCouponCode,
       validateTel,
-      showInfo,
+      showCartInfo,
     };
   },
 };
@@ -306,17 +306,16 @@ export default {
   &.active {
     > h3 {
       transform: scale(0);
-      animation: scale-ani 0.5s forwards;
+      animation: scale-anime 0.5s forwards;
       opacity: 1;
     }
   }
 }
-@keyframes scale-ani {
+@keyframes scale-anime {
   to {
     transform: scale(1);
   }
 }
-
 .form-group {
   height: 100px;
 }

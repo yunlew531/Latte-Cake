@@ -1,52 +1,17 @@
 import { reactive, readonly } from 'vue';
-import { apiGetCarts, apiGetPageProducts, apiGetOrders } from '@/api';
+import {
+  apiGetCarts, apiGetPageProducts, apiGetOrders, apiGetAllProducts,
+} from '@/api';
 
 // state
 const state = reactive({
   isLoading: false,
   cartsData: {},
+  allProducts: [],
   pageProductsData: {},
   pagination: {},
   orders: {},
 });
-
-// actions
-const getCarts = async () => {
-  try {
-    const { data } = await apiGetCarts();
-    if (data.success) {
-      state.cartsData = data.data;
-    }
-  } catch (err) {
-    console.dir('err');
-  }
-};
-
-const getPageProducts = async (page = 0) => {
-  try {
-    const { data } = await apiGetPageProducts(page);
-    if (data.success) {
-      state.pageProductsData = data.products;
-      state.pagination = data.pagination;
-    }
-  } catch (err) {
-    console.dir(err);
-  }
-};
-
-const getOrders = async () => {
-  try {
-    const { data } = await apiGetOrders();
-    if (data.success) {
-      state.orders = data.orders;
-      return data;
-    }
-    return false;
-  } catch (err) {
-    console.dir(err);
-    return false;
-  }
-};
 
 // mutations
 const setIsLoading = (boolean) => {
@@ -57,11 +22,76 @@ const setCartsData = (cartsData) => {
   state.cartsData = cartsData;
 };
 
+const setAllProducts = (products) => {
+  state.allProducts = products;
+};
+
+const setPageProducts = (data) => {
+  state.pageProductsData = data.products;
+  state.pagination = data.pagination;
+};
+
+const setOrders = (orders) => {
+  state.orders = orders;
+};
+
+// actions
+const getCarts = async () => {
+  try {
+    const { data } = await apiGetCarts();
+    if (data.success) {
+      setCartsData(data.data);
+    }
+  } catch (err) {
+    console.dir('err');
+  }
+};
+
+const getAllProducts = async () => {
+  let resData = null;
+  try {
+    const { data } = await apiGetAllProducts();
+    if (data.success) setAllProducts(data.products);
+    resData = data;
+  } catch (err) {
+    console.dir(err);
+    resData = err;
+  }
+  return resData;
+};
+
+const getPageProducts = async (page = 1) => {
+  try {
+    const { data } = await apiGetPageProducts(page);
+    if (data.success) {
+      setPageProducts(data);
+    }
+  } catch (err) {
+    console.dir(err);
+  }
+};
+
+const getOrders = async () => {
+  let resData = null;
+  try {
+    const { data } = await apiGetOrders();
+    if (data.success) {
+      setOrders(data.orders);
+    }
+    resData = data;
+  } catch (err) {
+    console.dir(err);
+    resData = err;
+  }
+  return resData;
+};
+
 export default {
   state: readonly(state),
   setIsLoading,
   getCarts,
   getOrders,
+  getAllProducts,
   getPageProducts,
   setCartsData,
 };

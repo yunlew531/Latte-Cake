@@ -61,14 +61,22 @@
 </template>
 
 <script>
-import { ref, reactive } from 'vue';
+import { ref, reactive, toRefs } from 'vue';
 import RestaurantLightbox from '@/components/frontend/RestaurantLightbox.vue';
 
 export default {
+  props: {
+    city: {
+      type: String,
+      default: '台北',
+    },
+  },
   components: {
     RestaurantLightbox,
   },
-  setup() {
+  setup(props) {
+    const { city } = toRefs(props);
+
     const shops = reactive([
       {
         city: '台北',
@@ -78,16 +86,16 @@ export default {
       {
         city: '台中',
         src:
-          'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d115676.73003252424!2d121.49439485820317!3d25.037541700000002!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3442abb9dc73545d%3A0x6513f5fb17ad1f67!2z6Ie65YyX5biC5pS_5bqc!5e0!3m2!1szh-TW!2stw!4v1624710293387!5m2!1szh-TW!2stw',
+          'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3640.282090079828!2d120.64467441536776!3d24.16183777885!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x34693d84daa07441%3A0x2c5e7459c2aaf71a!2z6Ie65Lit5biC5pS_5bqc!5e0!3m2!1szh-TW!2stw!4v1624725149252!5m2!1szh-TW!2stw',
       },
       {
         city: '高雄',
         src:
-          'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d115676.73003252424!2d121.49439485820317!3d25.037541700000002!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3442abb9dc73545d%3A0x6513f5fb17ad1f67!2z6Ie65YyX5biC5pS_5bqc!5e0!3m2!1szh-TW!2stw!4v1624710293387!5m2!1szh-TW!2stw',
+          'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d10416.999211285864!2d120.3066260090534!3d22.61776753863218!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x344465d114abb19!2z6auY6ZuE5biC5pS_5bqcIOWbm-e2reihjOaUv-S4reW_gw!5e0!3m2!1szh-TW!2stw!4v1624723884270!5m2!1szh-TW!2stw',
       },
     ]);
 
-    const shopPosition = ref('台北');
+    const shopPosition = ref(city.value);
     const setShopPosition = (place) => {
       shopPosition.value = place;
     };
