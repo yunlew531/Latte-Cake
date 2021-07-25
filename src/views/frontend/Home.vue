@@ -61,13 +61,9 @@ export default {
         window.scrollTo(0, position);
       });
     };
-    watch(
-      scrollToElProps,
-      (id) => {
-        if (id) scrollToEl(id);
-      },
-      { immediate: true },
-    );
+    watch([scrollToElProps, ajaxStatus], ([id, status]) => {
+      if (id && status) scrollToEl(id);
+    });
     onMounted(() => {
       $emitter.on('scrollToEl', scrollToEl);
     });
