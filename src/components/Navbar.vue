@@ -1,5 +1,5 @@
 <template>
-  <header class="d-block position-absolute z-30 top-0 start-0 end-0 p-0">
+  <header class="d-block position-absolute z-999 top-0 start-0 end-0 p-0">
     <p
       class="
         container
@@ -26,54 +26,48 @@
         position-fixed
         start-0
         end-0
-        px-12
-        py-0
+        px-sm-6 px-md-12
+        py-2
         z-20
+        overflow-hidden
       "
-      :class="{ active: isScrollDown }"
+      :class="{ 'scroll-down': isScrollDown }"
     >
       <div class="container-fluid">
-        <h1 class="m-0 pt-1 pb-2px">
+        <h1 class="m-0 lh-1">
           <router-link
             to="/home"
-            class="navbar-brand d-block"
-            :class="{ active: isScrollDown }"
-          >
+            class="navbar-brand fw-bolder text-danger d-block p-0"
+            :class="{ 'scroll-down': isScrollDown }"
+            >PastaHouse
           </router-link>
         </h1>
         <button
           class="navbar-toggler"
           type="button"
           data-bs-toggle="collapse"
-          data-bs-target="#carouselNabar"
+          data-bs-target="#carouselNavbar"
         >
           <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse ps-8" id="carouselNabar">
+        <div class="collapse navbar-collapse ps-8" id="carouselNavbar">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li class="nav-item">
-              <a class="nav-link active px-16" aria-current="page" href="#"
-                >原料</a
-              >
-            </li>
-            <li class="nav-item">
-              <router-link
-                to="/products"
-                class="nav-link d-block px-16"
-                aria-current="page"
-                href="#"
-                >商品</router-link
-              >
-            </li>
-            <li class="nav-item">
-              <router-link to="/aboutUs" class="nav-link d-block px-16"
-                >關於我們</router-link
-              >
+            <li v-for="link in navLinks" :key="link" class="nav-item">
+              <router-link :to="link.url" class="nav-link active px-xl-5" aria-current="page">{{
+                link.title
+              }}</router-link>
             </li>
           </ul>
           <button
             type="button"
-            class="cart-btn lh-1 bg-transparent border-0 position-relative"
+            class="
+              cart-btn
+              lh-1
+              bg-transparent
+              border-0
+              bottom-n1
+              position-relative
+            "
             @click="showCartCanvas"
           >
             <span class="material-icons h-100 w-100"> shopping_cart </span>
@@ -92,7 +86,7 @@
               >{{ cartsData.carts?.length }}</span
             >
           </button>
-          <form class="d-flex position-relative ms-3">
+          <div class="d-flex position-relative ms-3">
             <input
               class="
                 search-input
@@ -105,15 +99,17 @@
               type="search"
               placeholder="搜尋商品"
               aria-label="Search"
-              v-model="searchText"
+              v-model.trim="searchText"
+              @keyup.enter="searchProduct"
             />
             <button
               class="search-btn btn position-absolute end-0"
               type="button"
+              @click="searchProduct"
             >
               <span class="material-icons"> search </span>
             </button>
-          </form>
+          </div>
         </div>
       </div>
     </nav>
@@ -122,8 +118,10 @@
 </template>
 
 <script>
-import { ref, watch, inject, toRefs } from 'vue';
-import { useGetScrollY } from '@/methods';
+import {
+  ref, reactive, inject, watch, toRefs, onMounted, onUnmounted,
+} from 'vue';
+import { useRouter } from 'vue-router';
 import store from '@/composition/store';
 
 const { getCarts } = store;
@@ -132,40 +130,65 @@ export default {
   name: 'Navbar',
   setup() {
     const state = inject('state');
-    const { scrollY } = useGetScrollY();
-    const isScrollDown = ref(false);
+    const { cartsData } = toRefs(state);
+    const router = useRouter();
+    const scrollY = inject('scrollY');
     const $emitter = inject('$emitter');
+
     getCarts();
+
+    const searchText = ref('');
+    const isSearchFocus = ref(false);
+    watch(searchText, (value) => {
+      if (value) isSearchFocus.value = true;
+      else isSearchFocus.value = false;
+    });
+
+    const navLinks = reactive([
+      { title: '首頁', url: '/' },
+      { title: '商品', url: '/products' },
+      { title: '關於我們', url: '/aboutUs' },
+      { title: '購物車', url: '/cart' },
+      { title: '歷史訂單', url: '/orders' },
+      { title: '登入', url: '/login' },
+    ]);
+
+    const isScrollDown = ref(false);
+    watch(scrollY, (y) => {
+      if (y >= 100) isScrollDown.value = true;
+      else isScrollDown.value = false;
+    });
 
     const showCartCanvas = () => {
       getCarts();
       $emitter.emit('showCartCanvas');
     };
 
-    const searchText = ref('');
-    const isSearchFocus = ref(false);
-    watch(searchText, () => {
-      if (searchText.value) {
-        isSearchFocus.value = true;
-      } else {
-        isSearchFocus.value = false;
-      }
+    const searchProduct = () => {
+      window.scrollTo(0, 0);
+      router.push({ name: 'Products', query: { searchText } });
+    };
+
+    const removeSearch = () => {
+      searchText.value = '';
+    };
+
+    onMounted(() => {
+      $emitter.on('removeSearch', removeSearch);
     });
 
-    watch(scrollY, (newScrollY) => {
-      if (newScrollY >= 100) {
-        isScrollDown.value = true;
-      } else {
-        isScrollDown.value = false;
-      }
+    onUnmounted(() => {
+      $emitter.off('removeSearch', removeSearch);
     });
 
     return {
-      ...toRefs(state),
-      searchText,
-      isSearchFocus,
       isScrollDown,
+      isSearchFocus,
+      cartsData,
+      navLinks,
+      searchText,
       showCartCanvas,
+      searchProduct,
     };
   },
 };
@@ -174,23 +197,33 @@ export default {
 <style lang="scss" scoped>
 @import '~bootstrap/scss/functions';
 @import '~@/assets/styleSheets/custom/variables';
+@import '~bootstrap/scss/mixins';
 
 .navbar-brand {
-  width: 136px;
-  height: 56px;
-  background: center no-repeat;
-  background-size: cover;
-  background-image: url(~@/assets/images/logo_transparent_medium.png);
-  .logo-icon {
-    padding-bottom: $spacer * 1;
+  font-family: 'Nothing You Could Do', cursive;
+  font-size: $h4-font-size;
+  text-shadow: 0.05rem 0.05rem 0.2rem $white;
+  transition: 0.3s;
+  margin-top: 12px;
+  &::first-letter {
+    font-size: 48px;
   }
-  .logo-icon-text {
-    bottom: $spacer * 0.25;
+  &.scroll-down {
+    font-size: $h5-font-size;
+    margin-top: 6px;
+    &::first-letter {
+      font-size: $h2-font-size;
+    }
   }
-  &.active {
-    width: 117px;
-    height: 48px;
-    background-image: url(~@/assets/images/logo_transparent_small.png);
+}
+
+.navbar-nav {
+  transform: translateY(-150%) rotate3d(0, 1, 0, 45deg);
+  animation: navbar-nav 0.8s forwards cubic-bezier(0.17, 0.67, 0.71, 1.26);
+}
+@keyframes navbar-nav {
+  100% {
+    transform: translateY(0) rotate3d(0, 0, 0, 45deg);
   }
 }
 
@@ -204,9 +237,16 @@ export default {
 .navbar {
   background-color: rgba(28, 28, 28, 0.6);
   top: $spacer * 1.75;
-  &.active {
+  &.scroll-down {
     top: 0;
     background-color: rgba(28, 28, 28, 0.9);
+  }
+  @include media-breakpoint-down(lg) {
+    background-color: rgba(28, 28, 28, 1);
+    padding-bottom: 100px;
+    &.scroll-down {
+      background-color: rgba(28, 28, 28, 1);
+    }
   }
 }
 

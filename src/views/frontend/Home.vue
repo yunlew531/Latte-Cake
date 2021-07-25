@@ -12,10 +12,9 @@
 
 <script>
 import {
-  ref, inject, provide, watch, toRefs, onMounted, onUnmounted, nextTick,
+  ref, inject, watch, toRefs, onMounted, onUnmounted, nextTick,
 } from 'vue';
 import store from '@/composition/store';
-import useGetScrollY from '@/methods/useGetScrollY';
 import Carousel from '@/components/frontend/Index/Carousel.vue';
 import WhyChooseUs from '@/components/frontend/Index/WhyChooseUs.vue';
 import Menu from '@/components/frontend/Index/Menu.vue';
@@ -47,12 +46,8 @@ export default {
     LocationPanel,
   },
   setup(props) {
-    const state = inject('state');
     const $emitter = inject('$emitter');
     const { scrollToElProps } = toRefs(props);
-
-    const { scrollY } = useGetScrollY();
-    provide('scrollY', scrollY);
 
     const ajaxStatus = ref(false);
     getAllProducts().then((data) => {
@@ -80,9 +75,7 @@ export default {
       $emitter.off('scrollToEl', scrollToEl);
     });
 
-    return {
-      ...toRefs(state),
-    };
+    return {};
   },
 };
 </script>

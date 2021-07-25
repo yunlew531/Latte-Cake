@@ -20,7 +20,8 @@
 </template>
 
 <script>
-import { toRefs } from 'vue';
+import { toRefs, provide } from 'vue';
+import useGetScrollY from '@/methods/useGetScrollY';
 import CartCanvas from '@/components/CartCanvas.vue';
 import Navbar from '@/components/Navbar.vue';
 import SubFooter from '@/components/SubFooter.vue';
@@ -40,6 +41,9 @@ export default {
     Footer,
   },
   setup() {
+    const { scrollY } = useGetScrollY();
+    provide('scrollY', scrollY);
+
     return {
       ...toRefs(state),
     };

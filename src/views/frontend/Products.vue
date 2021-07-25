@@ -24,15 +24,8 @@
   </section>
   <section class="container bg-white rounded shadow-sm p-10">
     <ul class="row gx-5 gy-10 list-unstyled">
-      <li
-        class="product-item col-3"
-        v-for="product in pageProductsData"
-        :key="product.id"
-      >
-        <router-link
-          :to="`/product/${product.id}`"
-          class="text-reset text-decoration-none d-block"
-        >
+      <li class="product-item col-3" v-for="product in pageProductsData" :key="product.id">
+        <router-link :to="`/product/${product.id}`" class="text-reset text-decoration-none d-block">
           <div
             class="
               product-img
@@ -51,13 +44,10 @@
               <h2 class="fs-5 mb-0 duration-200">{{ product.title }}</h2>
               <p class="fs-7 text-black-300 m-0">草莓、白酒</p>
             </div>
-            <span class="text-danger align-self-start border border-danger px-1"
-              >熱銷商品</span
-            >
+            <span class="text-danger align-self-start border border-danger px-1">熱銷商品</span>
           </div>
           <p class="d-flex justify-content-between m-0">
-            <span class="text-decoration-line-through"
-              >原價: NT${{ product.origin_price }}</span
+            <span class="text-decoration-line-through">原價: NT${{ product.origin_price }}</span
             ><span class="fs-5">售價: NT${{ product.price }}</span>
           </p>
         </router-link>
@@ -68,7 +58,9 @@
 </template>
 
 <script>
-import { computed, reactive, ref, watch, inject, toRefs } from 'vue';
+import {
+  computed, reactive, ref, watch, inject, toRefs,
+} from 'vue';
 import Pagination from '@/components/Pagination.vue';
 import store from '@/composition/store';
 
@@ -79,16 +71,14 @@ export default {
   components: {
     Pagination,
   },
+  props: {
+    searchText: {
+      type: String || Number,
+    },
+  },
   setup() {
     const state = inject('state');
-    const categoryList = reactive([
-      '全部',
-      '咖啡',
-      '蛋糕',
-      '其他1',
-      '其他2',
-      '其他3',
-    ]);
+    const categoryList = reactive(['全部', '咖啡', '蛋糕', '其他1', '其他2', '其他3']);
     const nowHoverCategory = ref('');
     const nowCategory = ref('全部');
 
@@ -123,11 +113,7 @@ export default {
           if (item === nowCategory.value) position = idx * percent;
         });
       }
-      return [
-        { width: `${percent}%` },
-        { left: `${position}%` },
-        { transition: '0.3s' },
-      ];
+      return [{ width: `${percent}%` }, { left: `${position}%` }, { transition: '0.3s' }];
     });
 
     watch(nowCategory, () => {
