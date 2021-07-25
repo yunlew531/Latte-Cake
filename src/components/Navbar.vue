@@ -137,13 +137,6 @@ export default {
 
     getCarts();
 
-    const searchText = ref('');
-    const isSearchFocus = ref(false);
-    watch(searchText, (value) => {
-      if (value) isSearchFocus.value = true;
-      else isSearchFocus.value = false;
-    });
-
     const navLinks = reactive([
       { title: '首頁', url: '/' },
       { title: '商品', url: '/products' },
@@ -152,6 +145,13 @@ export default {
       { title: '歷史訂單', url: '/orders' },
       { title: '登入', url: '/login' },
     ]);
+
+    const searchText = ref('');
+    const isSearchFocus = ref(false);
+    watch(searchText, (value) => {
+      if (value) isSearchFocus.value = true;
+      else isSearchFocus.value = false;
+    });
 
     const isScrollDown = ref(false);
     watch(scrollY, (y) => {
@@ -164,13 +164,13 @@ export default {
       $emitter.emit('showCartCanvas');
     };
 
-    const searchProduct = () => {
-      window.scrollTo(0, 0);
-      router.push({ name: 'Products', query: { searchText } });
-    };
-
     const removeSearch = () => {
       searchText.value = '';
+    };
+
+    const searchProduct = () => {
+      window.scrollTo(0, 0);
+      router.push({ name: 'Products', query: { search: searchText.value } });
     };
 
     onMounted(() => {
@@ -216,7 +216,6 @@ export default {
     }
   }
 }
-
 .navbar-nav {
   transform: translateY(-150%) rotate3d(0, 1, 0, 45deg);
   animation: navbar-nav 0.8s forwards cubic-bezier(0.17, 0.67, 0.71, 1.26);
@@ -226,14 +225,12 @@ export default {
     transform: translateY(0) rotate3d(0, 0, 0, 45deg);
   }
 }
-
 .cart-btn {
   color: $white;
   &:hover {
     color: shade-color($white, 20%);
   }
 }
-
 .navbar {
   background-color: rgba(28, 28, 28, 0.6);
   top: $spacer * 1.75;
@@ -249,7 +246,6 @@ export default {
     }
   }
 }
-
 .search-input {
   caret-color: $white;
   background-color: transparent;

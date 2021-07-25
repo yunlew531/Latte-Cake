@@ -8,6 +8,7 @@ $secondary: #a3a3a3;
 $danger: #c63232;
 $white: #fff;
 $white-100: rgb(255, 254, 250);
+$white-200: #f9fafd;
 $black: #1c1c1c;
 $black-100: #1f2021;
 $black-200: #333;
@@ -15,11 +16,6 @@ $black-300: #798079;
 $black-400: rgb(100, 100, 100);
 $gray-300: #dfdfdf;
 // custom-end
-
-// Settings for the `<body>` element.
-$body-bg: $white-100 !default;
-$body-color: $black !default;
-$letter-spacing: 0.0625rem;
 
 // scss-docs-start color-variables
 $gray-100: #f8f9fa !default;
@@ -49,6 +45,7 @@ $theme-colors: (
   'dark': $dark,
   'white': $white,
   'white-100': $white-100,
+  'white-200': $white-200,
   'black': $black,
   'black-100': $black-100,
   'black-200': $black-200,
@@ -56,6 +53,12 @@ $theme-colors: (
   'black-400': $black-400,
   'gray-300': $gray-300
 ) !default;
+
+// Settings for the `<body>` element.
+$body-bg: $white-100 !default;
+$body-color: $black !default;
+$letter-spacing: 0.0625rem;
+// Settings for the `<body>` element.
 
 // Spacing
 //
