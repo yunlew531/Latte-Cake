@@ -166,6 +166,7 @@ export default {
 
     const removeSearch = () => {
       searchText.value = '';
+      router.push({ name: 'Products' });
     };
 
     const searchProduct = () => {
