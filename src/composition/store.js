@@ -61,14 +61,18 @@ const getAllProducts = async () => {
 };
 
 const getPageProducts = async (page = 1) => {
+  let resData = null;
   try {
     const { data } = await apiGetPageProducts(page);
     if (data.success) {
       setPageProducts(data);
+      resData = data;
     }
   } catch (err) {
     console.dir(err);
+    resData = err;
   }
+  return resData;
 };
 
 const getOrders = async () => {

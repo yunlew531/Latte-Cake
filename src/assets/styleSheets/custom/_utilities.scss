@@ -11,8 +11,8 @@ $utilities: map-merge(
       class: font,
       values: (
         sans: $font-family-sans-serif,
-        Tamma: $font-family-Tamma-cursive,
-      ),
+        Tamma: $font-family-Tamma-cursive
+      )
     ),
     'letter-spacing': (
       responsive: true,
@@ -22,8 +22,8 @@ $utilities: map-merge(
         0: 0,
         1: 0.0625rem,
         2: 0.125rem,
-        3: 0.187rem,
-      ),
+        3: 0.187rem
+      )
     ),
     'z-index': (
       responsive: true,
@@ -34,7 +34,10 @@ $utilities: map-merge(
         10: 10,
         20: 20,
         30: 30,
-      ),
+        40: 40,
+        50: 50,
+        999: 999
+      )
     ),
     'opacity': (
       responsive: true,
@@ -44,8 +47,8 @@ $utilities: map-merge(
         25: 0.25,
         50: 0.5,
         75: 0.75,
-        100: 1,
-      ),
+        100: 1
+      )
     ),
     'transition-duration': (
       responsive: true,
@@ -57,44 +60,44 @@ $utilities: map-merge(
         300: 300ms,
         500: 500ms,
         600: 600ms,
-        1000: 1s,
-      ),
+        1000: 1s
+      )
     ),
     'top': (
       property: top,
-      values: $position-values,
+      values: $position-values
     ),
     'bottom': (
       property: bottom,
-      values: $position-values,
+      values: $position-values
     ),
     'start': (
       property: left,
       class: start,
-      values: $position-values,
+      values: $position-values
     ),
     'end': (
       property: right,
       class: end,
-      values: $position-values,
+      values: $position-values
     ),
     'top-n': (
       property: top,
-      values: $negative-spacers,
+      values: $negative-spacers
     ),
     'bottom-n': (
       property: bottom,
-      values: $negative-spacers,
+      values: $negative-spacers
     ),
     'start-n': (
       property: left,
       class: start,
-      values: $negative-spacers,
+      values: $negative-spacers
     ),
     'end-n': (
       property: right,
       class: end,
-      values: $negative-spacers,
+      values: $negative-spacers
     ),
     'line-height': (
       property: line-height,
@@ -103,8 +106,8 @@ $utilities: map-merge(
         1: 1,
         sm: $line-height-sm,
         base: $line-height-base,
-        lg: $line-height-lg,
-      ),
+        lg: $line-height-lg
+      )
     ),
     'shadow': (
       property: box-shadow,
@@ -114,21 +117,29 @@ $utilities: map-merge(
         sm: $box-shadow-sm,
         lg: $box-shadow-lg,
         inset: $box-shadow-inset,
-        none: none,
-      ),
+        none: none
+      )
     ),
     'width': (
       responsive: true,
       property: width,
       class: w,
       values: (
+        0: 0%,
         25: 25%,
         33: 33%,
         50: 50%,
         75: 75%,
         100: 100%,
-        auto: auto,
-      ),
+        auto: auto
+      )
     ),
+    'wrap': (
+      property: white-space,
+      class: text,
+      values: (
+        wrap: pre-wrap
+      )
+    )
   )
 );
