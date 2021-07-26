@@ -19,10 +19,7 @@
           <td>{{ order.id }}</td>
           <td>{{ useTranslateTime(order?.create_at) }}</td>
           <td>
-            <p
-              v-if="order.is_paid"
-              class="text-success d-flex align-items-center m-0"
-            >
+            <p v-if="order.is_paid" class="text-success d-flex align-items-center m-0">
               <span class="material-icons-outlined"> check </span>
               <span>已付款</span>
             </p>
@@ -33,11 +30,7 @@
           </td>
           <td>NT$ {{ order.total?.toLocaleString() }}</td>
           <td>
-            <button
-              type="button"
-              class="btn btn-outline-primary"
-              @click="showOrderDetail(order)"
-            >
+            <button type="button" class="btn btn-outline-primary" @click="showOrderDetail(order)">
               詳細
             </button>
           </td>
@@ -56,6 +49,7 @@ import 'vue-loading-overlay/dist/vue-loading.css';
 import { useTranslateTime } from '@/methods';
 
 export default {
+  name: 'BackendOrders',
   components: {
     Loading,
   },

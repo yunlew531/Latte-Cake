@@ -48,6 +48,21 @@ const routes = [
         name: 'Checkout',
         component: () => import('../views/frontend/Checkout.vue'),
       },
+      {
+        path: 'orderCompleted',
+        name: 'OrderCompleted',
+        component: () => import('../views/frontend/OrderCompleted.vue'),
+      },
+      {
+        path: 'orders',
+        name: 'Orders',
+        component: () => import('../views/frontend/Orders.vue'),
+      },
+      {
+        path: 'order/:id',
+        name: 'Order',
+        component: () => import('../views/frontend/Order.vue'),
+      },
     ],
   },
   {
@@ -78,15 +93,20 @@ const routes = [
       },
       {
         path: 'orders',
-        name: 'Orders',
+        name: 'BackendOrders',
         component: () => import('../views/backend/Orders.vue'),
       },
       {
         path: 'order/:id',
-        name: 'Order',
+        name: 'BackendOrder',
         component: () => import('../views/backend/Order.vue'),
       },
     ],
+  },
+  {
+    path: '/:pathMatch(.*)*',
+    name: 'NotFound',
+    component: () => import('../views/NotFound.vue'),
   },
 ];
 

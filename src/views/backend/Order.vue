@@ -2,28 +2,20 @@
   <div class="rounded bg-white shadow w-100 p-10">
     <Loading v-model:active="isLoading" :is-full-page="false" />
     <div v-if="order.id">
-      <router-link
-        to="/admin/orders"
-        class="btn btn-sm btn-outline-primary mb-3"
+      <router-link to="/admin/orders" class="btn btn-sm btn-outline-primary mb-3"
         >返回訂單列表</router-link
       >
       <div class="d-flex">
-        <h3 class="fs-5 me-auto">
-          <span class="fs-6 me-2">訂單編號:</span>{{ order.id }}
-        </h3>
+        <h3 class="fs-5 me-auto"><span class="fs-6 me-2">訂單編號:</span>{{ order.id }}</h3>
         <span class="fs-5">
-          <span class="fs-6 me-2">成立時間:</span
-          >{{ useTranslateTime(order.create_at) }}</span
+          <span class="fs-6 me-2">成立時間:</span>{{ useTranslateTime(order.create_at) }}</span
         >
       </div>
       <div class="d-flex align-items-center mb-5">
         <h4 class="fs-6 d-flex align-items-center m-0 me-2">
           狀態:
           <span v-show="!isEdit">
-            <span
-              v-if="order.is_paid"
-              class="text-success d-flex align-items-center"
-            >
+            <span v-if="order.is_paid" class="text-success d-flex align-items-center">
               <span class="material-icons-outlined"> done </span>
               <span>已付款</span>
             </span>
@@ -88,20 +80,15 @@
                 <h4 class="fs-6">類別: {{ product.product.category }}</h4>
                 <p class="d-flex align-items-center mb-2">
                   <span class="me-auto"
-                    >原價:
-                    {{ product.product.origin_price?.toLocaleString() }}</span
+                    >原價: {{ product.product.origin_price?.toLocaleString() }}</span
                   >
-                  <span
-                    >售價: {{ product.product.price?.toLocaleString() }}</span
-                  >
+                  <span>售價: {{ product.product.price?.toLocaleString() }}</span>
                 </p>
                 <p class="mb-2">數量: {{ product.qty }}</p>
                 <p class="mb-2">金額: {{ product.total?.toLocaleString() }}</p>
                 <p class="mb-2">
                   折扣後金額:
-                  <span class="fs-5">{{
-                    product.final_total?.toLocaleString()
-                  }}</span>
+                  <span class="fs-5">{{ product.final_total?.toLocaleString() }}</span>
                 </p>
               </div>
             </div>
@@ -110,12 +97,7 @@
       </ul>
       <div class="d-flex align-items-center">
         <div class="me-auto">
-          <button
-            v-show="!isEdit"
-            type="button"
-            class="btn btn-primary"
-            @click="editOrder"
-          >
+          <button v-show="!isEdit" type="button" class="btn btn-primary" @click="editOrder">
             編輯
           </button>
           <button
@@ -137,9 +119,7 @@
         </div>
         <p class="fs-6 m-0">
           總計: NT$
-          <span v-show="!isEdit" class="fs-3"
-            >{{ order.total?.toLocaleString() }}
-          </span>
+          <span v-show="!isEdit" class="fs-3">{{ order.total?.toLocaleString() }} </span>
           <input
             v-show="isEdit"
             type="number"
@@ -154,7 +134,9 @@
 </template>
 
 <script>
-import { ref, reactive, toRefs, watch } from 'vue';
+import {
+  ref, reactive, toRefs, watch,
+} from 'vue';
 import { useRoute } from 'vue-router';
 import store from '@/composition/store';
 import { useToast, useTranslateTime } from '@/methods';
@@ -163,6 +145,7 @@ import Loading from 'vue-loading-overlay';
 import 'vue-loading-overlay/dist/vue-loading.css';
 
 export default {
+  name: 'BackendOrder',
   components: {
     Loading,
   },
@@ -177,9 +160,7 @@ export default {
       isLoading.value = true;
       getOrders().then((data) => {
         if (data) {
-          [order.order] = data.orders.filter(
-            (orderData) => orderData.id === route.params.id
-          );
+          [order.order] = data.orders.filter((orderData) => orderData.id === route.params.id);
           console.log(order.order);
           if (!order.order) useToast('找不到訂單!', 'danger');
           else isLoading.value = false;
@@ -223,7 +204,7 @@ export default {
         if (route.params.id && route.name === 'Orders') {
           setOrder();
         }
-      }
+      },
     );
 
     return {
