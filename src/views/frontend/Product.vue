@@ -1,33 +1,36 @@
 <template>
-  <section class="nav-bg"></section>
+  <div class="nav-bg"></div>
   <section
-    class="product-panel bg-white rounded shadow-sm container p-10"
+    class="product-panel bg-white rounded shadow-sm container p-5 p-sm-10"
     :class="{ active: !isProductLoading }"
   >
     <div class="row gx-12">
-      <ul class="col-6 list-unstyled mb-0">
+      <ul class="product-img-list col-lg-6 list-unstyled order-2 order-lg-1 mb-0">
         <li
+          v-if="product.imageUrl"
           class="product-img rounded"
           :style="{
-            'background-image': `url(${productData.product?.imageUrl})`,
+            'background-image': `url(${product.imageUrl})`,
           }"
           @click="showLightbox(0)"
         ></li>
         <li
-          v-for="(img, key) in productData.product?.imagesUrl"
+          v-for="(img, key) in product.imagesUrl"
           :key="img + key"
           :style="{
             'background-image': `url(${img})`,
           }"
           class="product-img rounded"
-          @click="showLightbox(productData.product?.imageUrl ? key + 1 : key)"
+          @click="showLightbox(product.imageUrl ? key + 1 : key)"
         ></li>
       </ul>
-      <div class="col-6">
+      <div class="col-lg-6 order-1 order-lg-2">
         <div class="product-content position-sticky">
-          <div class="d-flex justify-content-between pt-1">
-            <h2 class="fw-bold lh-1">{{ productData.product?.title }}</h2>
-            <div class="d-flex">
+          <div class="d-flex flex-wrap justify-content-between pt-1">
+            <h2 class="fw-bold lh-1 overflow-hidden order-2 order-sm-1">
+              <span class="product-title d-block">{{ product.title }}</span>
+            </h2>
+            <div class="d-flex order-1 order-sm-2 pb-5 pb-sm-0">
               <p
                 class="
                   fs-7
@@ -46,7 +49,7 @@
                 <span class="ms-1">熱銷商品</span>
               </p>
               <p
-                v-if="productData.product?.freeDelivery"
+                v-if="product.freeDelivery"
                 class="
                   fs-7
                   align-self-start
@@ -64,7 +67,11 @@
               </p>
             </div>
           </div>
-          <h4 class="fs-6 text-black-300">蘋果、白酒</h4>
+          <h4 class="fs-6 text-black-300 overflow-hidden">
+            <span class="product-material d-block">
+              {{ product.description }}
+            </span>
+          </h4>
           <p class="fs-6 mb-0 lh-1 pt-2">
             <span
               class="
@@ -72,18 +79,24 @@
                 d-inline-block
                 w-50
               "
-              >NT${{ productData.product?.origin_price }}</span
+              >NT${{ product.origin_price?.toLocaleString() }}</span
             >
             <span class="fs-5 text-primary d-inline-block w-50"
-              >NT${{ productData.product?.price }}</span
+              >NT${{ product.price?.toLocaleString() }}</span
             >
           </p>
           <hr class="text-black-300" />
-          <p class="text-black-200 py-5">
-            {{ productData.product?.description }}
+          <p class="text-wrap lh-lg fs-5 fw-light text-black-100 py-5">
+            {{ product.content }}
           </p>
           <div
-            class="bg-white border border-gray-300 shadow-inset rounded p-12"
+            class="
+              bg-white
+              border border-gray-300
+              shadow-inset
+              rounded
+              p-5 p-sm-12
+            "
           >
             <div class="d-flex align-items-center">
               <span class="fs-6 text-black-200">購買數量</span>
@@ -133,23 +146,13 @@
                 </button>
               </div>
             </div>
-            <button
-              class="
-                add-cart-btn
-                fs-5
-                tracking-2
-                btn btn-danger
-                border-danger
-                rounded-lg
-                w-100
-                py-5
-                mt-8
-              "
+            <Button
+              bgColor="danger"
+              class="fs-5 w-100 py-5 mt-8"
               :class="{ active: isProductLoading }"
               @click="addCart"
-            >
-              加入購物車
-            </button>
+              >加入購物車
+            </Button>
           </div>
         </div>
       </div>
@@ -165,12 +168,13 @@
 </template>
 
 <script>
-import { inject, ref, reactive, watch, toRefs } from 'vue';
+import { ref, watch, inject } from 'vue';
 import { useRoute } from 'vue-router';
 import { apiPostAddCart, apiGetProductInfo } from '@/api';
 import store from '@/composition/store';
 import { useToast } from '@/methods';
 import VueEasyLightbox from 'vue-easy-lightbox';
+import Button from '@/components/frontend/Button.vue';
 
 const { getCarts, setIsLoading } = store;
 
@@ -178,28 +182,17 @@ export default {
   name: 'Product',
   components: {
     VueEasyLightbox,
+    Button,
   },
   setup() {
-    const state = inject('state');
-    const $emitter = inject('$emitter');
     const route = useRoute();
-    const { productData, isProductLoading } = apiGetProductInfo(
-      route.params.id,
-      'setup'
-    );
-    const productNum = ref(1);
+    const $emitter = inject('$emitter');
 
-    const isLightboxShow = ref(false);
-    const lightboxImgs = reactive({ lightboxImgs: [] });
+    const productId = route.params.id;
+    const { product, lightboxImgs, isProductLoading } = apiGetProductInfo(productId);
+
     const lightboxIndex = ref(0);
-
-    watch(productData, () => {
-      const data = productData.value.product;
-      lightboxImgs.lightboxImgs = data.imageUrl
-        ? [data.imageUrl, ...(data.imagesUrl || [])]
-        : data.imagesUrl || [];
-    });
-
+    const isLightboxShow = ref(false);
     const showLightbox = (idx) => {
       lightboxIndex.value = idx;
       isLightboxShow.value = true;
@@ -209,41 +202,41 @@ export default {
       isLightboxShow.value = false;
     };
 
+    const productNum = ref(1);
     const addCart = async () => {
-      const { id } = productData.value.product;
+      setIsLoading(true);
+      const { id } = product.value;
       try {
-        setIsLoading(true);
         const { data } = await apiPostAddCart(id, productNum.value);
         if (data.success) {
           await getCarts();
-          setIsLoading(false);
           $emitter.emit('showCartCanvas', true);
-          useToast('成功加入購物車!', 'success');
+          useToast('成功加入購物車!');
           productNum.value = 1;
         } else useToast('操作失敗!', 'danger');
       } catch (err) {
         console.dir(err);
       }
+      setIsLoading(false);
     };
 
     watch(
       () => route.params.id,
       (id) => {
-        apiGetProductInfo(id);
-      }
+        if (route.name === 'Product') apiGetProductInfo(id);
+      },
     );
 
     return {
-      ...toRefs(state),
-      productNum,
-      productData,
-      isProductLoading,
-      addCart,
+      product,
+      lightboxImgs,
       isLightboxShow,
-      ...toRefs(lightboxImgs),
       lightboxIndex,
+      productNum,
+      isProductLoading,
       showLightbox,
       hideLightbox,
+      addCart,
     };
   },
 };
@@ -258,6 +251,7 @@ export default {
 <style lang="scss" scoped>
 @import '~bootstrap/scss/functions';
 @import '~@/assets/styleSheets/custom/variables';
+@import '~bootstrap/scss/mixins';
 
 .product-panel {
   transform: translateY(-50px);
@@ -267,30 +261,58 @@ export default {
     margin-bottom: $spacer * 1.25;
     background-size: cover;
     transform: scale(0);
+    cursor: zoom-in;
     &:last-child {
       margin-bottom: 0;
     }
   }
+  @include media-breakpoint-down(lg) {
+    .product-img-list {
+      display: flex;
+      flex-wrap: wrap;
+      padding-top: 20px;
+      padding-right: 2%;
+    }
+    .product-img {
+      width: 31.33333%;
+      height: 200px;
+      margin-right: 2%;
+    }
+  }
+  @include media-breakpoint-down(md) {
+    .product-img {
+      width: 48%;
+      margin-right: 2%;
+    }
+  }
+  .product-title,
+  .product-material {
+    transform: translateY(100%);
+  }
   &.active {
     .product-img {
       animation: scale-ani 0.5s forwards;
+    }
+    .product-title,
+    .product-material {
+      animation: rise-up 0.5s forwards;
+    }
+    .product-material {
+      animation-delay: 0.3s;
     }
   }
 }
 .product-content {
   top: 150px;
 }
-.page-title {
-  &.active {
-    > h3 {
-      animation: scale-ani 0.5s forwards;
-      transform: scale(0);
-    }
-  }
-}
 @keyframes scale-ani {
   to {
     transform: scale(1);
+  }
+}
+@keyframes rise-up {
+  to {
+    transform: translateY(0);
   }
 }
 .nav-bg {

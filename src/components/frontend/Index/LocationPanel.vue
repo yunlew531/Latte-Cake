@@ -108,7 +108,7 @@ export default {
     let carousel = null;
     const locationPanelEl = ref(null);
     const setCarousel = () => {
-      carousel = new Carousel(locationPanelEl, {
+      carousel = new Carousel(locationPanelEl.value, {
         interval: 8000,
         ride: 'carousel',
       });

@@ -1,26 +1,32 @@
-import { ref, reactive, toRefs, onUnmounted } from 'vue';
+import {
+  ref, reactive, toRefs, onUnmounted,
+} from 'vue';
 import frontReq from '@/api/frontReq';
 
-const productData = reactive({ productData: {} });
+const product = reactive({ product: {} });
+const lightboxImgs = reactive({ lightboxImgs: [] });
+
 const isProductLoading = ref(false);
 
-export default (id, lifeCycle) => {
+export default (id) => {
   isProductLoading.value = true;
-  frontReq.get(`api/${process.env.VUE_APP_PATH}/product/${id}`).then((res) => {
-    if (res.data.success) {
-      productData.productData = res.data;
-      isProductLoading.value = false;
+  frontReq.get(`api/${process.env.VUE_APP_PATH}/product/${id}`).then(({ data }) => {
+    if (data.success) {
+      product.product = data.product;
+      lightboxImgs.lightboxImgs = data.product.imageUrl
+        ? [data.product.imageUrl, ...(data.product.imagesUrl || [])]
+        : data.product.imagesUrl || [];
     }
+    isProductLoading.value = false;
   });
 
-  if (lifeCycle === 'setup') {
-    onUnmounted(() => {
-      productData.productData = {};
-    });
-  }
+  onUnmounted(() => {
+    product.product = {};
+  });
 
   return {
-    ...toRefs(productData),
-    isProductLoading
+    ...toRefs(product),
+    ...toRefs(lightboxImgs),
+    isProductLoading,
   };
 };
