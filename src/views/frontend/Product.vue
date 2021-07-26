@@ -168,7 +168,9 @@
 </template>
 
 <script>
-import { ref, watch, inject } from 'vue';
+import {
+  ref, watch, inject, onUnmounted,
+} from 'vue';
 import { useRoute } from 'vue-router';
 import { apiPostAddCart, apiGetProductInfo } from '@/api';
 import store from '@/composition/store';
@@ -223,9 +225,15 @@ export default {
     watch(
       () => route.params.id,
       (id) => {
-        if (route.name === 'Product') apiGetProductInfo(id);
+        if (route.name === 'Product') {
+          product.value = {};
+          apiGetProductInfo(id);
+        }
       },
     );
+    onUnmounted(() => {
+      product.value = {};
+    });
 
     return {
       product,

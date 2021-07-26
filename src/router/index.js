@@ -22,6 +22,7 @@ const routes = [
         component: () => import('../views/frontend/Products.vue'),
         props: (route) => ({
           ...route.query,
+          ...route.params,
         }),
       },
       {

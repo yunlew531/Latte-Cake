@@ -1,6 +1,4 @@
-import {
-  ref, reactive, toRefs, onUnmounted,
-} from 'vue';
+import { ref, reactive, toRefs } from 'vue';
 import frontReq from '@/api/frontReq';
 
 const product = reactive({ product: {} });
@@ -18,10 +16,6 @@ export default (id) => {
         : data.product.imagesUrl || [];
     }
     isProductLoading.value = false;
-  });
-
-  onUnmounted(() => {
-    product.product = {};
   });
 
   return {

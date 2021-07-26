@@ -22,7 +22,7 @@
         class="products-panel-container duration-500"
         :class="isScrollDown ? 'col-10' : 'col-12'"
       >
-        <h3 v-if="search && allProducts.length" class="fs-5 pb-2">
+        <h3 v-if="search && products.length" class="fs-5 pb-2">
           搜尋到
           <span class="fs-4 text-danger">{{ displayData.length }}</span> 件有關
           <span class="fs-4 text-danger">{{ search }}</span> 的商品
@@ -40,7 +40,7 @@
           :class="{ active: playAnime }"
         >
           <div
-            v-if="!displayData.length && search && allProducts.length"
+            v-if="!displayData.length && search && products.length"
             class="
               flex-grow-1
               d-flex
@@ -125,7 +125,7 @@
     <Pagination
       class="py-8"
       :class="{ invisible: nowCategory !== '全部' || search }"
-      :pages="pagination"
+      :pages="pages"
       @handPage="handPage"
     />
   </section>
@@ -133,14 +133,14 @@
 
 <script>
 import {
-  ref, inject, watch, toRefs, computed, onUnmounted,
+  ref, reactive, inject, watch, toRefs, computed, onUnmounted,
 } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import store from '@/composition/store';
 import CategoryNav from '@/components/frontend/Products/CategoryNav.vue';
 import Pagination from '@/components/Pagination.vue';
 
-const { getAllProducts, getPageProducts, setPageProducts } = store;
+const { getAllProducts, getPageProducts } = store;
 
 export default {
   name: 'Products',
@@ -161,7 +161,7 @@ export default {
     const { allProducts, pageProductsData, pagination } = toRefs(state);
     const route = useRoute();
     const router = useRouter();
-    const { search } = toRefs(props);
+    const { search, category } = toRefs(props);
     const scrollY = inject('scrollY');
     const $emitter = inject('$emitter');
 
@@ -169,16 +169,28 @@ export default {
     const isScrollDown = ref(false);
 
     const nowCategory = ref('全部');
+    const products = reactive({ products: [] });
+    const pageProducts = reactive({ pageProducts: [] });
+    const pages = reactive({ pages: {} });
     const displayData = computed(() => {
       let data = null;
-      if (search.value && allProducts.value.length) {
-        data = allProducts.value.filter((product) => product.title.match(search.value));
+      if (search.value && products.products?.length) {
+        data = products.products.filter((product) => product.title.match(search.value));
       } else if (nowCategory.value === '全部' || nowCategory.value === '搜尋') {
-        data = pageProductsData.value;
+        data = pageProducts.pageProducts;
       } else {
-        data = allProducts.value.filter((product) => product.category === nowCategory.value);
+        data = products.products.filter((product) => product.category === nowCategory.value);
       }
       return data;
+    });
+    watch(allProducts, (data) => {
+      products.products = data;
+    });
+    watch(pageProductsData, (data) => {
+      pageProducts.pageProducts = data;
+    });
+    watch(pagination, (data) => {
+      pages.pages = data;
     });
 
     watch(scrollY, (y) => {
@@ -191,25 +203,29 @@ export default {
       playAnime.value = true;
     });
 
-    watch(search, (value) => {
-      if (value) nowCategory.value = '搜尋';
-    });
+    watch(
+      [search, category],
+      ([searchProps, categoryProps]) => {
+        if (searchProps) nowCategory.value = '搜尋';
+        else if (categoryProps) nowCategory.value = categoryProps;
+      },
+      { immediate: true },
+    );
 
     const handPage = (page) => {
       getPageProducts(page);
       window.scrollTo(0, 0);
     };
 
-    const removeSearch = (category) => {
+    const removeSearch = (value) => {
       $emitter.emit('removeSearch');
-      nowCategory.value = category;
+      nowCategory.value = value;
       const query = { ...route.query };
       delete query.search;
       router.replace({ query });
     };
     onUnmounted(removeSearch);
 
-    setPageProducts({ products: [] });
     getAllProducts();
     getPageProducts().then(({ success }) => {
       if (success) playAnime.value = true;
@@ -219,11 +235,12 @@ export default {
     };
 
     return {
+      ...toRefs(products),
+      ...toRefs(pageProducts),
+      ...toRefs(pages),
       isScrollDown,
       nowCategory,
-      allProducts,
       displayData,
-      pagination,
       playAnime,
       handPage,
       removeSearch,

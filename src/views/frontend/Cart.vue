@@ -235,6 +235,7 @@
 import {
   ref, inject, toRefs, computed,
 } from 'vue';
+import { useRouter } from 'vue-router';
 import Button from '@/components/frontend/Button.vue';
 import { useToast } from '@/methods';
 import { apiPutCartQty, apiDeleteCart, apiDeleteAllCarts } from '@/api';
@@ -248,6 +249,7 @@ export default {
     Button,
   },
   setup() {
+    const router = useRouter();
     const state = inject('state');
     const productNum = ref(1);
 
@@ -300,6 +302,10 @@ export default {
       setIsLoading(false);
     };
 
+    const searchCategory = (category) => {
+      router.push({ name: 'Products', params: { category } });
+    };
+
     const deliveryTime = computed(() => {
       const dayTranslate = ['日', '一', '二', '三', '四', '五', '六'];
       const date = new Date();
@@ -324,6 +330,7 @@ export default {
       removeCart,
       removeAllCarts,
       handQty,
+      searchCategory,
     };
   },
 };

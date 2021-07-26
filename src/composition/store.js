@@ -93,6 +93,7 @@ const getOrders = async () => {
 export default {
   state: readonly(state),
   setIsLoading,
+  setAllProducts,
   setPageProducts,
   getCarts,
   getOrders,
