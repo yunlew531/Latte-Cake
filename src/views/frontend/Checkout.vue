@@ -100,7 +100,7 @@
               :key="product.id"
               class="product-item fs-5 shadow-sm rounded mb-2"
               :class="{ show: nowShowCarts.includes(key) }"
-              @click="showCartInfo(key)"
+              @click="showCartInfo($event, key)"
             >
               <button type="button" class="btn d-flex flex-wrap align-items-end w-100 p-3">
                 <h2 class="text-primary d-inline-block d-sm-block fs-5 m-0">
@@ -112,8 +112,8 @@
                   ><span class="fs-7">NT$</span> {{ product.total }}</span
                 >
               </button>
-              <div class="product-content">
-                <div class="fs-7 d-flex justify-content-between">
+              <div class="product-content border-0 px-4">
+                <div class="fs-7 d-flex justify-content-between mt-4">
                   <router-link :to="`/product/${product.product.id}`">
                     商品連結
                   </router-link>
@@ -265,10 +265,10 @@ export default {
     };
 
     const nowShowCarts = reactive([]);
-    const showCartInfo = (key) => {
+    const showCartInfo = (event, key) => {
       const idx = nowShowCarts.indexOf(key);
-      if (idx !== -1) nowShowCarts.splice(idx, 1);
-      else nowShowCarts.push(key);
+      if (idx !== -1 && event.target.closest('button')) nowShowCarts.splice(idx, 1);
+      else if (idx === -1) nowShowCarts.push(key);
     };
 
     return {
@@ -328,13 +328,15 @@ export default {
   &.show {
     border: 1px solid tint-color($primary, 90%);
     .product-content {
+      transition: 1s ease-in-out;
       max-height: 500px;
       border-top: 1px solid $gray-300;
-      padding: 12px;
     }
   }
 }
 .product-content {
+  box-shadow: 0 -1px 0 tint-color($primary, 90%);
+  transition: 0.5s cubic-bezier(0, 1, 0, 1);
   overflow: hidden;
   max-height: 0;
 }
