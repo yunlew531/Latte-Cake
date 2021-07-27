@@ -7,6 +7,7 @@
     data-bs-backdrop="false"
     data-bs-scroll="true"
     aria-labelledby="cartCanvasLabel"
+    @click="playProgressAnime = false"
   >
     <div class="offcanvas-header">
       <h4 id="cartCanvasLabel">購物車</h4>
@@ -18,47 +19,35 @@
       ></button>
     </div>
     <div class="px-4 m-0 d-flex align-items-center">
-      <span class="me-auto">{{ cartsData.carts?.length }} 個品項</span>
-      <a
-        href="javascript:;"
-        class="cart-btn btn btn-danger"
-        @click="goToPage('cart')"
-        >詳細購物車</a
-      >
+      <span class="me-auto">{{ carts.carts?.length }} 個品項</span>
+      <Button class="py-1" @click="goToPage('cart')"> 詳細購物車 </Button>
     </div>
     <div class="px-4 py-3 border-bottom">
-      <div
-        class="progress"
-        :class="{ active: isProgressAniPlay }"
-        v-show="isProgressAniPlay"
-      >
+      <div class="progress" :class="{ active: playProgressAnime }" v-show="playProgressAnime">
         <div class="progress-bar" role="progressbar"></div>
       </div>
     </div>
     <ul class="offcanvas-body list-unstyled mb-0">
       <li
         class="product-item border border-black-300 mb-3"
-        v-for="product in cartsData.carts"
+        v-for="product in carts.carts"
         :key="product.id"
       >
-        <a
-          href="javascript:;"
-          class="text-decoration-none text-reset"
-          @click="goToPage('product', product.product.id)"
-        >
+        <div>
           <div class="d-flex">
             <div
               class="product-img"
               :style="{
-                'background-image': `url(${product.product.imageUrl})`,
+                'background-image': `url(${product.product.imageUrl ||
+                  product.product.imagesUrl[0]})`,
               }"
             ></div>
             <div class="p-3 flex-grow-1">
-              <h3 class="fs-6">{{ product.product.title }}</h3>
+              <h3 class="product-title fs-6" @click="goToPage('product', product.product.id)">
+                {{ product.product.title }}
+              </h3>
               <div class="d-flex">
-                <span class="flex-grow-1">
-                  NT$ {{ product.product.price?.toLocaleString() }}
-                </span>
+                <span class="flex-grow-1"> NT$ {{ product.product.price?.toLocaleString() }} </span>
                 <span>x {{ product.qty }} 個</span>
               </div>
               <div class="d-flex">
@@ -69,13 +58,8 @@
                 >
               </div>
               <div class="d-flex align-items-center mt-1">
-                <div
-                  class="d-flex align-items-center position-relative me-auto"
-                >
-                  <span
-                    class="qty-btn material-icons"
-                    @click.stop="handQty(product, -1)"
-                  >
+                <div class="d-flex align-items-center position-relative me-auto">
+                  <span class="qty-btn material-icons" @click="handQty(product, -1)">
                     remove
                   </span>
                   <span
@@ -88,81 +72,84 @@
                     "
                     >{{ product.qty }}</span
                   >
-                  <span
-                    class="qty-btn material-icons"
-                    @click.stop="handQty(product, 1)"
-                  >
+                  <span class="qty-btn material-icons" @click="handQty(product, 1)">
                     add
                   </span>
                 </div>
-                <button
-                  type="button"
-                  class="btn btn-danger py-2px"
-                  @click.stop="removeCart(product.id)"
-                >
+                <Button class="py-2px" @click="removeCart(product.id)">
                   移除
-                </button>
+                </Button>
               </div>
             </div>
           </div>
-        </a>
+        </div>
       </li>
     </ul>
     <div class="d-flex align-items-center border-top px-4 py-4">
-      <span class="fs-5 ms-auto"
-        >總金額 NT$ {{ cartsData.total?.toLocaleString() }} 元</span
-      >
+      <span class="fs-5 ms-auto">總金額 NT$ {{ carts.total?.toLocaleString() }} 元</span>
     </div>
   </section>
 </template>
 
 <script>
-import { ref, inject, toRefs, onMounted, onUnmounted } from 'vue';
+import {
+  ref, reactive, inject, toRefs, watch, onMounted, onUnmounted,
+} from 'vue';
 import Offcanvas from 'bootstrap/js/dist/offcanvas';
 import { apiPutCartQty, apiDeleteCart } from '@/api';
 import { useRouter } from 'vue-router';
 import store from '@/composition/store';
 import { useToast } from '@/methods';
+import Button from '@/components/frontend/Button.vue';
 
 const { getCarts, setIsLoading } = store;
 
 export default {
   name: 'CartCanvas',
+  components: {
+    Button,
+  },
   setup() {
-    const router = useRouter();
-    const $emitter = inject('$emitter');
     const state = inject('state');
-    const cartCanvasDom = ref(null);
-    const isProgressAniPlay = ref(false);
-    let cartCanvas = null;
-    let progressAniTimeOut = null;
+    const { cartsData } = toRefs(state);
+    const $emitter = inject('$emitter');
+    const router = useRouter();
 
-    const showCartCanvas = (playAni) => {
-      if (isProgressAniPlay.value) {
-        clearTimeout(progressAniTimeOut);
-        isProgressAniPlay.value = false;
-      } else if (playAni) {
-        isProgressAniPlay.value = true;
-        progressAniTimeOut = setTimeout(() => {
-          isProgressAniPlay.value = false;
-          cartCanvas.hide();
+    const carts = reactive({ carts: [] });
+    watch(cartsData, (data) => {
+      carts.carts = data;
+    });
+
+    let cartCanvas = null;
+    const hideCartCanvas = () => {
+      cartCanvas.hide();
+    };
+
+    let progressAnimeTimeout = null;
+    const playProgressAnime = ref(false);
+    const showCartCanvas = (playAnime = false) => {
+      if (playProgressAnime.value) {
+        clearTimeout(progressAnimeTimeout);
+        playProgressAnime.value = false;
+      } else if (playAnime) {
+        playProgressAnime.value = true;
+        progressAnimeTimeout = setTimeout(() => {
+          if (playProgressAnime.value === false) return;
+          playProgressAnime.value = false;
+          hideCartCanvas();
         }, 8000);
       }
       cartCanvas.show();
     };
 
-    const hideCartCanvas = () => {
-      cartCanvas.hide();
-    };
-
     const goToPage = (page, id) => {
-      if (page === 'product') router.push({ path: `/${page}/${id}` });
-      else router.push({ path: `/${page}` });
+      if (page === 'product') router.push(`/${page}/${id}`);
+      else router.push(`/${page}`);
       cartCanvas.hide();
     };
 
     const goToCart = () => {
-      router.push({ path: '/cart' });
+      router.push('/cart');
       cartCanvas.hide();
     };
 
@@ -175,47 +162,54 @@ export default {
         const { data } = await apiPutCartQty(product);
         if (data.success) {
           await getCarts();
-          setIsLoading(false);
           useToast('成功更新數量!', 'success');
         } else useToast('操作失敗!', 'danger');
       } catch (err) {
         console.dir(err);
       }
+      setIsLoading(false);
     };
 
-    const removeCart = async (id) => {
+    const removeCart = async (productId) => {
       setIsLoading(true);
       try {
-        const { data } = await apiDeleteCart(id);
+        const { data } = await apiDeleteCart(productId);
         if (data.success) {
           await getCarts();
-          setIsLoading(false);
           useToast('成功移除商品!', 'success');
-        } else useToast('發生錯誤!', 'danger');
+        } else {
+          useToast('操作失敗!', 'danger');
+        }
       } catch (err) {
         console.dir(err);
       }
+      setIsLoading(false);
     };
 
+    const init = () => {
+      $emitter.on('showCartCanvas', showCartCanvas);
+      $emitter.on('hideCartCanvas', hideCartCanvas);
+    };
+    init();
+
+    const cartCanvasDom = ref(null);
     onMounted(() => {
       cartCanvas = new Offcanvas(cartCanvasDom.value);
-      $emitter.on('showCartCanvas', showCartCanvas); // Product.vue / Navbar.vue
-      $emitter.on('hideCartCanvas', hideCartCanvas);
     });
-
     onUnmounted(() => {
       $emitter.off('showCartCanvas', showCartCanvas);
       $emitter.off('hideCartCanvas', hideCartCanvas);
     });
 
     return {
-      ...toRefs(state),
+      ...toRefs(carts),
       cartCanvasDom,
+      playProgressAnime,
+      showCartCanvas,
       goToPage,
       goToCart,
       handQty,
       removeCart,
-      isProgressAniPlay,
     };
   },
 };
@@ -223,14 +217,6 @@ export default {
 
 <style lang="scss" scoped>
 @import '~@/assets/styleSheets/custom/variables';
-
-.cart-btn {
-  color: $white;
-  &:hover {
-    color: $primary;
-    background: $white;
-  }
-}
 
 .progress {
   height: 6px;
@@ -292,6 +278,15 @@ export default {
     box-shadow: $box-shadow;
   }
 }
+
+.product-title {
+  color: $primary;
+  cursor: pointer;
+  &:hover {
+    color: shade-color($primary, 10%);
+  }
+}
+
 .product-img {
   width: 133px;
   background: center no-repeat;
