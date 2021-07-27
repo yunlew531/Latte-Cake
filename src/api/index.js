@@ -10,7 +10,7 @@ import { postUploadImg, postAddProduct, putEditProduct } from './backend/AddProd
 import getCustOrders from './frontend/Orders';
 import getCustOrder from './frontend/Order';
 import LogOut from './backend/shared/index';
-import { getProducts } from './backend/Products';
+import { getProducts, getAllAdminProducts, deleteProduct } from './backend/Products';
 import { postCheckout, postCoupon } from './frontend/Checkout';
 import { getOrders } from './backend/Orders';
 import putEditOrder from './backend/Order';
@@ -41,6 +41,9 @@ export const apiPostUploadImg = postUploadImg;
 export const apiPostAddProduct = postAddProduct;
 export const apiLogOut = LogOut;
 export const apiGetProducts = getProducts;
+export const apiGetAllAdminProducts = getAllAdminProducts;
+export const apiDeleteProduct = deleteProduct;
+
 export const apiPutEditProduct = putEditProduct;
 export const apiGetOrders = getOrders;
 export const apiPutEditOrder = putEditOrder;
