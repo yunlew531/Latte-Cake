@@ -67,8 +67,7 @@
           py-2
         "
       >
-        <span class="material-icons-outlined text-primary me-1">
-          border_color </span
+        <span class="material-icons-outlined text-primary me-1"> border_color </span
         >訂單列表</router-link
       >
     </li>
@@ -87,8 +86,7 @@
           py-2
         "
       >
-        <span class="material-icons-outlined text-primary me-1">
-          local_offer </span
+        <span class="material-icons-outlined text-primary me-1"> local_offer </span
         >優惠券</router-link
       >
     </li>

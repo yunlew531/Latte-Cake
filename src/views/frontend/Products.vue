@@ -133,9 +133,9 @@
 
 <script>
 import {
-  ref, reactive, inject, watch, toRefs, computed, onUnmounted,
+  ref, reactive, inject, watch, toRefs, computed,
 } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
+import { onBeforeRouteLeave, useRoute, useRouter } from 'vue-router';
 import store from '@/composition/store';
 import CategoryNav from '@/components/frontend/Products/CategoryNav.vue';
 import Pagination from '@/components/Pagination.vue';
@@ -224,7 +224,7 @@ export default {
       delete query.search;
       router.replace({ query });
     };
-    onUnmounted(removeSearch);
+    onBeforeRouteLeave(removeSearch);
 
     getAllProducts();
     getPageProducts().then(({ success }) => {

@@ -1,5 +1,6 @@
 <template>
   <div class="rounded bg-white shadow w-100 p-10">
+    <Loading v-model:active="isLoading" :is-full-page="false" />
     <h2 class="mb-5">{{ boardStatus }}產品</h2>
     <Form v-slot="{ errors }" @submit="addProduct">
       <div class="row">
@@ -15,31 +16,17 @@
                 placeholder="輸入圖片網址"
                 v-model.trim="product.imgsTemp"
               />
-              <button
-                type="button"
-                class="text-black btn btn-outline-secondary"
-                @click="addImg"
-              >
+              <button type="button" class="text-black btn btn-outline-secondary" @click="addImg">
                 新增
               </button>
             </div>
           </div>
           <div class="mb-3">
             <label for="img" class="form-label mb-1">圖片上傳</label>
-            <input
-              ref="fileInput"
-              @change="upLoadImg"
-              type="file"
-              class="form-control"
-            />
+            <input ref="fileInputEl" @change="upLoadImg" type="file" class="form-control" />
           </div>
-          <ul
-            class="product-img-list d-flex flex-wrap list-unstyled py-sm-5 m-0"
-          >
-            <li
-              v-if="product.imageUrl"
-              class="product-img position-relative mb-2"
-            >
+          <ul class="product-img-list d-flex flex-wrap list-unstyled py-sm-5 m-0">
+            <li v-if="product.imageUrl" class="product-img position-relative mb-2">
               <img :src="product.imageUrl" class="img-fluid" />
               <button
                 type="button"
@@ -78,7 +65,7 @@
               rules="required"
               v-model.trim="product.title"
             ></Field>
-            <error-message name="名稱" class="invalid-feedback"></error-message>
+            <ErrorMessage name="名稱" class="invalid-feedback"></ErrorMessage>
           </div>
           <div class="row">
             <div class="col-6">
@@ -94,10 +81,7 @@
                   rules="required"
                   v-model.trim="product.category"
                 ></Field>
-                <error-message
-                  name="分類"
-                  class="invalid-feedback"
-                ></error-message>
+                <ErrorMessage name="分類" class="invalid-feedback"></ErrorMessage>
               </div>
             </div>
             <div class="col-6">
@@ -113,10 +97,7 @@
                   rules="required"
                   v-model.trim="product.unit"
                 ></Field>
-                <error-message
-                  name="單位"
-                  class="invalid-feedback"
-                ></error-message>
+                <ErrorMessage name="單位" class="invalid-feedback"></ErrorMessage>
               </div>
             </div>
           </div>
@@ -132,12 +113,10 @@
                   :class="{ 'is-invalid': errors['原價'] }"
                   placeholder="請輸入 原價"
                   rules="required"
+                  min="0"
                   v-model.number="product.origin_price"
                 ></Field>
-                <error-message
-                  name="原價"
-                  class="invalid-feedback"
-                ></error-message>
+                <ErrorMessage name="原價" class="invalid-feedback"></ErrorMessage>
               </div>
             </div>
             <div class="col-6">
@@ -151,12 +130,10 @@
                   :class="{ 'is-invalid': errors['售價'] }"
                   placeholder="請輸入 售價"
                   rules="required"
+                  min="0"
                   v-model.number="product.price"
                 ></Field>
-                <error-message
-                  name="售價"
-                  class="invalid-feedback"
-                ></error-message>
+                <ErrorMessage name="售價" class="invalid-feedback"></ErrorMessage>
               </div>
             </div>
           </div>
@@ -193,9 +170,7 @@
                 class="form-check-input"
                 v-model="product.freeDelivery"
               />
-              <label for="freeDelivery" class="ms-2 me-10 me-sm-0"
-                >免運費</label
-              >
+              <label for="freeDelivery" class="ms-2 me-10 me-sm-0">免運費</label>
               <input
                 id="is_enabled"
                 type="checkbox"
@@ -223,55 +198,44 @@
 </template>
 
 <script>
-import { onUnmounted, reactive, ref, watch, toRefs } from 'vue';
+import {
+  ref, reactive, toRefs, onUnmounted, watch, inject,
+} from 'vue';
 import { useRouter } from 'vue-router';
-import store from '@/composition/store';
 import { useToast } from '@/methods';
 import { apiPostUploadImg, apiPostAddProduct, apiPutEditProduct } from '@/api';
-
-const { setIsLoading } = store;
+import Loading from 'vue-loading-overlay';
+import 'vue-loading-overlay/dist/vue-loading.css';
 
 export default {
   name: 'AddProduct',
+  components: {
+    Loading,
+  },
   props: {
     boardStatus: {
       type: String,
       default: '新增',
     },
     tempProduct: {
-      type: Object,
+      type: String,
     },
   },
-  emits: {
-    handStatus: (status) => status.status === '新增',
-  },
-  setup(props, { emit }) {
+  setup(props) {
     const { boardStatus, tempProduct } = toRefs(props);
     const router = useRouter();
+    const $emitter = inject('$emitter');
 
-    const product = reactive({
-      product: { imgs: [] },
-    });
-    const fileInput = ref(null);
+    const isLoading = ref(false);
 
-    watch(
-      boardStatus,
-      (next) => {
-        if (next === '編輯') {
-          product.product = tempProduct.value;
-        }
-      },
-      { immediate: true }
-    );
-
+    const product = reactive({ product: { imgs: [] } });
     const addImg = () => {
       const prod = product.product;
       if (!prod.imagesUrl) prod.imagesUrl = [];
-      if (!prod.imgsTemp) {
-        useToast('請輸入網址!', 'danger');
-      } else if (
-        (prod.imageUrl && prod.imagesUrl.length >= 4) ||
-        (!prod.imageUrl && prod.imagesUrl.length >= 5)
+      if (!prod.imgsTemp) useToast('請輸入網址!', 'danger');
+      else if (
+        (prod.imageUrl && prod.imagesUrl.length >= 4)
+        || (!prod.imageUrl && prod.imagesUrl.length >= 5)
       ) {
         useToast('已達圖片上限!', 'danger');
       } else prod.imagesUrl.push(prod.imgsTemp);
@@ -279,6 +243,7 @@ export default {
     };
 
     const addProduct = async () => {
+      isLoading.value = true;
       const prod = product.product;
       const productData = {
         title: prod.title,
@@ -293,56 +258,69 @@ export default {
         imagesUrl: prod.imagesUrl,
         freeDelivery: prod.freeDelivery,
       };
-      const method =
-        boardStatus === '新增' ? apiPostAddProduct : apiPutEditProduct;
-      const { id } = prod;
+      const method = boardStatus.value === '新增' ? apiPostAddProduct : apiPutEditProduct;
+      const { id } = product.product;
       try {
         const { data } = await method(productData, id);
         if (data.success) {
+          useToast(boardStatus.value === '新增' ? '新增成功!' : '完成更新!', 'success');
           router.push('/admin/products');
-          useToast('新增成功!', 'success');
         } else useToast('發生錯誤!', 'danger');
       } catch (err) {
         console.dir(err);
       }
+      isLoading.value = false;
     };
 
     const removeImg = (key) => {
       product.product.imagesUrl.splice(key, 1);
     };
 
+    const fileInputEl = ref(null);
     const upLoadImg = async () => {
-      setIsLoading(true);
+      isLoading.value = true;
       const formData = new FormData();
-      formData.append('file-to-upload', fileInput.value.files[0]);
+      formData.append('file-to-upload', fileInputEl.value.files[0]);
       try {
         const { data } = await apiPostUploadImg(formData);
         if (data.success) {
           product.product.imageUrl = data.imageUrl;
-          fileInput.value.value = '';
+          fileInputEl.value.value = '';
+          useToast('成功上傳!', 'success');
         } else useToast(data.message, 'danger');
-        setIsLoading(false);
       } catch (err) {
         console.dir(err);
       }
+      isLoading.value = false;
     };
 
     const handStatus = () => {
-      emit('handStatus', { status: '新增' });
+      $emitter.emit('handStatus', '新增');
       router.push('/admin/products');
     };
 
+    watch(
+      tempProduct,
+      (value) => {
+        if (value) {
+          product.product = JSON.parse(value);
+        }
+      },
+      { immediate: true },
+    );
+
     onUnmounted(() => {
-      emit('handStatus', { status: '新增' });
+      $emitter.emit('handStatus', '新增');
     });
 
     return {
       ...toRefs(product),
-      fileInput,
+      fileInputEl,
+      isLoading,
       addImg,
+      addProduct,
       removeImg,
       upLoadImg,
-      addProduct,
       handStatus,
     };
   },

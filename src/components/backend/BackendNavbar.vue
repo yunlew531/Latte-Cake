@@ -27,15 +27,20 @@
           type="search"
           placeholder="搜尋商品"
           aria-label="Search"
-          v-model="searchText"
+          v-model.trim="search"
+          @keyup.enter="searchProduct"
         />
-        <button class="search-btn btn position-absolute end-0" type="button">
+        <button
+          class="search-btn btn position-absolute end-0 bottom-n1"
+          type="button"
+          @click="searchProduct"
+        >
           <span class="material-icons"> search </span>
         </button>
       </form>
       <button
         type="button"
-        class="align-self-start btn btn-primary mt-2 ms-0 ms-xm-5"
+        class="align-self-start btn btn-primary mt-2 ms-0 ms-sm-5"
         @click="logOut"
       >
         登出
@@ -58,11 +63,9 @@
         class="user-photo rounded-pill border overflow-hiddden"
       ></div>
       <p class="m-0 ms-3">
-        <span
-          class="d-block fs-5"
-          :class="calcNameSize(user.username?.length)"
-          >{{ user.username }}</span
-        >
+        <span class="d-block fs-5" :class="calcNameSize(user.username?.length)">{{
+          user.username
+        }}</span>
         <span class="fs-7 text-black-300">管理員</span>
       </p>
     </div>
@@ -70,49 +73,90 @@
 </template>
 
 <script>
-import { watch, ref } from 'vue';
-import { useRouter } from 'vue-router';
-import { apiLogOut } from '@/api';
+import {
+  inject, onUnmounted, ref, reactive, watch,
+} from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+import { apiLogOut, apiGetUser } from '@/api';
+
+import store from '@/composition/store';
+
+const { setIsLogIn } = store;
 
 export default {
   name: 'BackendNavbar',
-  props: {
-    user: {
-      type: Object,
-      default: () => ({ username: '無法取得用戶者資料' }),
-    },
-  },
   setup() {
     const router = useRouter();
+    const route = useRoute();
+    const $emitter = inject('$emitter');
+    const search = ref('');
 
-    const searchText = ref('');
-    const isSearchFocus = ref(false);
-    watch(searchText, () => {
-      if (searchText.value) {
-        isSearchFocus.value = true;
-      } else {
-        isSearchFocus.value = false;
+    const logOut = async () => {
+      const { data } = await apiLogOut();
+      if (data.success) {
+        document.cookie = 'LatteCake=;expires=Thu, 01 Jan 1970 00:00:00 UTC;';
+        setIsLogIn(false);
+        router.push('/login');
       }
-    });
+    };
 
     const calcNameSize = (length) => {
       if (length > 15) return 'fs-6';
       return 'fs-5';
     };
 
-    const logOut = async () => {
-      const { data } = await apiLogOut();
-      if (data.success) {
-        document.cookie = 'LatteCake=;expires=Thu, 01 Jan 1970 00:00:00 UTC;';
-        router.push('/login');
+    const searchProduct = () => {
+      if (route.name === 'BackendProducts') {
+        $emitter.emit('handSearch', search.value);
+      } else {
+        router.push({
+          name: 'BackendProducts',
+          query: { search: search.value },
+        });
       }
     };
 
+    const removeSearch = () => {
+      search.value = '';
+    };
+
+    const user = reactive({});
+    const getUser = async () => {
+      try {
+        const res = await apiGetUser();
+        if (res.status === 200) {
+          const data = res.data.results[0];
+          user.username = `${data.name.first} ${data.name.last}`;
+          user.photo = data.picture.medium;
+        }
+      } catch (err) {
+        console.dir(err);
+      }
+    };
+
+    const init = () => {
+      $emitter.on('removeSearch', removeSearch);
+      getUser();
+    };
+    init();
+
+    onUnmounted(() => {
+      $emitter.off('removeSearch', removeSearch);
+    });
+
+    const isSearchFocus = ref(false);
+    watch(search, (value) => {
+      if (value) isSearchFocus.value = true;
+      else isSearchFocus.value = false;
+    });
+
     return {
-      searchText,
+      user,
+      search,
       isSearchFocus,
       logOut,
       calcNameSize,
+      searchProduct,
     };
   },
 };

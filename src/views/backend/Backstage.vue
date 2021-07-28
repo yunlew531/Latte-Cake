@@ -1,26 +1,27 @@
 <template>
-  <div v-if="isLogIn">
-    <BackendNavbar :user="user" />
+  <div v-if="isLogIn" id="backstage">
+    <BackendNavbar />
     <div class="d-flex flex-wrap px-5 pb-8">
       <Sidebar :boardStatus="boardStatus" />
-      <router-view
-        :boardStatus="boardStatus"
-        :tempProduct="tempProduct"
-        @handStatus="handStatus"
-        class="dashboard-content flex-grow-1"
-      />
+      <div class="dashboard-content flex-grow-1">
+        <router-view />
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import { ref, reactive, toRefs } from 'vue';
+import {
+  ref, inject, toRefs, onUnmounted,
+} from 'vue';
 import { useRouter } from 'vue-router';
-import backReq from '@/api/backReq';
-import { apiPostCheck, apiGetUser } from '@/api';
-import { useToast } from '@/methods';
+import { apiPostCheck } from '@/api';
 import BackendNavbar from '@/components/backend/BackendNavbar.vue';
 import Sidebar from '@/components/backend/Sidebar.vue';
+import backReq from '@/api/backReq';
+import store from '@/composition/store';
+
+const { setIsLogIn } = store;
 
 export default {
   name: 'Backstage',
@@ -29,55 +30,55 @@ export default {
     Sidebar,
   },
   setup() {
+    const state = inject('state');
+    const { isLogIn } = toRefs(state);
+    const $emitter = inject('$emitter');
     const router = useRouter();
-    const isLogIn = ref(false);
-
     const boardStatus = ref('新增');
-    const tempProduct = reactive({ tempProduct: {} });
-    const handStatus = (data) => {
-      boardStatus.value = data.status;
-      tempProduct.tempProduct = data.product;
-    };
 
     const setHeaders = () => {
       const token = document.cookie.replace(
         /(?:(?:^|.*;\s*)LatteCake\s*=\s*([^;]*).*$)|^.*$/,
-        '$1'
+        '$1',
       );
       backReq.defaults.headers.common.Authorization = token;
     };
 
-    setHeaders();
-
-    const user = reactive({});
-    apiPostCheck()
-      .then((res) => {
-        if (res.data.success) {
-          isLogIn.value = true;
-        } else {
-          useToast('請重新登入', 'danger');
+    const checkLoginStatus = async () => {
+      setHeaders();
+      let resData = null;
+      try {
+        const { data } = await apiPostCheck();
+        if (data.success) setIsLogIn(true);
+        else {
+          setIsLogIn(false);
           router.push('/login');
-          return false;
         }
-        return apiGetUser();
-      })
-      .then((res) => {
-        if (res.status === 200) {
-          const data = res.data.results[0];
-          user.username = `${data.name.first} ${data.name.last}`;
-          user.photo = data.picture.medium;
-        }
-      })
-      .catch((err) => {
+        resData = data;
+      } catch (err) {
         console.dir(err);
-      });
+        resData = err;
+      }
+      return resData;
+    };
+
+    const handStatus = (status) => {
+      boardStatus.value = status;
+    };
+
+    const init = () => {
+      $emitter.on('handStatus', handStatus);
+      checkLoginStatus();
+    };
+    init();
+
+    onUnmounted(() => {
+      $emitter.off('handStatus', handStatus);
+    });
 
     return {
-      ...toRefs(tempProduct),
-      isLogIn,
       boardStatus,
-      user,
-      handStatus,
+      isLogIn,
     };
   },
 };

@@ -80,11 +80,17 @@ const routes = [
         path: 'addProduct',
         name: 'AddProduct',
         component: () => import('../views/backend/AddProduct.vue'),
+        props: (route) => ({
+          ...route.params,
+        }),
       },
       {
         path: 'products',
         name: 'BackendProducts',
         component: () => import('../views/backend/Products.vue'),
+        props: (route) => ({
+          ...route.query,
+        }),
       },
       {
         path: 'coupon',

@@ -101,9 +101,6 @@ export default {
       type: String,
     },
   },
-  emits: {
-    handStatus: (status) => status.status === '編輯',
-  },
   components: {
     Loading,
     Pagination,
@@ -132,6 +129,10 @@ export default {
       }
       isLoading.value = false;
     };
+
+    watch(search, (value) => {
+      console.log(value);
+    });
 
     const getAllProducts = async () => {
       try {
@@ -166,9 +167,10 @@ export default {
 
     const editProduct = (product) => {
       const tempProduct = JSON.stringify(product);
+      $emitter.emit('handStatus', '編輯');
       router.push({
         name: 'AddProduct',
-        params: { boardStatus: '編輯', tempProduct },
+        params: { tempProduct, boardStatus: '編輯' },
       });
     };
 
@@ -200,6 +202,7 @@ export default {
 
     onUnmounted(() => {
       $emitter.off('handSearch', handSearch);
+      $emitter.emit('removeSearch', '');
     });
 
     onBeforeRouteLeave((to, from, next) => {

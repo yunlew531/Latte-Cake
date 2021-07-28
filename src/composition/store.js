@@ -5,6 +5,7 @@ import {
 
 // state
 const state = reactive({
+  isLogIn: false,
   isLoading: false,
   cartsData: {},
   allProducts: [],
@@ -33,6 +34,10 @@ const setPageProducts = (data) => {
 
 const setOrders = (orders) => {
   state.orders = orders;
+};
+
+const setIsLogIn = (status) => {
+  state.isLogIn = status;
 };
 
 // actions
@@ -100,4 +105,5 @@ export default {
   getAllProducts,
   getPageProducts,
   setCartsData,
+  setIsLogIn,
 };
