@@ -12,8 +12,8 @@ import getCustOrder from './frontend/Order';
 import LogOut from './backend/shared/index';
 import { getProducts, getAllAdminProducts, deleteProduct } from './backend/Products';
 import { postCheckout, postCoupon } from './frontend/Checkout';
-import { getOrders } from './backend/Orders';
-import putEditOrder from './backend/Order';
+import { getOrders, deleteAllOrders } from './backend/Orders';
+import { putEditOrder, delOrder } from './backend/Order';
 import {
   postAddCoupon, getCoupons, editCoupon, deleteCoupon,
 } from './backend/Coupon';
@@ -43,9 +43,10 @@ export const apiLogOut = LogOut;
 export const apiGetProducts = getProducts;
 export const apiGetAllAdminProducts = getAllAdminProducts;
 export const apiDeleteProduct = deleteProduct;
-
 export const apiPutEditProduct = putEditProduct;
 export const apiGetOrders = getOrders;
+export const apiDelOrder = delOrder;
+export const apiDeleteAllOrders = deleteAllOrders;
 export const apiPutEditOrder = putEditOrder;
 export const apiPostAddCoupon = postAddCoupon;
 export const apiGetCoupons = getCoupons;

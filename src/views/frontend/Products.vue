@@ -133,9 +133,9 @@
 
 <script>
 import {
-  ref, reactive, inject, watch, toRefs, computed,
+  ref, reactive, inject, watch, toRefs, computed, onUnmounted,
 } from 'vue';
-import { onBeforeRouteLeave, useRoute, useRouter } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import store from '@/composition/store';
 import CategoryNav from '@/components/frontend/Products/CategoryNav.vue';
 import Pagination from '@/components/Pagination.vue';
@@ -174,9 +174,9 @@ export default {
     const pages = reactive({ pages: {} });
     const displayData = computed(() => {
       let data = null;
-      if (search.value && products.products?.length) {
+      if (search.value && products.products.length) {
         data = products.products.filter((product) => product.title.match(search.value));
-      } else if (nowCategory.value === '全部' || nowCategory.value === '搜尋') {
+      } else if (nowCategory.value === '全部') {
         data = pageProducts.pageProducts;
       } else {
         data = products.products.filter((product) => product.category === nowCategory.value);
@@ -224,7 +224,10 @@ export default {
       delete query.search;
       router.replace({ query });
     };
-    onBeforeRouteLeave(removeSearch);
+
+    onUnmounted(() => {
+      $emitter.emit('removeSearch');
+    });
 
     getAllProducts();
     getPageProducts().then(({ success }) => {

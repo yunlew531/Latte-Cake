@@ -201,7 +201,7 @@
 import {
   ref, reactive, toRefs, onUnmounted, watch, inject,
 } from 'vue';
-import { useRouter } from 'vue-router';
+import { useRouter, onBeforeRouteLeave } from 'vue-router';
 import { useToast } from '@/methods';
 import { apiPostUploadImg, apiPostAddProduct, apiPutEditProduct } from '@/api';
 import Loading from 'vue-loading-overlay';
@@ -311,6 +311,11 @@ export default {
 
     onUnmounted(() => {
       $emitter.emit('handStatus', '新增');
+    });
+
+    onBeforeRouteLeave((to, from, next) => {
+      isLoading.value = false;
+      next();
     });
 
     return {
