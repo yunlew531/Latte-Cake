@@ -2,11 +2,7 @@
   <div class="row">
     <div class="col-8">
       <div class="rounded bg-white shadow w-100 p-10 position-relative">
-        <Loading
-          v-model:active="isGetCouponsLoading"
-          :is-full-page="false"
-          :opacity="0.9"
-        />
+        <Loading v-model:active="isGetCouponsLoading" :is-full-page="false" :opacity="0.9" />
         <h2 class="mb-3">優惠券</h2>
         <ul class="list-unstyled">
           <li
@@ -47,19 +43,14 @@
                 text-center
               "
             >
-              <div
-                class="d-flex flex-column justify-content-center flex-grow-1"
-              >
-                <span class="fs-6 text-black-200 d-block mb-1"
-                  >編號: {{ coupon.id }}</span
-                >
+              <div class="d-flex flex-column justify-content-center flex-grow-1">
+                <span class="fs-6 text-black-200 d-block mb-1">編號: {{ coupon.id }}</span>
                 <span class="fs-6 d-block">到期日</span>
                 <span class="fs-2 d-block">
                   {{ useTranslateTime(coupon.due_date).split(' ')[0] }}
                 </span>
                 <div class="fs-5">
-                  <span v-if="coupon.is_enabled" class="text-success"
-                    >已啟用</span
+                  <span v-if="coupon.is_enabled" class="text-success">已啟用</span
                   ><span v-else class="text-danger">未啟用</span>
                 </div>
               </div>
@@ -102,7 +93,7 @@
         <span v-if="!isEdit" class="fs-2 d-block mb-1">新增優惠券</span>
         <div v-else class="mb-3">
           <span class="fs-2 d-block mb-1">編輯優惠券</span>
-          <span class="fs-6 d-block mb-1"> 訂單編號</span>
+          <span class="fs-6 d-block mb-1"> 編號</span>
           <span class="fs-6 d-block"> {{ tempCoupon.id }} </span>
         </div>
         <Form v-slot="{ errors, resetForm }" @submit="handSubmit">
@@ -130,6 +121,7 @@
               class="form-control"
               :class="{ 'is-invalid': errors['折扣'] }"
               placeholder="請輸入 折扣 ex: 80"
+              min="0"
               v-model.number="tempCoupon.percent"
             ></Field>
             <ErrorMessage name="折扣" class="invalid-feedback"></ErrorMessage>
@@ -149,9 +141,7 @@
             <ErrorMessage name="優惠碼" class="invalid-feedback"></ErrorMessage>
           </div>
           <div class="mb-3">
-            <label for="coupon-date" class="form-label d-block mb-1"
-              >到期日</label
-            >
+            <label for="coupon-date" class="form-label d-block mb-1">到期日</label>
             <input id="oupon-date" type="date" v-model="tempCoupon.due_date" />
           </div>
           <div class="d-flex align-items-center">
@@ -163,9 +153,7 @@
                 :true-value="1"
                 :false-value="0"
               />
-              <label for="coupon-enabled" class="form-label m-0 ms-2"
-                >啟用</label
-              >
+              <label for="coupon-enabled" class="form-label m-0 ms-2">啟用</label>
             </div>
             <button v-show="!isEdit" class="btn btn-primary" type="submit">
               新增
@@ -191,12 +179,9 @@
 <script>
 import { ref, reactive, toRefs } from 'vue';
 import {
-  apiPostAddCoupon,
-  apiGetCoupons,
-  apiPutEditCoupon,
-  apiDeleteCoupon,
+  apiPostAddCoupon, apiGetCoupons, apiPutEditCoupon, apiDeleteCoupon,
 } from '@/api';
-import { useToast, useTranslateTime } from '@/methods';
+import { useTranslateTime, useToast } from '@/methods';
 import Loading from 'vue-loading-overlay';
 import 'vue-loading-overlay/dist/vue-loading.css';
 
@@ -215,32 +200,30 @@ export default {
       isGetCouponsLoading.value = true;
       try {
         const { data } = await apiGetCoupons();
-        if (data.success) {
-          coupons.coupons = data.coupons;
-          isGetCouponsLoading.value = false;
-        } else useToast('無法取得', 'danger');
+        if (data.success) coupons.coupons = data.coupons;
+        else useToast('無法取得', 'danger');
       } catch (err) {
         console.dir(err);
       }
-    };
-    getCoupons();
-
-    // Unix Timestamp to yyyy-mm-dd
-    const translateTime = (dueDate) => {
-      const options = { year: 'numeric', month: 'numeric', day: 'numeric' };
-      let date = new Date(dueDate * 1000).toLocaleString('zh-TW', options);
-      date = date
-        .split('/')
-        .map((time) => (time < 10 ? `0${time}` : time))
-        .join('-');
-      return date;
+      isGetCouponsLoading.value = false;
     };
 
-    const resetCouponForm = () => {
+    const initCouponForm = () => {
       let date = Date.now() / 1000;
-      date = translateTime(date);
-      tempCoupon.tempCoupon.due_date = date;
-      tempCoupon.tempCoupon.is_enabled = 1;
+      date = useTranslateTime(date, 'dash');
+      tempCoupon.tempCoupon = {
+        title: '',
+        percent: '',
+        code: '',
+        is_enabled: 1,
+        due_date: date,
+      };
+    };
+
+    const cancelEdit = (resetForm) => {
+      initCouponForm();
+      resetForm();
+      isEdit.value = false;
     };
 
     const submitAddCoupon = async () => {
@@ -250,14 +233,14 @@ export default {
       try {
         const { data: resData } = await apiPostAddCoupon(data);
         if (resData.success) {
-          useToast('成功新增', 'success');
+          useToast('成功新增');
           getCoupons();
-          resetCouponForm();
+          initCouponForm();
         } else useToast(resData.message[0], 'danger');
-        isAddCouponLoading.value = false;
       } catch (err) {
         console.dir(err);
       }
+      isAddCouponLoading.value = false;
     };
 
     const submitEditCoupon = async () => {
@@ -269,14 +252,20 @@ export default {
       try {
         const { data } = await apiPutEditCoupon(temp.id, temp);
         if (data.success) {
-          useToast('成功更新', 'success');
+          useToast('成功更新');
           getCoupons();
-          resetCouponForm();
+          initCouponForm();
         } else useToast('發生錯誤!', 'danger');
-        isAddCouponLoading.value = false;
       } catch (err) {
         console.dir(err);
       }
+      isAddCouponLoading.value = false;
+    };
+
+    const handSubmit = (value, { resetForm }) => {
+      resetForm();
+      if (isEdit.value) submitEditCoupon();
+      else submitAddCoupon();
     };
 
     const editCoupon = ($event, coupon) => {
@@ -285,51 +274,42 @@ export default {
       window.scrollTo(0, domPositionCenter);
       isEdit.value = true;
       const temp = { ...coupon };
-      const dueDate = translateTime(temp.due_date);
+      const dueDate = useTranslateTime(temp.due_date, 'dash');
       temp.due_date = dueDate;
       tempCoupon.tempCoupon = temp;
-      console.log(tempCoupon.tempCoupon);
-    };
-
-    const cancelEdit = (resetForm) => {
-      resetForm();
-      resetCouponForm();
-      isEdit.value = false;
     };
 
     const deleteCoupon = async (id) => {
       isGetCouponsLoading.value = true;
       try {
         const { data } = await apiDeleteCoupon(id);
-        isGetCouponsLoading.value = false;
         if (data.success) {
-          useToast(data.message, 'success');
+          useToast(data.message);
           getCoupons();
         } else useToast(data.message, 'danger');
       } catch (err) {
         console.dir(err);
       }
+      isGetCouponsLoading.value = false;
     };
 
-    const handSubmit = (value, { resetForm: reset }) => {
-      reset();
-      if (isEdit.value) submitEditCoupon();
-      else submitAddCoupon();
+    const init = () => {
+      getCoupons();
+      initCouponForm();
     };
+    init();
 
     return {
       ...toRefs(coupons),
       ...toRefs(tempCoupon),
-      deleteCoupon,
       isEdit,
-      useTranslateTime,
       isAddCouponLoading,
       isGetCouponsLoading,
-      editCoupon,
-      cancelEdit,
-      submitAddCoupon,
-      submitEditCoupon,
+      useTranslateTime,
       handSubmit,
+      editCoupon,
+      deleteCoupon,
+      cancelEdit,
     };
   },
 };

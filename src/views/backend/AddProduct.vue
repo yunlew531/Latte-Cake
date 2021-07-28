@@ -25,7 +25,7 @@
             <label for="img" class="form-label mb-1">圖片上傳</label>
             <input ref="fileInputEl" @change="upLoadImg" type="file" class="form-control" />
           </div>
-          <ul class="product-img-list d-flex flex-wrap list-unstyled py-sm-5 m-0">
+          <ul class="product-img-list d-flex flex-wrap list-unstyled py-sm-5 mb-0">
             <li v-if="product.imageUrl" class="product-img position-relative mb-2">
               <img :src="product.imageUrl" class="img-fluid" />
               <button
@@ -342,7 +342,7 @@ export default {
   }
 }
 .product-img-list {
-  margin-right: -10px !important;
+  margin-right: -10px;
 }
 .product-img {
   width: calc((100% - 20px) / 2);
