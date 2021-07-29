@@ -15,6 +15,26 @@
   >
     <li>
       <router-link
+        to="/admin/salesChart"
+        active-class="active"
+        class="
+          duration-1
+          router-link
+          d-flex
+          align-items-center
+          fs-5
+          text-black-200 text-decoration-none
+          rounded
+          px-5
+          py-2
+        "
+      >
+        <span class="material-icons-outlined text-primary me-1"> insert_chart </span
+        >銷售圖表</router-link
+      >
+    </li>
+    <li>
+      <router-link
         to="/admin/addProduct"
         active-class="active"
         class="

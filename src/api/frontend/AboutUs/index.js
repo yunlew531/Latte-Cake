@@ -17,6 +17,6 @@ export default () => {
   return {
     ...toRefs(imgs),
     imgFilter,
-    imgsFilter
+    imgsFilter,
   };
 };

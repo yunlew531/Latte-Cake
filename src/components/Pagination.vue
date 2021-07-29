@@ -2,16 +2,8 @@
   <section class="d-flex justify-content-center">
     <nav aria-label="Page navigation example">
       <ul class="pagination m-0">
-        <li
-          class="page-item"
-          :class="{ disabled: pagination.pagination.current_page === 1 }"
-        >
-          <a
-            class="page-link"
-            href="javascript:;"
-            aria-label="Previous"
-            @click="handPage(-1)"
-          >
+        <li class="page-item" :class="{ disabled: pagination.pagination.current_page === 1 }">
+          <a class="page-link" href="javascript:;" aria-label="Previous" @click="handPage(-1)">
             <span aria-hidden="true">&laquo;</span>
           </a>
         </li>
@@ -21,27 +13,15 @@
           class="page-item"
           :class="[{ active: page === pagination.pagination.current_page }]"
         >
-          <a
-            class="page-link"
-            href="javascript:;"
-            @click="handPage(page, true)"
-            >{{ page }}</a
-          >
+          <a class="page-link" href="javascript:;" @click="handPage(page, true)">{{ page }}</a>
         </li>
         <li
           class="page-item"
           :class="{
-            disabled:
-              pagination.pagination.current_page ===
-              pagination.pagination.total_pages,
+            disabled: pagination.pagination.current_page === pagination.pagination.total_pages,
           }"
         >
-          <a
-            class="page-link"
-            href="javascript:;"
-            aria-label="Next"
-            @click="handPage(1)"
-          >
+          <a class="page-link" href="javascript:;" aria-label="Next" @click="handPage(1)">
             <span aria-hidden="true">&raquo;</span>
           </a>
         </li>
@@ -81,7 +61,7 @@ export default {
       () => {
         pagination.pagination = props.pages;
       },
-      { deep: true }
+      { deep: true },
     );
 
     return {
@@ -92,5 +72,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>
