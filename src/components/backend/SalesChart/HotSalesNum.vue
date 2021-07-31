@@ -1,12 +1,12 @@
 <template>
   <div class="rounded bg-white shadow w-100 p-10">
-    <PieChart :chartData="hotSales" :options="hotSalesOptions" />
+    <PieChart :chartData="calcHotSales" :options="hotSalesOptions" />
   </div>
 </template>
 
 <script>
 import {
-  defineComponent, watch, toRefs, reactive,
+  defineComponent, toRefs, reactive, computed,
 } from 'vue';
 import { Chart, registerables } from 'chart.js';
 import { PieChart } from 'vue-chart-3';
@@ -14,7 +14,7 @@ import { PieChart } from 'vue-chart-3';
 Chart.register(...registerables);
 
 export default defineComponent({
-  name: 'SalesChart',
+  name: 'HotSalesNum',
   components: { PieChart },
   props: {
     orders: {
@@ -24,7 +24,6 @@ export default defineComponent({
   setup(props) {
     const { orders } = toRefs(props);
 
-    const hotSales = reactive({ hotSales: {} });
     const hotSalesOptions = reactive({
       hotSalesOptions: {
         plugins: {
@@ -33,7 +32,7 @@ export default defineComponent({
               return `${context.chart.data.labels[context.dataIndex]}: ${value}`;
             },
             font: { size: 12 },
-            align: 'left',
+            align: 'center',
           },
           legend: {
             position: 'left',
@@ -46,7 +45,7 @@ export default defineComponent({
           },
           title: {
             display: true,
-            text: '銷售量排名',
+            text: '銷售量占比',
             font: {
               size: 32,
             },
@@ -66,30 +65,30 @@ export default defineComponent({
       },
     });
 
-    const calcHotSales = (ordersData) => {
+    const calcHotSales = computed(() => {
       let productsArr = [];
-      ordersData.forEach((item) => {
+      orders.value.forEach((item) => {
         const products = Object.values(item.products);
         productsArr = [...productsArr, ...products];
       });
-      const obj = {};
+      const filterObj = {};
       productsArr.forEach((item) => {
-        if (obj[item.product_id]) {
-          obj[item.product_id].qty += item.qty;
+        if (filterObj[item.product_id]) {
+          filterObj[item.product_id].qty += item.qty;
         } else {
-          obj[item.product_id] = {};
-          obj[item.product_id].name = item.product.title;
-          obj[item.product_id].qty = item.qty;
+          filterObj[item.product_id] = {};
+          filterObj[item.product_id].name = item.product.title;
+          filterObj[item.product_id].qty = item.qty;
         }
       });
-      const newProductsArr = Object.values(obj);
+      const newProductsArr = Object.values(filterObj);
       const labels = [];
       const num = [];
       newProductsArr.forEach((item) => {
         labels.push(item.name);
         num.push(item.qty);
       });
-      hotSales.hotSales = {
+      return {
         labels,
         datasets: [
           {
@@ -105,15 +104,11 @@ export default defineComponent({
           },
         ],
       };
-    };
-
-    watch(orders, (value) => {
-      calcHotSales(value);
     });
 
     return {
-      ...toRefs(hotSales),
       ...toRefs(hotSalesOptions),
+      calcHotSales,
     };
   },
 });

@@ -7,10 +7,10 @@
       <div class="rounded bg-white shadow w-100 p-10">較上月相比</div>
     </div>
     <div class="col-6">
-      <HotSales :orders="orders" />
+      <HotSalesNum :orders="orders" />
     </div>
     <div class="col-6">
-      <div class="rounded bg-white shadow w-100 p-10"></div>
+      <HotSalesPrice :orders="orders" />
     </div>
   </div>
 </template>
@@ -18,12 +18,14 @@
 <script>
 import { reactive, toRefs } from 'vue';
 import { apiGetOrders } from '@/api';
-import HotSales from '@/components/backend/SalesChart/HotSales.vue';
+import HotSalesNum from '@/components/backend/SalesChart/HotSalesNum.vue';
+import HotSalesPrice from '@/components/backend/SalesChart/HotSalesPrice.vue';
 
 export default {
   name: 'SalesChart',
   components: {
-    HotSales,
+    HotSalesNum,
+    HotSalesPrice,
   },
   setup() {
     const orders = reactive({ orders: [] });
