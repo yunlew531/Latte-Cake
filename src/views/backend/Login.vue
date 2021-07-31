@@ -81,7 +81,7 @@ export default {
         if (data.success) {
           const { expired } = data;
           const { token } = data;
-          document.cookie = `LatteCake=${token};expires=${new Date(expired)};`;
+          document.cookie = `PASTAHOUSE=${token};expires=${new Date(expired)};`;
           router.push('/admin');
         } else useToast('登入失敗!', 'danger');
       } catch (err) {

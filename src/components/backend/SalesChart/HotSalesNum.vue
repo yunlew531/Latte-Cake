@@ -19,6 +19,7 @@ export default defineComponent({
   props: {
     orders: {
       type: Object,
+      required: true,
     },
   },
   setup(props) {
@@ -49,6 +50,10 @@ export default defineComponent({
             font: {
               size: 32,
             },
+            padding: {
+              bottom: 15,
+            },
+            color: '#333',
           },
           subtitle: {
             display: true,
