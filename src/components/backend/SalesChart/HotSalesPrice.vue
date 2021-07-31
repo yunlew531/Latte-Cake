@@ -1,6 +1,6 @@
 <template>
   <div class="rounded bg-white shadow w-100 p-10">
-    <PieChart :chartData="testData" :options="options" />
+    <PieChart :chartData="calcSalesPrice" :options="options" />
   </div>
 </template>
 
@@ -62,7 +62,7 @@ export default defineComponent({
       },
     });
 
-    const testData = computed(() => {
+    const calcSalesPrice = computed(() => {
       let arr = [];
       orders.value.forEach((item) => {
         arr = [...arr, ...Object.values(item.products)];
@@ -73,8 +73,8 @@ export default defineComponent({
           obj[item.product_id].total += item.total;
         } else {
           obj[item.product_id] = {};
-          obj[[item.product_id]].name = item.product.title;
-          obj[[item.product_id]].total = item.total;
+          obj[item.product_id].name = item.product.title;
+          obj[item.product_id].total = item.total;
         }
       });
       const newArr = Object.values(obj);
@@ -98,7 +98,7 @@ export default defineComponent({
 
     return {
       ...toRefs(options),
-      testData,
+      calcSalesPrice,
     };
   },
 });
