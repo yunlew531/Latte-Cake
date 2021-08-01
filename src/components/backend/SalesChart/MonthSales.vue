@@ -77,7 +77,7 @@ export default defineComponent({
 
     const calcMonthSales = computed(() => {
       const monthFilter = {};
-      new Array(12).fill(null).forEach((item, key) => {
+      new Array(12).fill().forEach((item, key) => {
         monthFilter[key + 1] = { total: 0 };
       });
       orders.value.forEach((item) => {
@@ -88,20 +88,7 @@ export default defineComponent({
       const monthPrice = Object.values(monthFilter).map((item) => item.total);
 
       return {
-        labels: [
-          '1月',
-          '2月',
-          '3月',
-          '4月',
-          '5月',
-          '6月',
-          '7月',
-          '8月',
-          '9月',
-          '10月',
-          '11月',
-          '12月',
-        ],
+        labels: new Array(12).fill().map((month, key) => `${key + 1}月`),
         datasets: [
           {
             barThickness: 25,

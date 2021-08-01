@@ -12,16 +12,13 @@
 
 <script>
 import {
-  ref, inject, toRefs, onUnmounted,
+  ref, inject, onUnmounted,
 } from 'vue';
 import { useRouter } from 'vue-router';
 import { apiPostCheck } from '@/api';
 import BackendNavbar from '@/components/backend/BackendNavbar.vue';
 import Sidebar from '@/components/backend/Sidebar.vue';
 import backReq from '@/api/backReq';
-import store from '@/composition/store';
-
-const { setIsLogIn } = store;
 
 export default {
   name: 'Backstage',
@@ -30,11 +27,11 @@ export default {
     Sidebar,
   },
   setup() {
-    const state = inject('state');
-    const { isLogIn } = toRefs(state);
     const $emitter = inject('$emitter');
     const router = useRouter();
     const boardStatus = ref('新增');
+
+    const isLogIn = ref(false);
 
     const setHeaders = () => {
       const token = document.cookie.replace(
@@ -49,9 +46,9 @@ export default {
       let resData = null;
       try {
         const { data } = await apiPostCheck();
-        if (data.success) setIsLogIn(true);
+        if (data.success) isLogIn.value = true;
         else {
-          setIsLogIn(false);
+          isLogIn.value = false;
           router.push('/login');
         }
         resData = data;

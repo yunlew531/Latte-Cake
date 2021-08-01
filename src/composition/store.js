@@ -1,17 +1,13 @@
 import { reactive, readonly } from 'vue';
-import {
-  apiGetCarts, apiGetPageProducts, apiGetOrders, apiGetAllProducts,
-} from '@/api';
+import { apiGetCarts, apiGetPageProducts, apiGetAllProducts } from '@/api';
 
 // state
 const state = reactive({
-  isLogIn: false,
   isLoading: false,
   cartsData: {},
   allProducts: [],
   pageProductsData: {},
   pagination: {},
-  orders: {},
 });
 
 // mutations
@@ -30,14 +26,6 @@ const setAllProducts = (products) => {
 const setPageProducts = (data) => {
   state.pageProductsData = data.products;
   state.pagination = data.pagination;
-};
-
-const setOrders = (orders) => {
-  state.orders = orders;
-};
-
-const setIsLogIn = (status) => {
-  state.isLogIn = status;
 };
 
 // actions
@@ -80,30 +68,13 @@ const getPageProducts = async (page = 1) => {
   return resData;
 };
 
-const getOrders = async () => {
-  let resData = null;
-  try {
-    const { data } = await apiGetOrders();
-    if (data.success) {
-      setOrders(data.orders);
-    }
-    resData = data;
-  } catch (err) {
-    console.dir(err);
-    resData = err;
-  }
-  return resData;
-};
-
 export default {
   state: readonly(state),
   setIsLoading,
   setAllProducts,
   setPageProducts,
   getCarts,
-  getOrders,
   getAllProducts,
   getPageProducts,
   setCartsData,
-  setIsLogIn,
 };
