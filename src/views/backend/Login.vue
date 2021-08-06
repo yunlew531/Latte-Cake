@@ -25,9 +25,8 @@
               placeholder="請輸入 Email"
               rules="email|required"
               v-model="user.email"
-            >
-            </Field>
-            <ErrorMessage name="email" class="invalid-feedback"></ErrorMessage>
+            />
+            <ErrorMessage name="email" class="invalid-feedback" />
           </div>
           <div class="form-group">
             <label for="password" class="form-label text-white">密碼</label>
@@ -40,8 +39,8 @@
               placeholder="請輸入密碼"
               rules="required"
               v-model="user.password"
-            ></Field>
-            <ErrorMessage name="密碼" class="invalid-feedback"></ErrorMessage>
+            />
+            <ErrorMessage name="密碼" class="invalid-feedback" />
           </div>
         </div>
         <div class="d-flex align-items-center">

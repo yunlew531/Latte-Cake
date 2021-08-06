@@ -54,7 +54,7 @@
                     {{ product.title }}
                   </router-link>
                 </h2>
-                <div class="dash-line flex-grow-1 mx-5"></div>
+                <div class="dash-line flex-grow-1 mx-5" />
                 <span class="fs-6">NT${{ product.price?.toLocaleString() }}</span>
               </div>
               <p class="fs-6 text-black-300 fw-light m-0">

@@ -35,7 +35,7 @@
             class="progress-bar position-absolute"
             :style="progressBarAnime"
             role="progressbar"
-          ></div>
+          />
         </div>
       </div>
     </section>
@@ -111,7 +111,6 @@ export default {
 
     let teleportTopToAsideTimeout = null;
     watch(isScrollDown, (down) => {
-      // isScrollDown 會觸發css動畫，動畫跑完再 teleport
       if (down) {
         teleportTopToAsideTimeout = setTimeout(() => {
           navTeleport.value = '#navbarTeleportAside';
@@ -129,7 +128,7 @@ export default {
       let position = 0;
       let sizeDirection = null;
       let zeroDirection = null;
-      // 有 hover nav 時動畫停在 hover 元素，反之動畫停在 nowCategory 元素
+
       if (nowHoverCategory.value) {
         categoryList.forEach((item, idx) => {
           if (item === nowHoverCategory.value) position = idx * percent;
@@ -139,7 +138,7 @@ export default {
           if (item === nowCategory.value) position = idx * percent;
         });
       }
-      // isScrollDown 判斷 navbar 是水平或是垂直
+
       if (isScrollDown.value) {
         sizeDirection = 'height';
         zeroDirection = 'top';

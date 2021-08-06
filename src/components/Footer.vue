@@ -20,20 +20,19 @@
         >
         <div class="mt-4">
           <a href="javascript:;" class="link-icon d-inline-block fs-3 rounded-pill">
-            <i class="bi bi-facebook"></i>
+            <i class="bi bi-facebook" />
           </a>
           <a href="javascript:;" class="link-icon d-inline-block fs-3 rounded-pill ms-5">
-            <i class="bi bi-instagram"></i>
+            <i class="bi bi-instagram" />
           </a>
           <a href="javascript:;" class="link-icon d-inline-block fs-3 rounded-pill ms-5">
-            <i class="bi bi-twitter"></i>
+            <i class="bi bi-twitter" />
           </a>
           <a href="javascript:;" class="link-icon d-inline-block fs-3 rounded-pill ms-5">
-            <i class="bi bi-google"></i>
+            <i class="bi bi-google" />
           </a>
         </div>
       </div>
-      <div></div>
       <div class="text-black-300 mt-8 mt-md-0">
         <h4 class="fs-5 lh-1">訂閱電子郵件</h4>
         <p class="fw-light mt-4">
@@ -58,7 +57,7 @@
             v-model="email"
           >
           </Field>
-          <ErrorMessage name="Email" class="invalid-feedback"></ErrorMessage>
+          <ErrorMessage name="Email" class="invalid-feedback" />
           <button
             type="submit"
             class="

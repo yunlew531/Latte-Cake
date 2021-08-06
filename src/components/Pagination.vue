@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import { reactive, watch } from 'vue';
+import { reactive, watch, toRef } from 'vue';
 
 export default {
   name: 'Pagination',
@@ -42,6 +42,7 @@ export default {
     },
   },
   setup(props, { emit }) {
+    const pages = toRef(props, 'pages');
     const pagination = reactive({ pagination: {} });
 
     const handPage = (num, isPage) => {
@@ -57,9 +58,9 @@ export default {
     };
 
     watch(
-      () => props.pages,
-      () => {
-        pagination.pagination = props.pages;
+      () => pages,
+      (val) => {
+        pagination.pagination = val;
       },
       { deep: true },
     );
@@ -71,5 +72,3 @@ export default {
   },
 };
 </script>
-
-<style></style>

@@ -10,9 +10,10 @@
           text-decoration-none
           me-auto
         "
-        ><span class="fs-1 material-icons-outlined"> home </span
-        ><span class="fs-4 ms-2 tracking-2">返回前台</span></router-link
       >
+        <span class="fs-1 material-icons-outlined"> home </span>
+        <span class="fs-4 ms-2 tracking-2">返回前台</span>
+      </router-link>
       <form class="d-flex position-relative">
         <input
           class="
@@ -61,7 +62,7 @@
       <div
         :style="{ 'background-image': `url(${user.photo})` }"
         class="user-photo rounded-pill border overflow-hiddden"
-      ></div>
+      />
       <p class="m-0 ms-3">
         <span class="d-block fs-5" :class="calcNameSize(user.username?.length)">{{
           user.username

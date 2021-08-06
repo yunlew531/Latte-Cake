@@ -1,5 +1,5 @@
 <template>
-  <div class="nav-bg"></div>
+  <div class="nav-bg" />
   <section class="orders-panel bg-white rounded shadow-sm container p-10">
     <Loading v-model:active="isLoading" :is-full-page="false" />
     <div v-if="!isLoading">

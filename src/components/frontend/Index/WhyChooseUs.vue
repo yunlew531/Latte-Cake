@@ -83,44 +83,6 @@ export default {
       whyChooseUsPanelEl,
     };
   },
-  // inject: ['scroll'],
-  // data() {
-  //   return {
-  //     cardList: [
-  //       {
-  //         title: '品質',
-  //         content:
-  //           '從尚未加工的原材料開始：蔬菜經過清潔，肉經過研磨、調味和煮熟，雞蛋手工破碎。',
-  //       },
-  //       {
-  //         title: '烹飪',
-  //         content:
-  //           '我們不斷學習，主動嘗試最新烹飪趨勢，以符合客人對我們的期待。',
-  //       },
-  //       {
-  //         title: '服務',
-  //         content:
-  //           '對待客人像對待自己的朋友一樣善待他們。無論您是誰，我們都提供無可挑剔的服務。',
-  //       },
-  //     ],
-  //     isScrollTo: false,
-  //   };
-  // },
-  // watch: {
-  //   scroll: {
-  //     handler(scroll) {
-  //       const { whyChooseUsPanelEl } = this.$refs;
-  //       const { offsetTop, clientHeight } = whyChooseUsPanelEl;
-  //       if (
-  //         scroll.Y > offsetTop - window.innerHeight * 0.67
-  //         && scroll.Y < offsetTop + clientHeight * 0.67
-  //       ) {
-  //         this.isScrollTo = true;
-  //       }
-  //     },
-  //     deep: true,
-  //   },
-  // },
 };
 </script>
 

@@ -1,11 +1,11 @@
 <template>
-  <div class="nav-bg"></div>
+  <div class="nav-bg" />
   <section class="container mb-12">
     <div
       id="navbarTeleportTop"
       class="teleport-container-top duration-600 mb-8"
       :class="isScrollDown ? 'w-0' : 'w-100'"
-    ></div>
+    />
     <div class="row">
       <CategoryNav
         :isScrollDown="isScrollDown"
@@ -17,7 +17,7 @@
         id="navbarTeleportAside"
         class="teleport-container-aside duration-500 position-relative"
         :class="isScrollDown ? 'col-2' : 'w-0 p-0'"
-      ></div>
+      />
       <div
         class="products-panel-container duration-500"
         :class="isScrollDown ? 'col-10' : 'col-12'"

@@ -1,5 +1,5 @@
 <template>
-  <section class="nav-bg"></section>
+  <div class="nav-bg" />
   <section class="checkout-panel container position-relative mb-12">
     <router-link to="/cart" class="position-absolute start-0 top-n16">
       <Button class="fs-6 px-5 ms-2">返回購物車</Button>
@@ -23,8 +23,8 @@
               placeholder="請輸入 Email"
               rules="email|required"
               v-model="user.email"
-            ></Field>
-            <ErrorMessage name="Email" class="invalid-feedback"></ErrorMessage>
+            />
+            <ErrorMessage name="Email" class="invalid-feedback" />
           </div>
           <div class="form-group text-black-200">
             <label for="name" class="form-label mb-1">姓名</label>
@@ -37,7 +37,7 @@
               placeholder="請輸入名字"
               rules="required"
               v-model="user.name"
-            ></Field>
+            />
             <ErrorMessage name="name" class="invalid-feedback" as="span">
               <span>姓名為必填</span>
             </ErrorMessage>
@@ -53,7 +53,7 @@
               placeholder="請輸入電話 ex: 0912345678"
               :rules="validateTel"
               v-model="user.tel"
-            ></Field>
+            />
             <ErrorMessage name="tel" class="invalid-feedback" as="span">
               <span>請填寫正確電話號碼</span>
             </ErrorMessage>
@@ -69,7 +69,7 @@
               placeholder="請輸入地址"
               rules="required"
               v-model="user.address"
-            ></Field>
+            />
             <ErrorMessage name="address" class="invalid-feedback" as="span">
               <span>地址為必填</span>
             </ErrorMessage>
@@ -157,8 +157,8 @@
                 placeholder="請輸入折扣碼"
                 rules="required"
                 v-model.trim="couponInput"
-              ></Field>
-              <ErrorMessage name="折扣碼" class="invalid-feedback"></ErrorMessage>
+              />
+              <ErrorMessage name="折扣碼" class="invalid-feedback" />
             </div>
             <Button
               btnType="submit"

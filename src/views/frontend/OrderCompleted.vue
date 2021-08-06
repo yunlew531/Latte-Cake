@@ -1,5 +1,5 @@
 <template>
-  <section class="navbar-bg"></section>
+  <div class="navbar-bg" />
   <section class="container order-completed-panel mb-12">
     <div class="rounded shadow-sm bg-white p-8">
       <h2 class="text-center text-danger pb-2">完成訂購!</h2>

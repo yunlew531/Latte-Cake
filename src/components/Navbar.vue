@@ -113,7 +113,7 @@
         </div>
       </div>
     </nav>
-    <slot name="content"></slot>
+    <slot name="content" />
   </header>
 </template>
 

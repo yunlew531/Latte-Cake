@@ -7,9 +7,10 @@
     :opacity="0.7"
   >
     <template v-slot:default class="position-absolute">
-      <div class="loading"></div>
-      <div class="cup-hand position-relative"></div> </template
-  ></Loading>
+      <div class="loading" />
+      <div class="cup-hand position-relative" />
+    </template>
+  </Loading>
 </template>
 
 <script>
@@ -35,7 +36,7 @@ export default {
       () => props.isLoading,
       () => {
         isLoad.value = props.isLoading;
-      }
+      },
     );
 
     return {

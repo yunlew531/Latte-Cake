@@ -1,5 +1,5 @@
 <template>
-  <div class="nav-bg"></div>
+  <div class="nav-bg" />
   <section
     class="product-panel bg-white rounded shadow-sm container p-5 p-sm-10"
     :class="{ active: !isProductLoading }"
@@ -13,7 +13,7 @@
             'background-image': `url(${product.imageUrl})`,
           }"
           @click="showLightbox(0)"
-        ></li>
+        />
         <li
           v-for="(img, key) in product.imagesUrl"
           :key="img + key"
@@ -22,7 +22,7 @@
           }"
           class="product-img rounded"
           @click="showLightbox(product.imageUrl ? key + 1 : key)"
-        ></li>
+        />
       </ul>
       <div class="col-lg-6 order-1 order-lg-2">
         <div class="product-content position-sticky">
@@ -166,7 +166,7 @@
     :imgs="lightboxImgs"
     :index="lightboxIndex"
     @hide="hideLightbox"
-  ></VueEasyLightbox>
+  />
 </template>
 
 <script>

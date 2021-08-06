@@ -7,7 +7,6 @@
     @mouseenter="isMouseInCarousel = true"
     @mouseleave="(isMouseInCarousel = false), handTextShadow($event)"
   >
-    <!-- 進度條 start -->
     <div class="progress carousel-progress position-absolute">
       <div
         class="progress-bar"
@@ -15,11 +14,8 @@
         aria-valuenow="75"
         aria-valuemin="0"
         aria-valuemax="100"
-      ></div>
+      />
     </div>
-    <!-- 進度條 end -->
-
-    <!-- title 最初 teleport 位置 start -->
     <div
       id="titleTeleportMiddle"
       class="
@@ -34,9 +30,6 @@
     >
       <CarouselTitle v-model:isReadyTextShadow="isReadyTextShadow" :styleSheets="styleSheets" />
     </div>
-    <!-- title 最初 teleport 位置 end -->
-
-    <!-- title 動畫結束後 teleport 位置 start -->
     <div
       id="titleTeleportAside"
       class="
@@ -48,9 +41,7 @@
         overflow-hidden
         px-5 px-xxl-12
       "
-    ></div>
-    <!-- title 動畫結束後 teleport 位置 end -->
-
+    />
     <div ref="carouselEl" class="carousel slide carousel-fade">
       <ul class="carousel-inner m-0 p-0">
         <li
@@ -60,7 +51,7 @@
           :class="{ active: key === 0 }"
           :style="{ 'background-image': `url(${image})` }"
           @animationend="playProgressAnime = false"
-        ></li>
+        />
       </ul>
     </div>
     <div class="scroll-btn position-absolute bottom-0 start-50 z-10">

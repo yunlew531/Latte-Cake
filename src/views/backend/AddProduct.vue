@@ -64,8 +64,8 @@
               placeholder="請輸入 名稱"
               rules="required"
               v-model.trim="product.title"
-            ></Field>
-            <ErrorMessage name="名稱" class="invalid-feedback"></ErrorMessage>
+            />
+            <ErrorMessage name="名稱" class="invalid-feedback" />
           </div>
           <div class="row">
             <div class="col-6">
@@ -80,8 +80,8 @@
                   placeholder="請輸入 分類"
                   rules="required"
                   v-model.trim="product.category"
-                ></Field>
-                <ErrorMessage name="分類" class="invalid-feedback"></ErrorMessage>
+                />
+                <ErrorMessage name="分類" class="invalid-feedback" />
               </div>
             </div>
             <div class="col-6">
@@ -96,8 +96,8 @@
                   placeholder="請輸入 單位"
                   rules="required"
                   v-model.trim="product.unit"
-                ></Field>
-                <ErrorMessage name="單位" class="invalid-feedback"></ErrorMessage>
+                />
+                <ErrorMessage name="單位" class="invalid-feedback" />
               </div>
             </div>
           </div>
@@ -115,8 +115,8 @@
                   rules="required"
                   min="0"
                   v-model.number="product.origin_price"
-                ></Field>
-                <ErrorMessage name="原價" class="invalid-feedback"></ErrorMessage>
+                />
+                <ErrorMessage name="原價" class="invalid-feedback" />
               </div>
             </div>
             <div class="col-6">
@@ -132,12 +132,12 @@
                   rules="required"
                   min="0"
                   v-model.number="product.price"
-                ></Field>
-                <ErrorMessage name="售價" class="invalid-feedback"></ErrorMessage>
+                />
+                <ErrorMessage name="售價" class="invalid-feedback" />
               </div>
             </div>
           </div>
-          <div class="dropdown-divider my-5"></div>
+          <div class="dropdown-divider my-5" />
           <div class="mb-3">
             <label for="description" class="form-label mb-1">產品描述</label>
             <textarea
@@ -148,7 +148,7 @@
               v-model.trim="product.description"
               cols="30"
               rows="3"
-            ></textarea>
+            />
           </div>
           <div class="mb-3">
             <label for="content" class="form-label mb-1">產品內容</label>
@@ -160,7 +160,7 @@
               v-model.trim="product.content"
               cols="30"
               rows="3"
-            ></textarea>
+            />
           </div>
           <div class="d-flex align-items-center mt-4">
             <div class="me-auto">

@@ -1,5 +1,5 @@
 <template>
-  <section class="navbar-bg"></section>
+  <div class="navbar-bg" />
   <section class="container cart-panel mb-12">
     <div class="row g-8">
       <div class="col-lg-8">
@@ -63,7 +63,7 @@
                     'background-image': `url(${product.product.imageUrl ||
                       product.product.imagesUrl[0]})`,
                   }"
-                ></div>
+                />
                 <div
                   class="
                     d-flex
@@ -255,8 +255,6 @@ export default {
     const state = inject('state');
     const productNum = ref(1);
 
-    getCarts();
-
     const handQty = async (item, num) => {
       const product = { ...item };
       product.qty = item.qty + num <= 1 ? 1 : item.qty + num;
@@ -324,6 +322,11 @@ export default {
       const time = `${y} / ${m} / ${deliveryD} 星期${dayTranslate[deliveryDay]}`;
       return time;
     });
+
+    const init = () => {
+      getCarts();
+    };
+    init();
 
     return {
       ...toRefs(state),

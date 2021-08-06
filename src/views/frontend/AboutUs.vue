@@ -1,5 +1,5 @@
 <template>
-  <div class="navbar-bg"></div>
+  <div class="navbar-bg" />
   <section class="container about-us-panel bg-white shadow-sm rounded mb-n12">
     <div class="p-sm-12">
       <div class="row g-8">
@@ -50,7 +50,7 @@
           style="border: 0"
           allowfullscreen=""
           loading="lazy"
-        ></iframe>
+        />
       </div>
     </div>
   </section>

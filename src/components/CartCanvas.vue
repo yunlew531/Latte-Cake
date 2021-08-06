@@ -24,7 +24,7 @@
     </div>
     <div class="px-4 py-3 border-bottom">
       <div class="progress" :class="{ active: playProgressAnime }" v-show="playProgressAnime">
-        <div class="progress-bar" role="progressbar"></div>
+        <div class="progress-bar" role="progressbar" />
       </div>
     </div>
     <ul class="offcanvas-body list-unstyled mb-0">
@@ -41,7 +41,7 @@
                 'background-image': `url(${product.product.imageUrl ||
                   product.product.imagesUrl[0]})`,
               }"
-            ></div>
+            />
             <div class="p-3 flex-grow-1">
               <h3 class="product-title fs-6" @click="goToPage('product', product.product.id)">
                 {{ product.product.title }}

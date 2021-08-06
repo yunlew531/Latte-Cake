@@ -51,7 +51,7 @@
                   'background-image': `url(${product.imageUrl || product.imagesUrl[0]})`,
                 }"
                 class="product-img"
-              ></div>
+              />
             </td>
             <td class="text-nowrap px-8">{{ product.title }}</td>
             <td class="px-8 lh-1">

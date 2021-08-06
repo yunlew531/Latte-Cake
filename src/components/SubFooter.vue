@@ -16,7 +16,7 @@
               rounded
             "
           >
-            <div class="raw-material-img"></div>
+            <div class="raw-material-img" />
             <div class="ps-5 flex-grow-1">
               <h3 class="fs-5 m-0">關於食材</h3>
               <p class="m-0">About Raw Materials</p>
@@ -40,7 +40,7 @@
               rounded
             "
           >
-            <div class="shop-img"></div>
+            <div class="shop-img" />
             <div class="ps-5 flex-grow-1">
               <h3 class="fs-5 m-0">關於本店</h3>
               <p class="m-0">About Shop</p>

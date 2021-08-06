@@ -108,8 +108,8 @@
               :class="{ 'is-invalid': errors['名稱'] }"
               placeholder="請輸入 名稱"
               v-model.trim="tempCoupon.title"
-            ></Field>
-            <ErrorMessage name="名稱" class="invalid-feedback"></ErrorMessage>
+            />
+            <ErrorMessage name="名稱" class="invalid-feedback" />
           </div>
           <div class="mb-3">
             <label for="percent" class="form-label mb-1">折扣 % 數</label>
@@ -123,8 +123,8 @@
               placeholder="請輸入 折扣 ex: 80"
               min="0"
               v-model.number="tempCoupon.percent"
-            ></Field>
-            <ErrorMessage name="折扣" class="invalid-feedback"></ErrorMessage>
+            />
+            <ErrorMessage name="折扣" class="invalid-feedback" />
           </div>
           <div class="mb-3">
             <label for="coupon-code" class="form-label mb-1">優惠碼</label>
@@ -137,8 +137,8 @@
               :class="{ 'is-invalid': errors['優惠碼'] }"
               placeholder="請輸入 優惠碼"
               v-model.trim="tempCoupon.code"
-            ></Field>
-            <ErrorMessage name="優惠碼" class="invalid-feedback"></ErrorMessage>
+            />
+            <ErrorMessage name="優惠碼" class="invalid-feedback" />
           </div>
           <div class="mb-3">
             <label for="coupon-date" class="form-label d-block mb-1">到期日</label>
