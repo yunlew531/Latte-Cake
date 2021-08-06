@@ -176,7 +176,7 @@
                 <p class="coupon-code btn flex-grow-1 m-0">
                   {{ coupon.code }}
                 </p>
-                <button class="flex-grow-0 px-5 btn btn-primary">複製</button>
+                <button type="button" class="flex-grow-0 px-5 btn btn-primary">複製</button>
               </div>
             </li>
           </ul>

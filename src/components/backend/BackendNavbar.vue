@@ -31,8 +31,8 @@
           @keyup.enter="searchProduct"
         />
         <button
-          class="search-btn btn position-absolute end-0 bottom-n1"
           type="button"
+          class="search-btn btn position-absolute end-0 bottom-n1"
           @click="searchProduct"
         >
           <span class="material-icons"> search </span>

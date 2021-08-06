@@ -1,5 +1,5 @@
 <template>
-  <div class="rounded bg-white shadow w-100 p-10">
+  <div class="rounded bg-white shadow w-100 p-10 pb-0">
     <PieChart :chartData="calcHotSales" :options="hotSalesOptions" />
   </div>
 </template>
@@ -27,6 +27,9 @@ export default defineComponent({
 
     const hotSalesOptions = reactive({
       hotSalesOptions: {
+        layout: {
+          padding: 0,
+        },
         plugins: {
           datalabels: {
             formatter(value, context) {

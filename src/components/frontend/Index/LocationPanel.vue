@@ -13,7 +13,7 @@
             data-bs-target="#carouselLocation"
             :data-bs-slide-to="key"
             :class="{ active: key === 0 }"
-          ></button>
+          />
         </li>
       </ul>
       <ul class="carousel-inner list-unstyled">
@@ -52,21 +52,21 @@
         </li>
       </ul>
       <button
-        class="carousel-control-prev"
         type="button"
+        class="carousel-control-prev"
         data-bs-target="#carouselLocation"
         data-bs-slide="prev"
       >
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="carousel-control-prev-icon" aria-hidden="true" />
         <span class="visually-hidden">Previous</span>
       </button>
       <button
-        class="carousel-control-next"
         type="button"
+        class="carousel-control-next"
         data-bs-target="#carouselLocation"
         data-bs-slide="next"
       >
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="carousel-control-next-icon" aria-hidden="true" />
         <span class="visually-hidden">Next</span>
       </button>
     </div>

@@ -27,7 +27,7 @@
           </div>
           <ul class="product-img-list d-flex flex-wrap list-unstyled py-sm-5 mb-0">
             <li v-if="product.imageUrl" class="product-img position-relative mb-2">
-              <img :src="product.imageUrl" class="img-fluid" />
+              <img :src="product.imageUrl" class="img-fluid" :alt="product.title" />
               <button
                 type="button"
                 class="img-close-btn btn p-0 lh-1 position-absolute end-0 top-0"
@@ -41,7 +41,7 @@
               :key="img + key"
               class="product-img position-relative mb-2"
             >
-              <img :src="img" class="img-fluid" />
+              <img :src="img" class="img-fluid" :alt="img" />
               <button
                 type="button"
                 class="img-close-btn btn p-0 lh-1 position-absolute end-0 top-0"
@@ -181,13 +181,13 @@
             </div>
             <button
               v-if="boardStatus === '編輯'"
+              type="button"
               @click="handStatus"
               class="btn btn-outline-primary text-nowrap mx-3"
-              type="button"
             >
               取消
             </button>
-            <button class="btn btn-primary text-nowrap" type="submit">
+            <button type="submit" class="btn btn-primary text-nowrap">
               送出
             </button>
           </div>

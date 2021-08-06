@@ -116,6 +116,7 @@
                   >{{ productNum }}</span
                 >
                 <button
+                  type="button"
                   class="
                     quntity-btn
                     h-50
@@ -130,6 +131,7 @@
                   <span class="material-icons"> arrow_drop_up </span>
                 </button>
                 <button
+                  type="button"
                   class="
                     quntity-btn
                     h-50

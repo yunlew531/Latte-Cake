@@ -32,7 +32,7 @@
       <ul class="d-flex list-unstyled">
         <li v-for="shop in shops" :key="shop.city" class="flex-grow-1">
           <button
-            type="button "
+            type="button"
             class="city-btn btn text-white w-100 rounded-0 shadow-none"
             :class="{ active: shopPosition === shop.city }"
             @click="setShopPosition(shop.city)"

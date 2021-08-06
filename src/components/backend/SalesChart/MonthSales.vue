@@ -28,6 +28,9 @@ export default defineComponent({
 
     const options = ref({
       responsive: true,
+      layout: {
+        padding: 0,
+      },
       plugins: {
         datalabels: {
           formatter(value) {
@@ -37,6 +40,7 @@ export default defineComponent({
           color: 'black',
           anchor: 'end',
           align: 'end',
+          offset: 0,
         },
         legend: {
           display: false,
@@ -69,9 +73,6 @@ export default defineComponent({
           },
           position: 'bottom',
         },
-      },
-      layout: {
-        padding: 0,
       },
     });
 

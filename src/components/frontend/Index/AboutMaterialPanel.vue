@@ -14,7 +14,7 @@
           :class="{ active: isScrollToFirstMetarial }"
         >
           <div class="about-egg-img">
-            <img class="img-fluid" src="@/assets/images/image-cake-2.jpg" alt="cake" />
+            <img class="img-fluid" src="@/assets/images/image-egg.jpg" alt="about-egg" />
           </div>
           <div class="p-12">
             <h3 class="paragraph-title text-primary fs-4 fw-bold tracking-2 mb-5">
@@ -57,7 +57,7 @@
             </p>
           </div>
           <div class="about-flour-img order-1 order-xl-2">
-            <img class="img-fluid" src="@/assets/images/image-flour-2.jpg" alt="flour" />
+            <img class="img-fluid" src="@/assets/images/image-flour-2.jpg" alt="about-flour" />
           </div>
         </div>
       </div>

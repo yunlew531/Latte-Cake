@@ -43,12 +43,12 @@
           </router-link>
         </h1>
         <button
-          class="navbar-toggler"
           type="button"
+          class="navbar-toggler"
           data-bs-toggle="collapse"
           data-bs-target="#carouselNavbar"
         >
-          <span class="navbar-toggler-icon"></span>
+          <span class="navbar-toggler-icon" />
         </button>
         <div class="collapse navbar-collapse ps-8" id="carouselNavbar">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
@@ -103,8 +103,8 @@
               @keyup.enter="searchProduct"
             />
             <button
-              class="search-btn btn position-absolute end-0"
               type="button"
+              class="search-btn btn position-absolute end-0"
               @click="searchProduct"
             >
               <span class="material-icons"> search </span>

@@ -15,7 +15,7 @@
           bottom-0
         "
         src="@/assets/images/photo-spaggetti.png"
-        alt="cake"
+        alt="pasta-spaghetti"
       />
       <div class="overflow-hidden text-end px-xl-50 ps-50">
         <router-link to="/products">

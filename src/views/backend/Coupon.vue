@@ -155,18 +155,18 @@
               />
               <label for="coupon-enabled" class="form-label m-0 ms-2">啟用</label>
             </div>
-            <button v-show="!isEdit" class="btn btn-primary" type="submit">
+            <button v-show="!isEdit" type="submit" class="btn btn-primary">
               新增
             </button>
             <button
               v-show="isEdit"
-              class="btn btn-outline-primary me-2"
               type="button"
+              class="btn btn-outline-primary me-2"
               @click="cancelEdit(resetForm)"
             >
               取消
             </button>
-            <button v-show="isEdit" class="btn btn-primary" type="submit">
+            <button v-show="isEdit" type="submit" class="btn btn-primary">
               儲存
             </button>
           </div>

@@ -6,7 +6,7 @@
       <img
         class="img-fluid hand-img rounded"
         src="https://images.unsplash.com/photo-1580893246395-52aead8960dc?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2134&q=80"
-        alt=""
+        alt="order-complete-hand"
       />
       <div class="d-flex justify-content-center pt-5">
         <router-link to="/products">

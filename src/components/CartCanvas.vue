@@ -16,7 +16,7 @@
         class="btn-close text-reset"
         data-bs-dismiss="offcanvas"
         aria-label="Close"
-      ></button>
+      />
     </div>
     <div class="px-4 m-0 d-flex align-items-center">
       <span class="me-auto">{{ carts.carts?.length }} 個品項</span>

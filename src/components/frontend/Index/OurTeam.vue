@@ -12,7 +12,7 @@
               :key="chef.name"
               class="col-md-6 col-lg-4 chef-card position-relative"
             >
-              <img class="img-fluid" :src="chef.url" alt="chef" />
+              <img class="img-fluid" :src="chef.url" :alt="chef.name" />
               <div
                 class="
                   card-content

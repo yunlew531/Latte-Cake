@@ -15,7 +15,6 @@
         >
           熱銷商品
         </h3>
-        <h4 class="text-center fs-5 mb-12"></h4>
         <Swiper
           :space-between="50"
           :autoplay="{
@@ -41,7 +40,7 @@
         >
           <SwiperSlide
             v-for="product in allProducts"
-            :key="product"
+            :key="product.id"
             class="rounded overflow-hidden bg-info"
             @transitionend="playSwiper($event)"
           >
@@ -60,7 +59,7 @@
                   bottom-0
                   h-25
                   w-100
-                  px-12
+                  px-6
                 "
               >
                 <div class="text-reset text-decoration-none">
@@ -147,19 +146,12 @@ export default {
     transition: 1s 1.5s cubic-bezier(0.34, 0.34, 0.32, 1);
     transform: translateY(100%) rotate3d(0, 1, 0, 30deg);
   }
-  .paragraph-text {
-    transition-delay: 2s;
-  }
-
   .swiper-content {
     h2,
     p {
       opacity: 0;
       padding-top: 100px;
       transition: 0.3s;
-    }
-    p {
-      transition-delay: 0.1s;
     }
   }
   .swiper-slide:nth-of-type(1),

@@ -1,8 +1,8 @@
 <template>
   <button :type="btnType" class="button btn" :class="`btn-${bgColor}`">
-    <div class="button-hover" :class="`bg-${hoverBgColor}`"></div>
+    <div class="button-hover" :class="`bg-${hoverBgColor}`" />
     <div class="opacity-0">
-      <slot></slot>
+      <slot />
     </div>
     <div
       class="
@@ -18,7 +18,7 @@
         align-items-center
       "
     >
-      <slot></slot>
+      <slot />
     </div>
   </button>
 </template>

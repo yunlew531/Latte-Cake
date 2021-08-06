@@ -4,7 +4,7 @@
     <Loading v-model:active="isLoading" :is-full-page="false" />
     <div class="d-flex justify-content-center">
       <h2 class="me-auto">訂單</h2>
-      <button class="btn btn-primary align-self-center" @click="showModal">
+      <button type="button" class="btn btn-primary align-self-center" @click="showModal">
         刪除全部訂單
       </button>
     </div>
@@ -40,8 +40,8 @@
             <td>NT$ {{ order.total?.toLocaleString() }}</td>
             <td>
               <router-link
+                tag="button"
                 :to="`/admin/order/${order.id}`"
-                type="button"
                 class="btn btn-outline-primary"
               >
                 詳細

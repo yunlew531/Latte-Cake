@@ -27,7 +27,7 @@
                 </li>
               </ul>
             </div>
-            <img src="@/assets/images/pasta.png" class="pasta-img img-fluid" />
+            <img src="@/assets/images/pasta.png" class="pasta-img img-fluid" alt="pasta" />
           </div>
           <ul
             class="
@@ -92,7 +92,11 @@
               </h3>
             </div>
           </div>
-          <img src="@/assets/images/fork.png" class="fork-img img-fluid position-absolute" />
+          <img
+            src="@/assets/images/fork.png"
+            class="fork-img img-fluid position-absolute"
+            alt="fork"
+          />
         </div>
       </div>
     </div>

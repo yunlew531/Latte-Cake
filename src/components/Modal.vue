@@ -1,10 +1,5 @@
 <template>
-  <div
-    ref="msgModal"
-    class="modal fade"
-    tabindex="-1"
-    data-bs-backdrop="static"
-  >
+  <div ref="msgModal" class="modal fade" tabindex="-1" data-bs-backdrop="static">
     <div class="modal-dialog">
       <div class="modal-content">
         <Loading v-model:active="isLoading" :is-full-page="false" />
@@ -12,22 +7,13 @@
           <slot name="title">
             <h5 class="modal-title">{{ msg.title }}</h5>
           </slot>
-          <button
-            type="button"
-            class="btn-close"
-            data-bs-dismiss="modal"
-            aria-label="Close"
-          ></button>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" />
         </div>
         <div class="modal-body">
           <p>{{ msg.content }}</p>
         </div>
         <div class="modal-footer">
-          <button
-            type="button"
-            class="btn btn-outline-info"
-            data-bs-dismiss="modal"
-          >
+          <button type="button" class="btn btn-outline-info" data-bs-dismiss="modal">
             取消
           </button>
           <slot name="button">

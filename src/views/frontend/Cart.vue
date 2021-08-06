@@ -118,6 +118,7 @@
                           >{{ product.qty }}</span
                         >
                         <button
+                          type="button"
                           class="
                             quntity-btn
                             h-50
@@ -132,6 +133,7 @@
                           <span class="material-icons"> arrow_drop_up </span>
                         </button>
                         <button
+                          type="button"
                           class="
                             quntity-btn
                             h-50
@@ -157,6 +159,7 @@
                   <div class="d-flex flex-wrap align-items-center">
                     <div class="d-flex flex-wrap align-items-center flex-grow-1">
                       <button
+                        type="button"
                         class="
                           product-remove-btn
                           border-0
@@ -165,13 +168,13 @@
                           align-items-center
                           p-0
                         "
-                        type="button"
                         @click="removeCart(product)"
                       >
                         <span class="text-danger material-icons"> delete </span>
                         <span class="ms-1">移除商品</span>
                       </button>
                       <button
+                        type="button"
                         class="
                           product-remove-btn
                           border-0
@@ -182,7 +185,6 @@
                           mt-1 mt-sm-0
                           ms-md-3
                         "
-                        type="button"
                       >
                         <span class="material-icons heart-border">
                           favorite_border
@@ -221,8 +223,8 @@
             <p class="d-flex text-black-400">
               <span class="flex-grow-1">運費</span><span>NT$ 100 元</span>
             </p>
-            <router-link v-if="cartsData.carts?.length" to="/checkout" class="d-inline-block w-100"
-              ><Button class="fs-5 w-100 py-3">結帳 </Button>
+            <router-link v-if="cartsData.carts?.length" to="/checkout" class="d-inline-block w-100">
+              <Button class="fs-5 w-100 py-3">結帳 </Button>
             </router-link>
           </div>
         </div>
